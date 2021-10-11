@@ -1,0 +1,10 @@
+topic: ~greetings()
+# Defining extra concepts out of words or group of words
+#concept:(hello) [hello hi hey "good morning" greetings]
+
+# Replying to speech
+#u:(~hello) ~hello
+
+concept:(hello) [hello hi hey "good morning"]
+
+u:(~hello) ~hello
