@@ -26,6 +26,9 @@ import com.aldebaran.qi.sdk.object.conversation.Say;
 
 public class MainActivity extends RobotActivity implements RobotLifecycleCallbacks {
 
+
+    /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
+    // region implements VARIABLES
     private static final String TAG = "MainActivity";
     private static final boolean DEBUG_MODE = true;
 
@@ -33,12 +36,16 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     // Store the Chat action.
     private Chat chat;
 
+    // endregion implements VARIABLES
+    /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
+    // region implements EVENTS
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        // Register the RobotLifecycleCallbacks to this Activity.
         QiSDK.register(this, this);
-        Log.i(TAG,"Start");
+        Log.i(TAG,"test");
     }
 
     @Override
@@ -50,26 +57,29 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
 
     @Override
     public void onRobotFocusGained(QiContext qiContext) {
-        // The robot focus is gained.
-        Log.i(TAG,"Focus gained");
         createChatBot(qiContext);
-
     }
 
     @Override
     public void onRobotFocusLost() {
-        Log.i(TAG,"Focus lost");
-    }
+        // The robot focus is lost.
 
-    @Override
-    public void onRobotFocusRefused(String reason) {
         // Remove on started listeners from the Chat action.
         if (chat != null) {
             chat.removeAllOnStartedListeners();
         }
     }
+    @Override
+    public void onRobotFocusRefused(String reason) {
+        // The robot focus is refused.
+    }
 
-    public void createChatBot(QiContext qiContext) {
+    // endregion implements EVENTS
+    /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
+    // region implements FUNCTIONS
+
+    // region implements CHATBOT
+    public void createChatBot(QiContext qiContext){
         // Create a topic.
         Topic greetingsTopic = TopicBuilder.with(qiContext) // Create the builder using the QiContext.
                 .withResource(R.raw.greetings) // Set the topic resource.
@@ -97,5 +107,8 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
                 Log.e(TAG, "Discussion finished with error.", future.getError());
             }
         });
+
     }
+    // endregion implements CHATBOT
+    // endregion implements FUNCTIONS
 }

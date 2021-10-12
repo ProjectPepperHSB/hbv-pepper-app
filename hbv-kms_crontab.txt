@@ -1,0 +1,12 @@
+
+
+
+
+
+
+0 */8 * * * for i in `seq $(($(/bin/date +%V | cut -d'0' -f2))) 52`; do /usr/bin/python3 ~/getTimeTableData.py -kw $i; done
+# e.g.: curl https://informatik.hs-bremerhaven.de/docker-hbv-kms-web/timetablesfb2/WI_B1_42.csv --output name.csv
+
+
+
+# ------ EOF ------

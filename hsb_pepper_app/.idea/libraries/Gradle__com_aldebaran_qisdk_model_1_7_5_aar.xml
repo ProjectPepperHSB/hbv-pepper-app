@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Gradle: com.aldebaran:qisdk-model:1.7.5@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/b7f76c8b7d960449f166d618db10d4c4/transformed/jetified-qisdk-model-1.7.5/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/b7f76c8b7d960449f166d618db10d4c4/transformed/jetified-qisdk-model-1.7.5/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/b7f76c8b7d960449f166d618db10d4c4/transformed/jetified-qisdk-model-1.7.5/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.aldebaran/qisdk-model/1.7.5/79853144114d837045ee4c5ce50d2edb3d43a239/qisdk-model-1.7.5-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.aldebaran/qisdk-model/1.7.5/eae8e51579a247501e530bae432181a2c84b3acc/qisdk-model-1.7.5-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

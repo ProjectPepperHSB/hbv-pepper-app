@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+body,html,canvas {
+  margin:0;
+  padding:0;
+  width: 100%;
+  height: 100%;
+}
+canvas {
+  cursor: none;
+  display: block;
+  background-color:gray;
+}
+    </style>
+
+    <script>
+      function init(){
+            }
+      window.onload=init
+
+      // Websocket 
+      let ws = new
+            WebSocket('wss://informatik.hs-bremerhaven.de/docker-hbv-kms-ws');
+      ws.onopen = function() {
+          console.log("connect"); 
+          const urlParams = new URLSearchParams(window.location.search);
+              if(urlParams.has("c") && urlParams.has("s") && urlParams.has("kw")){
+              if(ws.readyState==WebSocket.OPEN){
+                ws.send("timetable["+urlParams.get("c").toString()+","+urlParams.get("s").toString()+","+urlParams.get("kw").toString()+"]");
+
+
+                    }
+
+                    }
+      };
+      ws.onclose = function() {
+          console.log("close");
+            };
+      ws.onmessage = function(event) {
+          console.log(event.data)
+          lastdata=event.data
+            };
+      
+      //function oncepersecond(){
+      //        if(ws.readyState == WebSocket.OPEN ) {
+      //                ws.send("tt "+Date.now());
+      //              }
+      //      }
+      //window.setInterval(oncepersecond,1000);
+    </script>
+
+  </head>
+  <body>
+  </body>
+</html>
+
