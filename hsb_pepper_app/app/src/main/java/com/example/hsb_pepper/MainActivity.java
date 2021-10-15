@@ -111,13 +111,15 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         });
 
 
-        getTimeTable("WI","1","42");
+        ArrayList<WeekDay> week = getTimeTable("WI","1","42");
+
+
 
     }
     // endregion implements CHATBOT
 
     // region implements TIMETABLE-STUFF
-    public void getTimeTable(String _course, String _semester, String _kw) throws IOException {
+    public ArrayList<WeekDay> getTimeTable(String _course, String _semester, String _kw) throws IOException {
         String course_str = _course + "_B" + _semester + "_" + _kw;
         String url_str = "https://informatik.hs-bremerhaven.de/docker-hbv-kms-web/timetablesfb2/" + course_str + ".csv";
         String response_str  = HelperCollection.getUrlContents(url_str);
@@ -142,20 +144,22 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
                     content[5]
             );
 
-            if(!weekDays.get(weekDays.size() - 1).name.equals(content[0])){ // neuer Tag
+            if(!weekDays.get(weekDays.size() - 1).getName().equals(content[0])){ // neuer Tag
                 weekDays.add(new WeekDay(content[0], course));
             } else { // selber Tag, anderer Eintrag
-                weekDays.get(weekDays.size() - 1).courses.add(course);
+                weekDays.get(weekDays.size() - 1).addCourse(course);
             }
         }
-
+        /*
         for(int i = 0; i < weekDays.size(); i++){
             WeekDay day = weekDays.get(i);
-            Log.i(TAG, day.name + " " + day.courses.get(0).name);
-            /*
-            ... do something like return some info or crash 
-             */
+            Log.i(TAG, day.getName() + " " + day.getCourses().get(0).getName());
+
+            //... do something like return some info or crash
+
         }
+        */
+        return weekDays;
     }
 
 

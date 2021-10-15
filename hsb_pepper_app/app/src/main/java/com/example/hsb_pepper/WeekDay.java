@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class WeekDay {
-    public String name;
-    public ArrayList<Course> courses = new ArrayList<Course>(Arrays.asList(new Course[]{}));
+    private String name;
+    private ArrayList<Course> courses = new ArrayList<Course>(Arrays.asList(new Course[]{}));
 
     public WeekDay(String name){
         this.name = name;
@@ -20,5 +20,8 @@ public class WeekDay {
     }
     public ArrayList<Course> getCourses(){
         return courses;
+    }
+    public void addCourse(Course course){
+        courses.add(course);
     }
 }

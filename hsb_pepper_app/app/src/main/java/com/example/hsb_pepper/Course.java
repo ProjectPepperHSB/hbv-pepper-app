@@ -3,11 +3,11 @@ package com.example.hsb_pepper;
 import java.util.ArrayList;
 
 public class Course {
-    public String name;
-    public ArrayList<String> begins = new ArrayList<String>();
-    public ArrayList<String> ends = new ArrayList<String>();
-    public String prof;
-    public String room;
+    private String name;
+    private ArrayList<String> begins = new ArrayList<String>();
+    private ArrayList<String> ends = new ArrayList<String>();
+    private String prof;
+    private String room;
 
     public Course(String name, String begins, String ends, String prof, String room) {
         this.name = name;

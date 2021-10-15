@@ -1,4 +1,9 @@
-# hsb_pepper
+# Bachelorprojekt: Pepper Anwendung
 
+## Repository Struktur
 
-Shared Hopper Account: hbv-kms
+1.
+
+### Information
+
+1. Hopper $User: hbv-kms
