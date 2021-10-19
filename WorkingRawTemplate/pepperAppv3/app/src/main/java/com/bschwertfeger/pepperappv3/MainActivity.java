@@ -2,17 +2,23 @@ package com.bschwertfeger.pepperappv3;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import com.aldebaran.qi.sdk.design.activity.RobotActivity;
-import com.aldebaran.qi.sdk.RobotLifecycleCallbacks;
-import com.aldebaran.qi.sdk.QiSDK;
+import android.util.Log;
+
 import com.aldebaran.qi.sdk.QiContext;
+import com.aldebaran.qi.sdk.QiSDK;
+import com.aldebaran.qi.sdk.RobotLifecycleCallbacks;
+import com.aldebaran.qi.sdk.builder.SayBuilder;
+import com.aldebaran.qi.sdk.design.activity.RobotActivity;
+import com.aldebaran.qi.sdk.object.conversation.Say;
 
 public class MainActivity extends RobotActivity implements RobotLifecycleCallbacks {
+
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Register the RobotLifecycleCallbacks to this Activity.
+        setContentView(R.layout.activity_main);
         QiSDK.register(this, this);
     }
 
@@ -25,7 +31,8 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
 
     @Override
     public void onRobotFocusGained(QiContext qiContext) {
-        // The robot focus is gained.
+        Log.i(TAG,"##############Focus gained##############");
+        SayBuilder.with(qiContext).withText("Hallo ich bin Robotn").build().run();
     }
 
     @Override

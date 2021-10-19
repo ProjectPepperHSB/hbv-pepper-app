@@ -8,18 +8,28 @@ import com.aldebaran.qi.sdk.QiContext;
 import com.aldebaran.qi.sdk.QiSDK;
 import com.aldebaran.qi.sdk.RobotLifecycleCallbacks;
 import com.aldebaran.qi.sdk.builder.ChatBuilder;
+import com.aldebaran.qi.sdk.builder.ListenBuilder;
+import com.aldebaran.qi.sdk.builder.PhraseSetBuilder;
 import com.aldebaran.qi.sdk.builder.QiChatbotBuilder;
+import com.aldebaran.qi.sdk.builder.SayBuilder;
 import com.aldebaran.qi.sdk.builder.TopicBuilder;
 import com.aldebaran.qi.sdk.design.activity.RobotActivity;
+import com.aldebaran.qi.sdk.object.actuation.Animate;
+import com.aldebaran.qi.sdk.object.conversation.Bookmark;
 import com.aldebaran.qi.sdk.object.conversation.Chat;
+import com.aldebaran.qi.sdk.object.conversation.Listen;
+import com.aldebaran.qi.sdk.object.conversation.ListenResult;
+import com.aldebaran.qi.sdk.object.conversation.PhraseSet;
 import com.aldebaran.qi.sdk.object.conversation.QiChatbot;
 import com.aldebaran.qi.sdk.object.conversation.Topic;
+import com.aldebaran.qi.sdk.util.PhraseSetUtil;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
 
 public class MainActivity extends RobotActivity implements RobotLifecycleCallbacks {
 
@@ -29,9 +39,12 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     private static final String TAG = "MainActivity";
     private static final boolean DEBUG_MODE = true;
 
-    //qiChat
-    // Store the Chat action.
+    private QiChatbot qiChatbot;
     private Chat chat;
+    private Bookmark proposalBookmark;
+    private Map<String, Bookmark> bookmarks;
+
+    private Animate animate;
 
     // endregion implements VARIABLES
     /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
@@ -53,27 +66,50 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     }
 
     @Override
-    public void onRobotFocusGained(QiContext qiContext) {
-        try {
-            createChatBot(qiContext);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void onRobotFocusLost() {
+        Log.i(TAG,"Focus lost");
     }
 
     @Override
-    public void onRobotFocusLost() {
-        // The robot focus is lost.
-
+    public void onRobotFocusRefused(String reason) {
         // Remove on started listeners from the Chat action.
         if (chat != null) {
             chat.removeAllOnStartedListeners();
         }
     }
+
     @Override
-    public void onRobotFocusRefused(String reason) {
-        // The robot focus is refused.
+    public void onRobotFocusGained(QiContext qiContext) {
+        Log.i(TAG,"### Focus gained ###");
+        SayBuilder.with(qiContext).withText("Hallo ich bin Robotn").build().run();
+/*
+        try {
+            createChatBot(qiContext);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+*/
+        //Hear for keyword
+        TestMensa(qiContext);
     }
+
+    public void TestMensa(QiContext qiContext){
+
+        PhraseSet phraseSetYes = PhraseSetBuilder.with(qiContext).withTexts("Mensa", "Mensaplan", "Essen", "Cafetaria").build();
+
+        Listen listen = ListenBuilder.with(qiContext).withPhraseSets(phraseSetYes).build();
+
+        ListenResult listenResult = listen.run();
+
+        PhraseSet matchedPhraseSet = listenResult.getMatchedPhraseSet();
+        if (PhraseSetUtil.equals(matchedPhraseSet, phraseSetYes)) {
+            Log.i(TAG, "Heard phrase set: Mensa");
+            runOnUiThread(() -> setContentView(R.layout.mensa));
+            TestMensa(qiContext);
+        }
+    }
+
+
 
     // endregion implements EVENTS
     /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
