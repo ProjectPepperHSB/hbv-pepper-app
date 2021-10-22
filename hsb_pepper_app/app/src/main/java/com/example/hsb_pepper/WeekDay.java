@@ -4,24 +4,30 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class WeekDay {
+    /* Class to store multiple lectures in one weekday
+    */
+
     private String name;
-    private ArrayList<Course> courses = new ArrayList<Course>(Arrays.asList(new Course[]{}));
+    private ArrayList<Lectures> lectures = new ArrayList<Lectures>(Arrays.asList(new Lectures[]{}));
 
     public WeekDay(String name){
         this.name = name;
     }
 
-    public WeekDay(String name, Course course){
+    public WeekDay(String name, Lectures lectures){
         this.name = name;
-        this.courses.add(course);
+        this.lectures.add(lectures);
     }
+
     public String getName(){
         return name;
     }
-    public ArrayList<Course> getCourses(){
-        return courses;
+    public ArrayList<Lectures> getLectures(){
+        return lectures;
     }
-    public void addCourse(Course course){
-        courses.add(course);
+    public void addCourse(Lectures lectures){
+        this.lectures.add(lectures);
     }
 }
+
+/* ----- ----- EOF ----- ----- ----- ----- ----- ----- ----- ----- */

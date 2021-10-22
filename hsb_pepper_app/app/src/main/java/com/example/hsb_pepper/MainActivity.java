@@ -36,10 +36,14 @@ import java.util.Map;
 // └ outsource classes and not-main functions
 
 public class MainActivity extends RobotActivity implements RobotLifecycleCallbacks {
-
+     /* Main Function of this Applications
+        ├ Creates chatBots, handles interactions
+        └ Some more magic with "AI"
+     */
 
     /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
     // region implements VARIABLES
+
     private static final String TAG = "MainActivity";
     private static final boolean DEBUG_MODE = true;
 
@@ -47,8 +51,6 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     private Chat chat;
     private Bookmark proposalBookmark;
     private Map<String, Bookmark> bookmarks;
-
-    private Animate animate;
 
     private TimeTableChatBot ttchatBot = null;
 
@@ -82,17 +84,16 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         // Remove on started listeners from the Chat action.
         if (chat != null) {
             chat.removeAllOnStartedListeners();
-            ttchatBot = null;
         }
+        ttchatBot = null;
     }
 
     @Override
     public void onRobotFocusGained(QiContext qiContext) {
         Log.i(TAG,"### Focus gained ###");
-        SayBuilder.with(qiContext).withText("Hallo ich bin Robotn").build().run();
+        HelperCollection.Say(qiContext, "Hallo ich bin Robotn");
 
         if(true){
-            // wann || wo
             ttchatBot = new TimeTableChatBot(qiContext);
             ttchatBot.start();
         }
@@ -100,6 +101,10 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         //Hear for keyword
         //TestMensa(qiContext);
     }
+
+    // endregion implements EVENTS
+    /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
+    // region implement TESTING
 
     public void TestMensa(QiContext qiContext){
 
@@ -115,10 +120,10 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         }
     }
 
-    // endregion implements EVENTS
-    /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
-    // region implements FUNCTIONS
+    // endregion TESTING
 
 
-// endregion implements FUNCTIONS
 }
+
+
+/* ----- ----- EOF ----- ----- ----- ----- ----- ----- ----- ----- */

@@ -1,24 +1,15 @@
 package com.example.hsb_pepper;
 
-import android.nfc.Tag;
 import android.util.Log;
 
-import com.aldebaran.qi.Future;
 import com.aldebaran.qi.sdk.QiContext;
-import com.aldebaran.qi.sdk.builder.ChatBuilder;
 import com.aldebaran.qi.sdk.builder.ListenBuilder;
 import com.aldebaran.qi.sdk.builder.PhraseSetBuilder;
-import com.aldebaran.qi.sdk.builder.QiChatbotBuilder;
 import com.aldebaran.qi.sdk.builder.SayBuilder;
-import com.aldebaran.qi.sdk.builder.TopicBuilder;
-import com.aldebaran.qi.sdk.object.conversation.Chat;
 import com.aldebaran.qi.sdk.object.conversation.Listen;
 import com.aldebaran.qi.sdk.object.conversation.ListenResult;
 import com.aldebaran.qi.sdk.object.conversation.Phrase;
 import com.aldebaran.qi.sdk.object.conversation.PhraseSet;
-import com.aldebaran.qi.sdk.object.conversation.QiChatbot;
-import com.aldebaran.qi.sdk.object.conversation.Say;
-import com.aldebaran.qi.sdk.object.conversation.Topic;
 import com.aldebaran.qi.sdk.util.PhraseSetUtil;
 
 import java.io.BufferedReader;
@@ -35,12 +26,18 @@ public class TimeTableChatBot {
 
     private String TAG = "TimeTableChatBotClass";
 
+
+
     private QiContext qiContext;
     private String chosenSemester;
     private String chosenCourse;
     private String chosenLecture;
     private String chosenKW = "42";
-    private String chosenWeekday = "MO";
+    //private String chosenWeekday = "MO";
+
+    private PhraseSet semesterPhrases;
+    private PhraseSet coursesPhrases;
+    private PhraseSet lecturesPhrases;
 
     // TODO: Arrays als json in /res hinzufügen
     private String[] allSemester = {
@@ -56,47 +53,60 @@ public class TimeTableChatBot {
             "MO", "DI", "MI", "DO", "FR" // , "SA"
     };
 
-    private PhraseSet semester;
-    private PhraseSet courses;
-    private PhraseSet lectures;
+    /* ----- Exit handling ----- ----- ----- ----- */
+
+    private boolean cancelExists;
+    private PhraseSet cancelPhrases;
+
+    private String[] cancelStrings = {
+            "abbrechen", "abbruch", "hör auf", "zurück", "hä"
+    };
 
     /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
 
     public TimeTableChatBot(QiContext qiContext){
         this.qiContext = qiContext;
-        this.semester = PhraseSetBuilder.with(qiContext).withTexts(allSemester).build();
-        this.courses = PhraseSetBuilder.with(qiContext).withTexts(allCourses).build();
-        this.lectures = PhraseSetBuilder.with(qiContext).withTexts(allLectures).build();
+        this.semesterPhrases = PhraseSetBuilder.with(qiContext).withTexts(allSemester).build();
+        this.coursesPhrases = PhraseSetBuilder.with(qiContext).withTexts(allCourses).build();
+        this.lecturesPhrases = PhraseSetBuilder.with(qiContext).withTexts(allLectures).build();
+        this.cancelPhrases = PhraseSetBuilder.with(qiContext).withTexts(cancelStrings).build();
     }
 
     public void start(){
         while(chosenSemester == null || chosenCourse == null || chosenLecture == null){
-            Log.i(TAG, "--");
             checkInput();
+            if(cancelExists)
+                HelperCollection.Say(qiContext, "Okay, ich breche den Vorgang ab.");
+                return;
         }
     }
 
     /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
 
     private void checkInput(){
-        Listen listen = ListenBuilder.with(qiContext).withPhraseSets(semester,courses,lectures).build();
+        Listen listen = ListenBuilder.with(qiContext).withPhraseSets(semesterPhrases, coursesPhrases, lecturesPhrases,cancelPhrases).build();
         ListenResult listenResult = listen.run();
 
         PhraseSet matchedPhraseSet = listenResult.getMatchedPhraseSet();
 
-        if (PhraseSetUtil.equals(matchedPhraseSet, semester)) {
+        if (PhraseSetUtil.equals(matchedPhraseSet, cancelPhrases)) {
+            this.cancelExists = true;
+            return;
+        }
+
+        if (PhraseSetUtil.equals(matchedPhraseSet, semesterPhrases)) {
             chosenSemester = listenResult.getHeardPhrase().getText();
             Log.i(TAG, "Heard Semester -> " + chosenSemester);
         }
 
-        if (PhraseSetUtil.equals(matchedPhraseSet, courses)) {
+        if (PhraseSetUtil.equals(matchedPhraseSet, coursesPhrases)) {
             chosenCourse = listenResult.getHeardPhrase().getText();
             Log.i(TAG, "Heard Course -> " + chosenCourse);
         }
 
-        if (PhraseSetUtil.equals(matchedPhraseSet, lectures)) {
+        if (PhraseSetUtil.equals(matchedPhraseSet, lecturesPhrases)) {
             chosenLecture = listenResult.getHeardPhrase().getText();
-            Log.i(TAG, "Heard lecture -> " + chosenLecture);
+            Log.i(TAG, "Heard Lecture -> " + chosenLecture);
         }
 
         if (chosenSemester != null && chosenCourse != null && chosenLecture != null){
@@ -105,10 +115,10 @@ public class TimeTableChatBot {
                 //WeekDay day = week.get(Arrays.asList(weekdays).indexOf(chosenWeekday));
                 for(int i = 0; i < week.size(); i++){
                     WeekDay day = week.get(i);
-                    for(int j = 0; j < day.getCourses().size(); j++){
-                        Course course = day.getCourses().get(j);
-                        if(course.getName().contains(chosenLecture)){
-                            Log.i(TAG, day.getName() + " " + course.getName() + " " + course.getRoom());
+                    for(int j = 0; j < day.getLectures().size(); j++){
+                        Lectures lectures = day.getLectures().get(j);
+                        if(lectures.getName().contains(chosenLecture)){
+                            Log.i(TAG, day.getName() + " " + lectures.getName() + " " + lectures.getRoom());
                         }
                     }
                 }
@@ -117,16 +127,12 @@ public class TimeTableChatBot {
                 e.printStackTrace();
             }
         } else if (chosenSemester == null){
-            Say("Welches Semester?");
+            HelperCollection.Say(qiContext, "Welches Semester?");
         } else if (chosenLecture == null){
-            Say("Welcher Kurs?");
+            HelperCollection.Say(qiContext, "Welcher Kurs?");
         } else if (chosenCourse == null){
-            Say("Welcher Studiengang?");
+            HelperCollection.Say(qiContext, "Welcher Studiengang?");
         }
-    }
-
-    private void Say(String message){
-        SayBuilder.with(qiContext).withPhrase(new Phrase(message)).build().run();
     }
 
     /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
@@ -148,7 +154,7 @@ public class TimeTableChatBot {
                 continue;
 
             String[] content =  line.split(";");
-            Course course = new Course(
+            Lectures lectures = new Lectures(
                     content[3],
                     content[1],
                     content[2],
@@ -157,11 +163,14 @@ public class TimeTableChatBot {
             );
 
             if(!weekDays.get(weekDays.size() - 1).getName().equals(content[0])){ // neuer Tag
-                weekDays.add(new WeekDay(content[0], course));
+                weekDays.add(new WeekDay(content[0], lectures));
             } else { // selber Tag, anderer Eintrag
-                weekDays.get(weekDays.size() - 1).addCourse(course);
+                weekDays.get(weekDays.size() - 1).addCourse(lectures);
             }
         }
         return weekDays;
     }
 }
+
+
+/* ----- ----- EOF ----- ----- ----- ----- ----- ----- ----- ----- */

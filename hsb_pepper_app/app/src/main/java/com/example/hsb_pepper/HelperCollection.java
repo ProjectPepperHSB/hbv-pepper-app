@@ -1,11 +1,19 @@
 package com.example.hsb_pepper;
 
+import com.aldebaran.qi.sdk.QiContext;
+import com.aldebaran.qi.sdk.builder.SayBuilder;
+import com.aldebaran.qi.sdk.object.conversation.Phrase;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
 public class HelperCollection {
+    /* Class to store static functions
+       └ Accessable from everywhere
+    */
+
     public static String getUrlContents(String theUrl){
         StringBuilder content = new StringBuilder();
         // Use try and catch to avoid the exceptions
@@ -26,4 +34,11 @@ public class HelperCollection {
         }
         return content.toString();
     }
+
+    public static void Say(QiContext qiContext, String message){
+        SayBuilder.with(qiContext).withPhrase(new Phrase(message)).build().run();
+    }
+
 }
+
+/* ----- ----- EOF ----- ----- ----- ----- ----- ----- ----- ----- */

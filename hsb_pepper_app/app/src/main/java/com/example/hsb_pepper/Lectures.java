@@ -2,14 +2,17 @@ package com.example.hsb_pepper;
 
 import java.util.ArrayList;
 
-public class Course {
+public class Lectures {
+    /* Class to store information about lectures
+    */
+
     private String name;
     private String begin;
     private String end;
     private String prof;
     private String room;
 
-    public Course(String name, String begin, String end, String prof, String room) {
+    public Lectures(String name, String begin, String end, String prof, String room) {
         this.name = name;
         this.begin = begin;
         this.end = end;
@@ -57,3 +60,6 @@ public class Course {
         this.room = room;
     }
 }
+
+
+/* ----- ----- EOF ----- ----- ----- ----- ----- ----- ----- ----- */
