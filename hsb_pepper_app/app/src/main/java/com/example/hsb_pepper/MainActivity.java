@@ -31,6 +31,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 
+// TODO:
+// ├ Set variable chat to null if focus lost for x seconds
+// └ outsource classes and not-main functions
+
 public class MainActivity extends RobotActivity implements RobotLifecycleCallbacks {
 
 
@@ -45,6 +49,8 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     private Map<String, Bookmark> bookmarks;
 
     private Animate animate;
+
+    private TimeTableChatBot ttchatBot = null;
 
     // endregion implements VARIABLES
     /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
@@ -68,6 +74,7 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     @Override
     public void onRobotFocusLost() {
         Log.i(TAG,"Focus lost");
+        ttchatBot = null;
     }
 
     @Override
@@ -75,6 +82,7 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         // Remove on started listeners from the Chat action.
         if (chat != null) {
             chat.removeAllOnStartedListeners();
+            ttchatBot = null;
         }
     }
 
@@ -82,23 +90,21 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     public void onRobotFocusGained(QiContext qiContext) {
         Log.i(TAG,"### Focus gained ###");
         SayBuilder.with(qiContext).withText("Hallo ich bin Robotn").build().run();
-/*
-        try {
-            createChatBot(qiContext);
-        } catch (IOException e) {
-            e.printStackTrace();
+
+        if(true){
+            // wann || wo
+            ttchatBot = new TimeTableChatBot(qiContext);
+            ttchatBot.start();
         }
-*/
+
         //Hear for keyword
-        TestMensa(qiContext);
+        //TestMensa(qiContext);
     }
 
     public void TestMensa(QiContext qiContext){
 
         PhraseSet phraseSetYes = PhraseSetBuilder.with(qiContext).withTexts("Mensa", "Mensaplan", "Essen", "Cafetaria").build();
-
         Listen listen = ListenBuilder.with(qiContext).withPhraseSets(phraseSetYes).build();
-
         ListenResult listenResult = listen.run();
 
         PhraseSet matchedPhraseSet = listenResult.getMatchedPhraseSet();
@@ -109,96 +115,10 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         }
     }
 
-
-
     // endregion implements EVENTS
     /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
     // region implements FUNCTIONS
 
-    // region implements CHATBOT
-    public void createChatBot(QiContext qiContext) throws IOException {
 
-        // Create a topic.
-        Topic greetingsTopic = TopicBuilder.with(qiContext) // Create the builder using the QiContext.
-                .withResource(R.raw.greetings) // Set the topic resource.
-                .build(); // Build the topic.
-
-        // Create a new QiChatbot.
-        QiChatbot qiChatbot = QiChatbotBuilder.with(qiContext)
-                .withTopic(greetingsTopic)
-                .build();
-
-        // Create a new Chat action.
-        chat = ChatBuilder.with(qiContext)
-                .withChatbot(qiChatbot)
-                .build();
-
-        // Add an on started listener to the Chat action.
-        chat.addOnStartedListener(() -> Log.i(TAG, "Discussion started."));
-
-        // Run the Chat action asynchronously.
-        Future<Void> chatFuture = chat.async().run();
-
-        // Add a lambda to the action execution.
-        chatFuture.thenConsume(future -> {
-            if (future.hasError()) {
-                Log.e(TAG, "Discussion finished with error.", future.getError());
-            }
-        });
-
-
-        ArrayList<WeekDay> week = getTimeTable("WI","1","42");
-
-
-
-    }
-    // endregion implements CHATBOT
-
-    // region implements TIMETABLE-STUFF
-    public ArrayList<WeekDay> getTimeTable(String _course, String _semester, String _kw) throws IOException {
-        String course_str = _course + "_B" + _semester + "_" + _kw;
-        String url_str = "https://informatik.hs-bremerhaven.de/docker-hbv-kms-web/timetablesfb2/" + course_str + ".csv";
-        String response_str  = HelperCollection.getUrlContents(url_str);
-
-        ArrayList<WeekDay> weekDays = new ArrayList<WeekDay>(Arrays.asList(new WeekDay[]{new WeekDay("Mo")}));
-
-        BufferedReader reader = new BufferedReader(new StringReader(response_str));
-        String line;
-
-        int line_idx = 0;
-        while ((line = reader.readLine()) != null) {
-            line_idx++;
-            if(line_idx == 1)
-                continue;
-
-            String[] content =  line.split(";");
-            Course course = new Course(
-                    content[3],
-                    content[1],
-                    content[2],
-                    content[4],
-                    content[5]
-            );
-
-            if(!weekDays.get(weekDays.size() - 1).getName().equals(content[0])){ // neuer Tag
-                weekDays.add(new WeekDay(content[0], course));
-            } else { // selber Tag, anderer Eintrag
-                weekDays.get(weekDays.size() - 1).addCourse(course);
-            }
-        }
-        /*
-        for(int i = 0; i < weekDays.size(); i++){
-            WeekDay day = weekDays.get(i);
-            Log.i(TAG, day.getName() + " " + day.getCourses().get(0).getName());
-
-            //... do something like return some info or crash
-
-        }
-        */
-        return weekDays;
-    }
-
-
-    // endregion implements TIMETABLE-STUFF
 // endregion implements FUNCTIONS
 }
