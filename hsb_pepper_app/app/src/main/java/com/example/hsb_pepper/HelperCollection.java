@@ -22,7 +22,7 @@ public class HelperCollection {
             URLConnection urlConnection = url.openConnection(); // creating a urlconnection object
 
             // wrapping the urlconnection in a bufferedreader
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), "latin1"));
             String line;
             // reading from the urlconnection using the bufferedreader
             while ((line = bufferedReader.readLine()) != null) {

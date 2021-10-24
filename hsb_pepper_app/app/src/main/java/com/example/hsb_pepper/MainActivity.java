@@ -1,35 +1,26 @@
 package com.example.hsb_pepper;
 
+
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 
-import com.aldebaran.qi.Future;
 import com.aldebaran.qi.sdk.QiContext;
 import com.aldebaran.qi.sdk.QiSDK;
 import com.aldebaran.qi.sdk.RobotLifecycleCallbacks;
-import com.aldebaran.qi.sdk.builder.ChatBuilder;
 import com.aldebaran.qi.sdk.builder.ListenBuilder;
 import com.aldebaran.qi.sdk.builder.PhraseSetBuilder;
-import com.aldebaran.qi.sdk.builder.QiChatbotBuilder;
-import com.aldebaran.qi.sdk.builder.SayBuilder;
-import com.aldebaran.qi.sdk.builder.TopicBuilder;
 import com.aldebaran.qi.sdk.design.activity.RobotActivity;
-import com.aldebaran.qi.sdk.object.actuation.Animate;
 import com.aldebaran.qi.sdk.object.conversation.Bookmark;
 import com.aldebaran.qi.sdk.object.conversation.Chat;
 import com.aldebaran.qi.sdk.object.conversation.Listen;
 import com.aldebaran.qi.sdk.object.conversation.ListenResult;
 import com.aldebaran.qi.sdk.object.conversation.PhraseSet;
 import com.aldebaran.qi.sdk.object.conversation.QiChatbot;
-import com.aldebaran.qi.sdk.object.conversation.Topic;
 import com.aldebaran.qi.sdk.util.PhraseSetUtil;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Map;
+
 
 // TODO:
 // ├ Set variable chat to null if focus lost for x seconds
@@ -47,12 +38,19 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     private static final String TAG = "MainActivity";
     private static final boolean DEBUG_MODE = true;
 
+    QiContext qiContext = null;
+    ImageView imageView;
+
     private QiChatbot qiChatbot;
     private Chat chat;
     private Bookmark proposalBookmark;
     private Map<String, Bookmark> bookmarks;
 
     private TimeTableChatBot ttchatBot = null;
+
+    //Mensa Stuff
+    private String mensaURL = "https://informatik.hs-bremerhaven.de/docker-hbv-kms-web/mensa";
+    public Mensa mensa;
 
     // endregion implements VARIABLES
     /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
@@ -61,9 +59,21 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Register the RobotLifecycleCallbacks to this Activity.
+        setContentView(R.layout.activity_main);
+
+        //Select img id
+        imageView = (ImageView)findViewById(R.id.iMensa);
+        //Get Mensa img and csv
+        GetMensaData getMensaData = new GetMensaData(imageView, new AsyncResponse() {
+            @Override
+            public void processFinish(Mensa result) {
+                mensa = result;
+                System.out.println("got Mensa Info");
+            }
+        });
+        getMensaData.execute(mensaURL);
+
         QiSDK.register(this, this);
-        Log.i(TAG,"test");
     }
 
     @Override
@@ -91,20 +101,24 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     @Override
     public void onRobotFocusGained(QiContext qiContext) {
         Log.i(TAG,"### Focus gained ###");
+        this.qiContext = qiContext;
         HelperCollection.Say(qiContext, "Hallo ich bin Robotn");
 
+        /*
         if(true){
             ttchatBot = new TimeTableChatBot(qiContext);
             ttchatBot.start();
         }
+        */
 
-        //Hear for keyword
-        //TestMensa(qiContext);
+
+        TestMensa(qiContext);
     }
 
     // endregion implements EVENTS
     /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
     // region implement TESTING
+
 
     public void TestMensa(QiContext qiContext){
 
@@ -115,14 +129,17 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         PhraseSet matchedPhraseSet = listenResult.getMatchedPhraseSet();
         if (PhraseSetUtil.equals(matchedPhraseSet, phraseSetYes)) {
             Log.i(TAG, "Heard phrase set: Mensa");
-            runOnUiThread(() -> setContentView(R.layout.mensa));
+
+            runOnUiThread(() -> setContentView(R.layout.mensa_layout));
+            System.out.println(mensa.getDay()[2]);
+            System.out.println(mensa.getOffer1()[0]);
+            System.out.println(mensa.getOffer2()[4]);
+
             TestMensa(qiContext);
         }
     }
 
     // endregion TESTING
-
-
 }
 
 
