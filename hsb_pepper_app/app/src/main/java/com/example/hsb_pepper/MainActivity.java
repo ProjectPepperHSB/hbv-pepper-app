@@ -46,7 +46,7 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     private Bookmark proposalBookmark;
     private Map<String, Bookmark> bookmarks;
 
-    private TimeTableChatBot ttchatBot = null;
+    private TimeTableChatBot TTChatBot = null;
 
     //Mensa Stuff
     private String mensaURL = "https://informatik.hs-bremerhaven.de/docker-hbv-kms-web/mensa";
@@ -86,7 +86,7 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     @Override
     public void onRobotFocusLost() {
         Log.i(TAG,"Focus lost");
-        ttchatBot = null;
+        TTChatBot = null;
     }
 
     @Override
@@ -95,21 +95,21 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         if (chat != null) {
             chat.removeAllOnStartedListeners();
         }
-        ttchatBot = null;
+        TTChatBot = null;
     }
 
     @Override
     public void onRobotFocusGained(QiContext qiContext) {
         Log.i(TAG,"### Focus gained ###");
         this.qiContext = qiContext;
-        HelperCollection.Say(qiContext, "Hallo ich bin Robotn");
+        HelperCollection.Say(qiContext, "Hallo");
 
-        /*
+    /*
         if(true){
-            ttchatBot = new TimeTableChatBot(qiContext);
-            ttchatBot.start();
+            TTChatBot = new TimeTableChatBot(qiContext);
+            TTChatBot.start();
         }
-        */
+*/
 
 
         TestMensa(qiContext);

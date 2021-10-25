@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 
 public class TimeTableChatBot {
     /* Class to interact with the focused User
@@ -24,16 +25,16 @@ public class TimeTableChatBot {
        └ Returns (specific) timetables
      */
 
-    private String TAG = "TimeTableChatBotClass";
-
-
+    private final static String TAG = "TimeTableChatBotClass";
 
     private QiContext qiContext;
     private String chosenSemester;
     private String chosenCourse;
     private String chosenLecture;
-    private String chosenKW = "42";
+    private String chosenKW = String.valueOf(getWeek());
     //private String chosenWeekday = "MO";
+
+    ArrayList<WeekDay> week;
 
     private PhraseSet semesterPhrases;
     private PhraseSet coursesPhrases;
@@ -46,8 +47,10 @@ public class TimeTableChatBot {
     private String[] allCourses = {
             "WI", "Wirtschaftsinformatik"
     };
-    private String[] allLectures = { // das hier als json für jede Kurs - / Semester Kombination
-            "Programmierung", "BWL"
+    private String[] allLectures = { // das hier als json für jeden Kurs - / Semester Kombination
+            "Programmierung", "BWL", "Graphen und Endliche Automaten", "Diskrete Mathematik", "SWE", // 1, Semester
+            "Vernetze Systeme", "Datenbanken I", "Software Engineering III", "Theoretische Informatik", "Standardsoftware", "Controlling", // 3. Semester
+            "ERP", "Business Intelligence", "IT-Recht", "Datenbanken II", "Big Data", "Compilerbau", "IT-Sicherheit", "ABAB", "Datenbanken II", "Marketing", "Parallellprogrammierung", "Grundlagen Systemintegration"// 5. Semester
     };
     private String[] weekdays = {
             "MO", "DI", "MI", "DO", "FR" // , "SA"
@@ -55,6 +58,7 @@ public class TimeTableChatBot {
 
     /* ----- Exit handling ----- ----- ----- ----- */
 
+    private boolean done;
     private boolean cancelExists;
     private PhraseSet cancelPhrases;
 
@@ -73,68 +77,83 @@ public class TimeTableChatBot {
     }
 
     public void start(){
-        while(chosenSemester == null || chosenCourse == null || chosenLecture == null){
+        while(this.chosenSemester == null || this.chosenCourse == null || !done){
+            Log.i("!","_");
             checkInput();
-            if(cancelExists)
-                HelperCollection.Say(qiContext, "Okay, ich breche den Vorgang ab.");
+
+            if(this.cancelExists) {
+                HelperCollection.Say(this.qiContext, "Okay, ich breche den Vorgang ab.");
                 return;
+            }
         }
     }
 
     /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
 
     private void checkInput(){
-        Listen listen = ListenBuilder.with(qiContext).withPhraseSets(semesterPhrases, coursesPhrases, lecturesPhrases,cancelPhrases).build();
-        ListenResult listenResult = listen.run();
-
-        PhraseSet matchedPhraseSet = listenResult.getMatchedPhraseSet();
-
-        if (PhraseSetUtil.equals(matchedPhraseSet, cancelPhrases)) {
-            this.cancelExists = true;
-            return;
-        }
-
-        if (PhraseSetUtil.equals(matchedPhraseSet, semesterPhrases)) {
-            chosenSemester = listenResult.getHeardPhrase().getText();
-            Log.i(TAG, "Heard Semester -> " + chosenSemester);
-        }
-
-        if (PhraseSetUtil.equals(matchedPhraseSet, coursesPhrases)) {
-            chosenCourse = listenResult.getHeardPhrase().getText();
-            Log.i(TAG, "Heard Course -> " + chosenCourse);
-        }
-
-        if (PhraseSetUtil.equals(matchedPhraseSet, lecturesPhrases)) {
-            chosenLecture = listenResult.getHeardPhrase().getText();
-            Log.i(TAG, "Heard Lecture -> " + chosenLecture);
-        }
-
-        if (chosenSemester != null && chosenCourse != null && chosenLecture != null){
+        if (this.chosenCourse != null && this.chosenSemester != null) {
             try {
-                ArrayList<WeekDay> week = this.getTimeTable(chosenCourse,chosenSemester,chosenKW);
-                //WeekDay day = week.get(Arrays.asList(weekdays).indexOf(chosenWeekday));
-                for(int i = 0; i < week.size(); i++){
+                boolean lectureFound = false;
+                Log.i(TAG, "---> get Timetables");
+                week = this.getTimeTable(chosenCourse, chosenSemester, chosenKW);
+                for (int i = 0; i < week.size(); i++) {
                     WeekDay day = week.get(i);
-                    for(int j = 0; j < day.getLectures().size(); j++){
+                    for (int j = 0; j < day.getLectures().size(); j++) {
                         Lectures lectures = day.getLectures().get(j);
-                        if(lectures.getName().contains(chosenLecture)){
-                            Log.i(TAG, day.getName() + " " + lectures.getName() + " " + lectures.getRoom());
+                        if (this.chosenLecture != null && lectures.getName().contains(chosenLecture)) {
+                            String msg = this.chosenLecture + " findet am " + day.getName() + " im Zeitraum von "
+                                    + lectures.getBegin() + " bis " + lectures.getEnd() + " Uhr im Raum "
+                                    + lectures.getRoom() + " statt.";
+                            HelperCollection.Say(this.qiContext, msg);
+                            lectureFound = true;
                         }
+                        // DISPLAY ALL COURSES OF THIS WEEK ON THE TABLET
+                        Log.i(TAG, day.getName() + ", Kurs: " + lectures.getName() + " Raum: " + lectures.getRoom() + "Beginn: " + lectures.getBegin() + "Uhr Ende: " + lectures.getEnd() + "Uhr.");
                     }
                 }
-
+                if(!lectureFound){
+                    HelperCollection.Say(this.qiContext, this.chosenLecture + " habe ich für diese Studiengang / Semesterkombination nicht gefunden.");
+                }
+                this.done = true;
             } catch (IOException e) {
+                Log.i("!!","!!");
                 e.printStackTrace();
             }
-        } else if (chosenSemester == null){
-            HelperCollection.Say(qiContext, "Welches Semester?");
-        } else if (chosenLecture == null){
-            HelperCollection.Say(qiContext, "Welcher Kurs?");
-        } else if (chosenCourse == null){
-            HelperCollection.Say(qiContext, "Welcher Studiengang?");
-        }
-    }
+        } else {
+            Listen listen = ListenBuilder.with(qiContext)
+                    .withPhraseSets(this.semesterPhrases, this.coursesPhrases, this.lecturesPhrases, this.cancelPhrases)
+                    .build();
+            ListenResult listenResult = listen.run();
+            PhraseSet matchedPhraseSet = listenResult.getMatchedPhraseSet();
 
+            if (PhraseSetUtil.equals(matchedPhraseSet, this.cancelPhrases)) {
+                this.cancelExists = true;
+                return;
+            }
+            if (PhraseSetUtil.equals(matchedPhraseSet, this.lecturesPhrases)) {
+                this.chosenLecture = listenResult.getHeardPhrase().getText();
+                Log.i(TAG, "Heard Lecture -> " + this.chosenLecture);
+            }
+
+            if (PhraseSetUtil.equals(matchedPhraseSet, this.semesterPhrases)) {
+                this.chosenSemester = listenResult.getHeardPhrase().getText();
+                Log.i(TAG, "Heard Semester -> " + this.chosenSemester);
+            }
+
+            if (PhraseSetUtil.equals(matchedPhraseSet, this.coursesPhrases)) {
+                this.chosenCourse = listenResult.getHeardPhrase().getText();
+                Log.i(TAG, "Heard Course -> " + this.chosenCourse);
+            }
+
+            if (this.chosenSemester == null) {
+                HelperCollection.Say(this.qiContext, "Welches Semester?");
+            } else if (this.chosenCourse == null) {
+                HelperCollection.Say(this.qiContext, "Welcher Studiengang?");
+            }
+        }
+
+        Log.i("!",this.chosenCourse +" " + this.chosenSemester);
+    }
     /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
 
     private ArrayList<WeekDay> getTimeTable(String _course, String _semester, String _kw) throws IOException {
@@ -143,7 +162,6 @@ public class TimeTableChatBot {
         String response_str  = HelperCollection.getUrlContents(url_str);
 
         ArrayList<WeekDay> weekDays = new ArrayList<WeekDay>(Arrays.asList(new WeekDay[]{new WeekDay("Mo")}));
-
         BufferedReader reader = new BufferedReader(new StringReader(response_str));
         String line;
 
@@ -164,11 +182,15 @@ public class TimeTableChatBot {
 
             if(!weekDays.get(weekDays.size() - 1).getName().equals(content[0])){ // neuer Tag
                 weekDays.add(new WeekDay(content[0], lectures));
-            } else { // selber Tag, anderer Eintrag
+            } else { // selber Tag, anderer Kurs / Eintrag
                 weekDays.get(weekDays.size() - 1).addCourse(lectures);
             }
         }
         return weekDays;
+    }
+
+    private static int getWeek() {
+        return Calendar.getInstance().get(Calendar.WEEK_OF_YEAR);
     }
 }
 
