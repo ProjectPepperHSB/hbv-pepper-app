@@ -1,0 +1,37 @@
+topic: ~timetablephrases()
+# Defining extra concepts out of words or group of words
+#concept:(hello) [hello hi hey "good morning" greetings]
+
+# Replying to speech
+#u:(~hello) ~hello
+
+concept:(wo) [wo "wo ist" "wo befindet" "wo finde" "wo findet"]
+concept:(wann) [wann "wann ist" "wo ist" "wo finde" "wo findet"]
+
+# WI 1., 3., 5. Semester
+concept:(Programmieren-I) [prog programmieren "prog eins" "prog zwei"]
+concept:(Compilerbau) [compilerbau]
+concept:(Parallellprogrammierung) [paraprog parallelprogrammierung]
+concept:(BWL) [BWL betriebswirtschaftslehre]
+concept:(Graphen-und-Endliche-Automaten) [graphen "graphen und automaten"]
+concept:(Diskrete-Mathematik) [mathe "mathe eins" "amthematik eins"]
+concept:(Theoretische-Informatik) ["theo inf" "theoretische informatik"]
+
+concept:(SWE) ["swe eins" "software engineering"]
+concept:(Software-Engineering-III) ["swe drei"]
+concept:(Vernetze-Systeme) ["vernetzte systeme"]
+concept:(Big-Data) ["big data"]
+concept:(Grundlagen-Systemintegration) [systemintegration]
+concept:(Datenbanken-I) ["datenbanken eins" db DB]
+concept:(Datenbanken-II) ["datenbanken zwei"]
+
+concept:(ERP) [erp]
+concept:(ABAB) [abab]
+concept:(Business-Intelligence) [bi biei]
+concept:(Standardsoftware) [standardsoftware]
+concept:(Controlling) [controlling]
+
+concept:(IT-Recht) ["it recht"]
+concept:(IT-Sicherheit) ["it sicherheit"]
+
+

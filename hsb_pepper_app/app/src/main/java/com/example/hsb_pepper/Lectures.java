@@ -2,17 +2,20 @@ package com.example.hsb_pepper;
 
 import java.util.ArrayList;
 
-public class Course {
+public class Lectures {
+    /* Class to store information about lectures
+    */
+
     private String name;
-    private ArrayList<String> begins = new ArrayList<String>();
-    private ArrayList<String> ends = new ArrayList<String>();
+    private String begin;
+    private String end;
     private String prof;
     private String room;
 
-    public Course(String name, String begins, String ends, String prof, String room) {
+    public Lectures(String name, String begin, String end, String prof, String room) {
         this.name = name;
-        this.begins.add(begins);
-        this.ends.add(ends);
+        this.begin = begin;
+        this.end = end;
         this.prof = prof;
         this.room = room;
     }
@@ -29,20 +32,20 @@ public class Course {
         return room;
     }
 
-    public ArrayList<String> getBegins() {
-        return begins;
+    public String getBegin() {
+        return begin;
     }
 
-    public ArrayList<String> getEnds() {
-        return ends;
+    public String getEnd() {
+        return end;
     }
 
-    public void setBegins(ArrayList<String> begins) {
-        this.begins = begins;
+    public void setBegin(String begins) {
+        this.begin = begin;
     }
 
-    public void setEnds(ArrayList<String> ends) {
-        this.ends = ends;
+    public void setEnd(String ends) {
+        this.end = end;
     }
 
     public void setName(String name) {
@@ -57,3 +60,6 @@ public class Course {
         this.room = room;
     }
 }
+
+
+/* ----- ----- EOF ----- ----- ----- ----- ----- ----- ----- ----- */
