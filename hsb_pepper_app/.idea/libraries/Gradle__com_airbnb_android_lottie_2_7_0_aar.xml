@@ -3,6 +3,7 @@
     <ANNOTATIONS>
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/fdb3bd087a6a561114e5f0bf7d0c6c49/transformed/jetified-lottie-2.7.0/annotations.zip!/" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/f0bd1a920a84a5c142c801c3a3a0c654/transformed/jetified-lottie-2.7.0/annotations.zip!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/6822906d0aaee89736258ea09b34cbef/transformed/jetified-lottie-2.7.0/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/fdb3bd087a6a561114e5f0bf7d0c6c49/transformed/jetified-lottie-2.7.0/jars/classes.jar!/" />
@@ -11,6 +12,9 @@
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/f0bd1a920a84a5c142c801c3a3a0c654/transformed/jetified-lottie-2.7.0/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/f0bd1a920a84a5c142c801c3a3a0c654/transformed/jetified-lottie-2.7.0/AndroidManifest.xml" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/f0bd1a920a84a5c142c801c3a3a0c654/transformed/jetified-lottie-2.7.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/6822906d0aaee89736258ea09b34cbef/transformed/jetified-lottie-2.7.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/6822906d0aaee89736258ea09b34cbef/transformed/jetified-lottie-2.7.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/6822906d0aaee89736258ea09b34cbef/transformed/jetified-lottie-2.7.0/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.airbnb.android/lottie/2.7.0/884a8ccb30bda6f92fce2df382130c310c07e127/lottie-2.7.0-javadoc.jar!/" />
