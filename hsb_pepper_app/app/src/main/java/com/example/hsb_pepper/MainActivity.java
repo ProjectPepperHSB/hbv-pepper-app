@@ -104,12 +104,12 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         this.qiContext = qiContext;
         HelperCollection.Say(qiContext, "Hallo");
 
-    /*
+
         if(true){
             TTChatBot = new TimeTableChatBot(qiContext);
             TTChatBot.start();
         }
-*/
+
 
 
         TestMensa(qiContext);

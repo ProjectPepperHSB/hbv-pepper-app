@@ -32,10 +32,8 @@ public class TimeTableChatBot {
     private String chosenCourse;
     private String chosenLecture;
     private String chosenKW = String.valueOf(getWeek());
-    //private String chosenWeekday = "MO";
 
     ArrayList<WeekDay> week;
-
     private PhraseSet semesterPhrases;
     private PhraseSet coursesPhrases;
     private PhraseSet lecturesPhrases;
@@ -51,9 +49,6 @@ public class TimeTableChatBot {
             "Programmierung", "BWL", "Graphen und Endliche Automaten", "Diskrete Mathematik", "SWE", // 1, Semester
             "Vernetze Systeme", "Datenbanken I", "Software Engineering III", "Theoretische Informatik", "Standardsoftware", "Controlling", // 3. Semester
             "ERP", "Business Intelligence", "IT-Recht", "Datenbanken II", "Big Data", "Compilerbau", "IT-Sicherheit", "ABAB", "Datenbanken II", "Marketing", "Parallellprogrammierung", "Grundlagen Systemintegration"// 5. Semester
-    };
-    private String[] weekdays = {
-            "MO", "DI", "MI", "DO", "FR" // , "SA"
     };
 
     /* ----- Exit handling ----- ----- ----- ----- */
@@ -111,12 +106,11 @@ public class TimeTableChatBot {
                         Log.i(TAG, day.getName() + ", Kurs: " + lectures.getName() + " Raum: " + lectures.getRoom() + "Beginn: " + lectures.getBegin() + "Uhr Ende: " + lectures.getEnd() + "Uhr.");
                     }
                 }
-                if(!lectureFound){
+                if(chosenLecture != null && !lectureFound){
                     HelperCollection.Say(this.qiContext, this.chosenLecture + " habe ich für diese Studiengang / Semesterkombination nicht gefunden.");
                 }
                 this.done = true;
             } catch (IOException e) {
-                Log.i("!!","!!");
                 e.printStackTrace();
             }
         } else {
@@ -151,8 +145,6 @@ public class TimeTableChatBot {
                 HelperCollection.Say(this.qiContext, "Welcher Studiengang?");
             }
         }
-
-        Log.i("!",this.chosenCourse +" " + this.chosenSemester);
     }
     /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
 
