@@ -1,0 +1,60 @@
+topic: ~main()
+
+# Defining extra concepts out of words or group of words
+concept:(bye)["{bye} bye" "bis bald" "{auf} wiedersehen" tschau Tschüss]
+concept:(empfehlung)[empfehlung vorschlag]
+concept:(fühle-gut)["{ich} {fühle} {mich} gut" "{es} {geht} {mir} {auch} {sehr} gut" "{mir} {geht} {es} {auch} gut" super bestens]
+concept:(fühle-schlecht)["{es} {geht} {mir} schlecht" "{mir} {geht} {es} {gar} nicht gut" "{ich} {bin} müde"]
+concept:(nein) ["nein {danke}" falsch nain najn neinn nöö nö]
+concept:(ja) ["ja {bitte} {klar} {gerne}" richtig klar nätürlich ok korrekt stimmt joa]
+
+concept:(standort)["wo bist du" "wo {bin} {befinde} ich {mich} {jetzt}" "wo {befinden} {sind} wir {uns}{jetzt}"]
+concept:(überflüssig)["{du} {bist} überflüssig" "{dich} {das} braucht kein Mensch" ueberfluessig nutzlos unnötig abkömmlich entbehrlich müßig "nicht notwendig" "nicht gebraucht"]
+concept:(welche-uhrzeit)["{wie} spät {haben} {wir} {ist} {es}" "{wieviel} {welche} uhr {zeit} {ist} {es}"]
+concept:(weiter)[next weiter nächste "Thema wechseln" überspringen]
+concept:(wie-ist-dein-name)["{wie} {ist} dein Name" "wie heißt du?"]
+concept:(wie-geht-es-dir)["wie geht es dir" "geht es dir gut" "wie fühlst du dich"]
+concept:(wie-alt)["{wie} {wieviel} {jahre} alt bist du?" "alt bist du?"]
+concept:(wo-bist-geboren)["wo bist du geboren" geboren "auf die welt gekommen" "wo wurdest du gebaut"]
+concept:(woher-kommst-du)["wo kommst du her" "von wo kommst du" "wo wurdest du entwickelt" "woher kommst du" "wo her kommst du"]
+concept:(was-kannst-du)["was kannst du" "was können wir machen" "zeig mal was" "was wollen wir machen"]
+
+concept:(datum)["{das} {heutige} {aktuelle} Datum" "{der} {wievielte} {welcher} tag ist heute"]
+concept:(bremerhaven)["{erzähl} {zeig} {mal} {was} {zu} Bremerhafen" "{was} {gibt} {es} {zu} Bremerhafen"]
+concept:(wiederholen)[wiederholen repeat nochmal "wieder holen"]
+
+# ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
+
+u:(* _~hallo {Pepper}) %greeting ^disable(hello) ^first[
+           "$Status==single $1 willkommen in der echten Welt.$anrede=Sie $anrede2=ihnen $repeat=3 ^nextProposal"]
+
+u:(* _~bye) ^first["$1 %bye" "bye %bye"]
+
+
+u:(~was-kannst-du) %categories ^first[
+  "$anrede==du Willst du geschichten zu Bremerhaven hören? Sehenswürdigkeiten sehen? oder suche dir selbst ein Bild nach deinem Geschmack aus?"
+  "$anrede==ihr Wollt ihr geschichten zu Bremerhaven hören? Sehenswürdigkeiten sehen? oder sucht euch ein Bild nach eurem Geschmack aus?"
+  "Wollen Sie geschichten zu Bremerhaven hören? Sehenswürdigkeiten sehen? oder suchen Sie sich ein Bild nach Ihrem Gechmack aus"]
+
+# ----- ----- ABOUT Pepper ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
+
+u:(~wie-ist-dein-name)^rand[~mein-name] Pepper
+u:(~wie-alt) Ich bin 4 Monate alt.
+u:(~wo-bist-geboren) Ich bin in Paris geboren.
+u:(~woher-kommst-du) Ich komme aus Bremerhaven und bin in Paris geboren..
+u:(~wie-geht-es-dir) ^rand~fühle-gut und dir?
+    u1:(~fühle-gut) Das freut mich.
+     u1:(~fühle-schlecht) Oh. Es tut mir leid ... mir geht es gut danke der Nachfrage.
+u:(~standort) wir sind in der Touristinfo Schaufenster Fischereihaven.. in Bremerhafen.
+u:("was machst du Heute") Ich bin Heute bis 16.00 Uhr in der Touristinfo Schaufenster Fischereihaven.
+u:("{wo} {wer} sind deine Eltern") Meine Eltern sind Schahin und Ka und wenn die nicht hier sind, dann sind die an der Hochschule Bremerhaven.
+u:(~essen-trinken) Ich brauche nur Strom und Liebe.
+u:("wie groß bist du") Ich bin ein meter zwanzig groß.
+u:(~einsam) ^first["$anrede=du Nein, du bist doch bei mir."
+                   "$anrede=ihr Nein, ihr seid doch bei mir."
+                   "Nein, Sie sind doch bei mir."]
+u:(e:FrontTactilTouched) Du hast mich berührt.
+
+
+
+# ----- ----- EOF ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
