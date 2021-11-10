@@ -1,9 +1,7 @@
 package com.example.hsb_pepper;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 
-import com.aldebaran.qi.Future;
 import com.aldebaran.qi.sdk.QiContext;
 import com.aldebaran.qi.sdk.builder.SayBuilder;
 import com.aldebaran.qi.sdk.object.actuation.Frame;
@@ -11,15 +9,16 @@ import com.aldebaran.qi.sdk.object.conversation.Phrase;
 import com.aldebaran.qi.sdk.object.geometry.Transform;
 import com.aldebaran.qi.sdk.object.geometry.TransformTime;
 import com.aldebaran.qi.sdk.object.geometry.Vector3;
-import com.aldebaran.qi.sdk.object.human.Human;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;import android.annotation.SuppressLint;
+
+import org.json.JSONObject;
 
 public class HelperCollection {
     /* Class to store static functions
@@ -70,7 +69,35 @@ public class HelperCollection {
         return Math.sqrt(x * x + y * y);
     }
 
+    public static String getPrice(String symbol) throws Exception {
+        /* returns price of symbol in quote */
+        String url = "https://api.kucoin.com/api/v1/market/orderbook/level1?symbol="+symbol;
+        URL obj = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        // optional default is GET
+        con.setRequestMethod("GET");
+        //add request header
+        con.setRequestProperty("User-Agent", "Mozilla/5.0");
 
+        int responseCode = con.getResponseCode();
+        /*
+        System.out.println("\nSending 'GET' request to URL : " + url);
+        System.out.println("Response Code : " + responseCode);
+        */
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+        //System.out.println(response.toString());
+        //Read JSON response and print
+        JSONObject myResponse = new JSONObject(response.toString());
+        String price =  new JSONObject(myResponse.getString("data")).getString("price");
+        //System.out.println("Price: " + price);
+        return price;
+    }
 }
 
 /* ----- ----- EOF ----- ----- ----- ----- ----- ----- ----- ----- */

@@ -36,11 +36,11 @@ import com.aldebaran.qi.sdk.object.human.PleasureState;
 import com.aldebaran.qi.sdk.object.human.SmileState;
 import com.aldebaran.qi.sdk.util.PhraseSetUtil;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Map;
 import com.aldebaran.qi.sdk.object.humanawareness.HumanAwareness;
-
 
 // TODO:
 // ├ Set variable chat to null if focus lost for x seconds
@@ -77,6 +77,7 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     private QiChatVariable qiChatBemot;
     private QiChatVariable qiChatSmile;
     private QiChatVariable qiChatAge;
+    private QiChatVariable qiChatPrice;
 
     private StringBuilder personDetails;
 
@@ -114,10 +115,6 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         setContentView(R.layout.activity_main);
         initVariables();
         QiSDK.register(this, this);
-
-        /* ----- ----- ----- ----- ----- ----- ----- ----- ----- */
-
-        initVariables();
 
         /* ----- ----- ----- ----- ----- ----- ----- ----- ----- */
     }
@@ -209,10 +206,22 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         mainTopicStatus = qiChatbot.topicStatus(main_topic);
 
         bookmarks = main_topic.getBookmarks();
+
+        /* ----- ----- ----- ----- ----- ----- ----- ----- ----- */
+        /* // chatvariables are to link this code with topics
         qiChatStatus = qiChatbot.variable("Status");
         qiChatBemot = qiChatbot.variable("Bemot");
         qiChatSmile = qiChatbot.variable("Smile");
         qiChatAge = qiChatbot.variable("Age");
+         */
+        qiChatPrice = qiChatbot.variable("price");
+        try {
+            qiChatPrice.setValue(HelperCollection.getPrice("BTC-USDT"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        /* ----- ----- ----- ----- ----- ----- ----- ----- ----- */
 
         bookmarks = main_topic.getBookmarks();
 
@@ -220,8 +229,10 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
 
         if (this.DEBUG_MODE) {
             currentChatFuture = chatAction.async().run();
+            /*
             qiChatStatus.async().setValue("single");
             qiChatBemot.async().setValue("JOYFUL");
+                         */
         }
 
         qiChatbot.addOnBookmarkReachedListener(bookmark -> {
