@@ -36,11 +36,18 @@ concept:(einsam)[einsam alleine]
 concept:(standort)["wo bist du" "wo {bin} {befinde} ich {mich} {jetzt}" "wo {befinden} {sind} wir {uns}{jetzt}"]
 concept:(krypto)[krypto crypto cryptowährungen kryptowährungen krippto bitcoin ethereum]
 
+# KI
+concept:(ki)[KI "Künstliche Intelligenz" "{Was ist} Künstliche Intelligenz" "Kuenstliche Intelligenz"]
+
+
 # ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 u:(* _~hallo {Pepper}) %greeting ^disable(hallo) Magst du mich streicheln?
 u:(* _~bye) Du willst schon gehen? Dann such' ich mir jemand anderen zum Datenaustausch.
 u:(~was-kannst-du) %categories Bisher noch nicht viel, vielleicht errätst du ein paar Stichwörter.
 u:("man ey")^rand["Nun reg dich nicht so auf" "Ich habe mir das auch anders vorgestellt" "Zu hause hat es noch funktioniert"]
+
+u:(~ki) ^disable(ki) Künstliche Intelligenz ist die Studie, wie man Computer dazu bringt, Dinge zu tun, in denen Menschen im Moment besser sind.
+
 
 # ----- ----- ABOUT Pepper ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 u:(~wie-ist-dein-name)^rand[~mein-name] Pepper

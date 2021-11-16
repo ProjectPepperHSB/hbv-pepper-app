@@ -152,7 +152,7 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         HelperCollection.Say(qiContext, "Hallo!");
         Log.i(TAG, "Focus gained on DEBUG mode.");
 
-        //initQIChat();
+        initQIChat();
         if (!this.DEBUG_MODE) {
             initHumanAwareness();
         } else {
