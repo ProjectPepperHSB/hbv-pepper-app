@@ -18,13 +18,11 @@ public class GetMensaData extends AsyncTask<String, Void, Mensa> {
 
     public AsyncResponse delegate = null;
 
-    private ImageView imageView;
-    private Bitmap bitmap;
 
+    private Bitmap bitmap;
     private Mensa mensa;
 
-    public GetMensaData(ImageView imageView, AsyncResponse delegate){
-        this.imageView = imageView;
+    public GetMensaData(AsyncResponse delegate){
         this.delegate = delegate;
     }
 
@@ -73,7 +71,7 @@ public class GetMensaData extends AsyncTask<String, Void, Mensa> {
 
     protected void onPostExecute(Mensa mensa){
         super.onPostExecute(mensa);
-        imageView.setImageBitmap(mensa.getMensaImg());
+        //imageView.setImageBitmap(mensa.getMensaImg());
         delegate.processFinish(mensa);
     }
 }

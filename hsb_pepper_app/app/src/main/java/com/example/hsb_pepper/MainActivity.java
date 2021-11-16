@@ -152,7 +152,7 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         HelperCollection.Say(qiContext, "Hallo!");
         Log.i(TAG, "Focus gained on DEBUG mode.");
 
-        initQIChat();
+        //initQIChat();
         if (!this.DEBUG_MODE) {
             initHumanAwareness();
         } else {
@@ -180,13 +180,10 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         this.emotionActiveSpeaker = this.DEFAULT_STRING;
 
         /* ----- MENSA ----- ----- ----- ----- ----- */
-        imageView = (ImageView) findViewById(R.id.iMensa); //Select img id
-        GetMensaData getMensaData = new GetMensaData(imageView, new AsyncResponse() {
-            //Get Mensa img and csv
+        GetMensaData getMensaData = new GetMensaData(new AsyncResponse() {
             @Override
             public void processFinish(Mensa result) {
                 mensa = result;
-                System.out.println("got Mensa Info");
             }
         });
         getMensaData.execute(mensaURL);
@@ -483,7 +480,8 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
     // region implement TESTING
 
-    public void TestMensa(QiContext qiContext){
+    public void TestMensa(QiContext qiContext) {
+
 
         PhraseSet phraseSetYes = PhraseSetBuilder.with(qiContext).withTexts("Mensa", "Mensaplan", "Essen", "Cafetaria").build();
         Listen listen = ListenBuilder.with(qiContext).withPhraseSets(phraseSetYes).build();
@@ -491,15 +489,16 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
 
         PhraseSet matchedPhraseSet = listenResult.getMatchedPhraseSet();
         if (PhraseSetUtil.equals(matchedPhraseSet, phraseSetYes)) {
-            Log.i(TAG, "Heard phrase set: Mensa");
 
-            runOnUiThread(() -> setContentView(R.layout.mensa_layout));
-            System.out.println(mensa.getDay()[2]);
-            System.out.println(mensa.getOffer1()[0]);
-            System.out.println(mensa.getOffer2()[4]);
+            Log.i(TAG, listenResult.getHeardPhrase().getText());
 
-            TestMensa(qiContext);
+            runOnUiThread(() -> {
+                setContentView(R.layout.mensa_layout);
+                imageView = (ImageView) findViewById(R.id.iMensa);
+                imageView.setImageBitmap(mensa.getMensaImg());
+            });
         }
+        TestMensa(qiContext);
     }
 
     // endregion TESTING
