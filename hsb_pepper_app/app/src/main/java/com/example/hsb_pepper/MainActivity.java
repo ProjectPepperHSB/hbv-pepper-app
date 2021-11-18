@@ -46,6 +46,8 @@ import com.aldebaran.qi.sdk.object.humanawareness.HumanAwareness;
 // ├ Set variable chat to null if focus lost for x seconds
 // └ outsource classes and not-main functions
 
+// PEPPER PASSWORD: Pepper2020!
+
 public class MainActivity extends RobotActivity implements RobotLifecycleCallbacks {
      /* Main Function of this Applications
         ├ Creates chatBots, handles interactions
@@ -112,7 +114,7 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.selfie);
         initVariables();
         QiSDK.register(this, this);
 
@@ -180,6 +182,7 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         this.emotionActiveSpeaker = this.DEFAULT_STRING;
 
         /* ----- MENSA ----- ----- ----- ----- ----- */
+        /*
         GetMensaData getMensaData = new GetMensaData(new AsyncResponse() {
             @Override
             public void processFinish(Mensa result) {
@@ -187,6 +190,7 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
             }
         });
         getMensaData.execute(mensaURL);
+        */
     }
 
     private void initQIChat(){
