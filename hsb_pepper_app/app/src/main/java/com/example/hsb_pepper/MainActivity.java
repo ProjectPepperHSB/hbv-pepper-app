@@ -20,6 +20,7 @@ import com.aldebaran.qi.sdk.builder.TopicBuilder;
 import com.aldebaran.qi.sdk.design.activity.RobotActivity;
 import com.aldebaran.qi.sdk.object.actuation.Actuation;
 import com.aldebaran.qi.sdk.object.actuation.Frame;
+import com.aldebaran.qi.sdk.object.conversation.BaseQiChatExecutor;
 import com.aldebaran.qi.sdk.object.conversation.Bookmark;
 import com.aldebaran.qi.sdk.object.conversation.Chat;
 import com.aldebaran.qi.sdk.object.conversation.Listen;
@@ -38,7 +39,11 @@ import com.aldebaran.qi.sdk.util.PhraseSetUtil;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import com.aldebaran.qi.sdk.object.conversation.QiChatExecutor;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import com.aldebaran.qi.sdk.object.humanawareness.HumanAwareness;
 
@@ -200,6 +205,32 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         qiChatbot = QiChatbotBuilder.with(qiContext)
                 .withTopic(main_topic)
                 .build();
+        Map<String, QiChatExecutor> executors = new HashMap<>();
+
+        // Map the executor name from the topic to our qiChatExecutor
+        executors.put("myExecutor", new BaseQiChatExecutor(qiContext) {
+            @Override
+            public void runWith(List<String> list) {
+                System.out.println("Looking for price of " + list.get(0));
+                String coin = list.get(0);
+
+                qiChatPrice = qiChatbot.variable("price");
+                try {
+                    qiChatPrice.setValue(HelperCollection.getPrice(coin+"-USDT"));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void stop() {
+
+            }
+        });//new MyQiChatExecutor(this.qiContext, qiChatPrice, qiChatbot));
+
+        // Set the executors to the qiChatbot
+        qiChatbot.setExecutors(executors);
+
         chatAction = ChatBuilder.with(qiContext)
                 .withChatbot(qiChatbot)
                 .build();
@@ -215,12 +246,7 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         qiChatSmile = qiChatbot.variable("Smile");
         qiChatAge = qiChatbot.variable("Age");
          */
-        qiChatPrice = qiChatbot.variable("price");
-        try {
-            qiChatPrice.setValue(HelperCollection.getPrice("BTC-USDT"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
 
         /* ----- ----- ----- ----- ----- ----- ----- ----- ----- */
 
@@ -233,7 +259,7 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
             /*
             qiChatStatus.async().setValue("single");
             qiChatBemot.async().setValue("JOYFUL");
-                         */
+            */
         }
 
         qiChatbot.addOnBookmarkReachedListener(bookmark -> {

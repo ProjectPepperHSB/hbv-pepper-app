@@ -71,7 +71,7 @@ public class HelperCollection {
 
     public static String getPrice(String symbol) throws Exception {
         /* returns price of symbol in quote */
-        String url = "https://api.kucoin.com/api/v1/market/orderbook/level1?symbol="+symbol;
+        String url = "https://informatik.hs-bremerhaven.de/docker-hbv-kms-http/crypto?subject=price&symbol="+symbol;
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         // optional default is GET

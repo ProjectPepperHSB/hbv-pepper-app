@@ -71,6 +71,9 @@ u:(~krypto) Du stehst auch auf Krypto?
         u2:(~nein) Ich sag es dir trotzdem       $price Dollar
     u1:(~nein) Schade
 
+
+u:(was kostet {ein} _[btc eth]) I will check $1 ^execute(myExecutor, $1) the price is $price dollar per $1
+
 # ----- ----- PROPOSALS ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 u:(~zurück) ^previousProposal
 u:(~wiederholen) ^sameProposal
