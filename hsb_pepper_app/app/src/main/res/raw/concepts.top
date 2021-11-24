@@ -1,0 +1,54 @@
+topic: ~concepts()
+
+concept:(i_want_to) [want "I want" "I want to" "want to" "I would like to" "would like to"]
+
+concept:(i_need_to) [need "I need" "I need to" "need to"]
+
+concept:(hello) ["hello" "hi" "hey" "good morning" "good evening"]
+
+concept:(bye)["goodbye" "see you" "bye" "bye bye"]
+concept:(reset){[~i_want_to ~i_need_to "let's" "can you"]} reset {["it" "the ["application app"]"]} {please}
+concept:(confirmation) ^rand["okay" "got it" "alright" "sure"]
+
+
+# ----- ----- ab hier von uns
+concept:(ich_möchte) [möchte "Ich möchte" "ich würde" "ich würde {gerne}" "ich will"]
+concept:(ich_brauche) ["ich brauche" "ich benötige" "ich muss"]
+concept:(reset){[~ich_brauche ~ich_möchte "lass uns" "kannst du dich"]} {["die ["anwendung"]"]} zurücksetzen
+
+# ----- ----- G E N E R A L ----- -----
+concept:(hallo)[hey hallo "was geht ab" ahoi moin "moin moin" na "guten Tag"]
+concept:(bye)["{bye} bye" "bis bald" "{auf} wiedersehen" tschau Tschüss]
+concept:(ablehnung) ["nein {danke}" falsch nain najn neinn nöö nö]
+concept:(bestaetigung) ["ja {bitte} {klar} {gerne}" richtig klar nätürlich ok korrekt stimmt joa]
+
+#
+concept:(empfehlung)[empfehlung vorschlag]
+concept:(fühle-gut)["{ich} {fühle} {mich} gut" "{es} {geht} {mir} {auch} {sehr} gut" "{mir} {geht} {es} {auch} gut" super bestens]
+concept:(fühle-schlecht)["{es} {geht} {mir} schlecht" "{mir} {geht} {es} {gar} nicht gut" "{ich} {bin} müde"]
+
+# commands
+concept:(zurück)[zurück vorrige back vorher]
+concept:(weiter)[next weiter nächste "Thema wechseln" überspringen]
+concept:(wiederholen)[wiederholen repeat nochmal "wieder holen"]
+
+# stuff
+concept:(standort)["wo bist du" "wo {bin} {befinde} ich {mich} {jetzt}" "wo {befinden} {sind} wir {uns}{jetzt}"]
+concept:(überflüssig)["{du} {bist} überflüssig" "{dich} {das} braucht kein Mensch" ueberfluessig nutzlos unnötig abkömmlich entbehrlich müßig "nicht notwendig" "nicht gebraucht"]
+concept:(welche-uhrzeit)["{wie} spät {haben} {wir} {ist} {es}" "{wieviel} {welche} uhr {zeit} {ist} {es}"]
+concept:(weiter)[next weiter nächste "Thema wechseln" überspringen]
+concept:(wie-ist-dein-name)["{wie} {ist} dein Name" "wie heißt du?"]
+concept:(wie-geht-es-dir)["wie geht es dir" "geht es dir gut" "wie fühlst du dich"]
+concept:(wie-alt)["{wie} {wieviel} {jahre} alt bist du?" "alt bist du?"]
+concept:(wo-bist-geboren)["wo bist du geboren" geboren "auf die welt gekommen" "wo wurdest du gebaut"]
+concept:(woher-kommst-du)["wo kommst du her" "von wo kommst du" "wo wurdest du entwickelt" "woher kommst du" "wo her kommst du"]
+concept:(was-kannst-du)["was kannst du" "was können wir machen" "zeig mal was" "was wollen wir machen"]
+concept:(mein-Name)^rand["mein name ist" "ich bin" "ich heiße"]
+concept:(datum)["{das} {heutige} {aktuelle} Datum" "{der} {wievielte} {welcher} tag ist heute"]
+concept:(bremerhaven)["{erzähl} {zeig} {mal} {was} {zu} Bremerhafen" "{was} {gibt} {es} {zu} Bremerhafen"]
+concept:(wiederholen)[wiederholen repeat nochmal "wieder holen"]
+concept:(einsam)[einsam alleine]
+concept:(standort)["wo bist du" "wo {bin} {befinde} ich {mich} {jetzt}" "wo {befinden} {sind} wir {uns}{jetzt}"]
+concept:(krypto)[krypto crypto cryptowährungen kryptowährungen krippto bitcoin ethereum]
+
+

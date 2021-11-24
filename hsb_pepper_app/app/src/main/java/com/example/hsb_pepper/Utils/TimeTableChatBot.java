@@ -1,16 +1,16 @@
-package com.example.hsb_pepper;
+package com.example.hsb_pepper.Utils;
 
 import android.util.Log;
 
 import com.aldebaran.qi.sdk.QiContext;
 import com.aldebaran.qi.sdk.builder.ListenBuilder;
 import com.aldebaran.qi.sdk.builder.PhraseSetBuilder;
-import com.aldebaran.qi.sdk.builder.SayBuilder;
 import com.aldebaran.qi.sdk.object.conversation.Listen;
 import com.aldebaran.qi.sdk.object.conversation.ListenResult;
-import com.aldebaran.qi.sdk.object.conversation.Phrase;
 import com.aldebaran.qi.sdk.object.conversation.PhraseSet;
 import com.aldebaran.qi.sdk.util.PhraseSetUtil;
+import com.example.hsb_pepper.Other.HBV_TimeTable.Lectures;
+import com.example.hsb_pepper.Other.HBV_TimeTable.WeekDay;
 
 import java.io.BufferedReader;
 import java.io.IOException;

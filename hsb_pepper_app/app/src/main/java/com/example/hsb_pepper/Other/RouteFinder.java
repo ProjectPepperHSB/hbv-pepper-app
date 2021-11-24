@@ -1,4 +1,4 @@
-package com.example.hsb_pepper;
+package com.example.hsb_pepper.Other;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -19,7 +19,5 @@ import com.aldebaran.qi.sdk.object.conversation.QiChatbot;
 import com.aldebaran.qi.sdk.util.PhraseSetUtil;
 
 public class RouteFinder {
-
-    
 
 }

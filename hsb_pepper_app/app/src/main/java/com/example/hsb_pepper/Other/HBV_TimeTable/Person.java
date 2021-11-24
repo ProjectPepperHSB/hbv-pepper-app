@@ -1,4 +1,4 @@
-package com.example.hsb_pepper;
+package com.example.hsb_pepper.Other.HBV_TimeTable;
 
 public class Person {
     /* Class to store data about a person

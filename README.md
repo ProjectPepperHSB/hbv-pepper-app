@@ -1,9 +1,9 @@
 # Bachelorprojekt: Pepper Anwendung
 
-## Repository Struktur
+#### Informationen
 
-1.
+- Hopper user: hbv-kms
 
-### Information
+#### References
 
-1. Hopper $User: hbv-kms
+- Über Peppers Sensoren (https://link.springer.com/article/10.1007/s12369-021-00749-x)

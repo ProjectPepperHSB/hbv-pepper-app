@@ -1,17 +1,16 @@
-package com.example.hsb_pepper;
+package com.example.hsb_pepper.Other.HBV_Mensa;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.widget.ImageView;
+
+import com.example.hsb_pepper.Utils.HelperCollection;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 public class GetMensaData extends AsyncTask<String, Void, Mensa> {
     private String TAG = "GetMensaData";
