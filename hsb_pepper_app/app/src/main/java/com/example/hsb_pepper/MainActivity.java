@@ -62,8 +62,6 @@ import com.example.hsb_pepper.Utils.TimeTableChatBot;
 // ├ Set variable chat to null if focus lost for x seconds
 // └ outsource classes and not-main functions
 
-// PEPPER PASSWORD: Pepper2020!
-
 public class MainActivity extends RobotActivity implements RobotLifecycleCallbacks {
      /* Main Function of this Applications
         ├ Creates chatBots, handles interactions
@@ -96,7 +94,7 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     private QiChatVariable qiChatBemot;
     private QiChatVariable qiChatSmile;
     private QiChatVariable qiChatAge;
-    private QiChatVariable qiChatPrice;
+    public QiChatVariable qiVariablePrice;
 
     private StringBuilder personDetails;
 
@@ -187,7 +185,7 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     @Override
     public void onRobotFocusGained(QiContext qiContext) {
         this.qiContext = qiContext;
-        HelperCollection.Say(qiContext, "Ich hab dich im Visier!");
+        HelperCollection.Say(qiContext, "jo!");
 
         /*initQIChat();
         if (!this.DEBUG_MODE) {
@@ -206,14 +204,14 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         // -------- N E W --------
         qiChatBot = new ChatData(this, qiContext, new Locale(language), topicNames, true);
         Map<String, QiChatExecutor> executors = new HashMap<>();
-        //executors.put("CryptoExecutor", new CryptoExecutor(qiContext, this, qiChatPrice));
         executors.put("FragmentExecutor", new FragmentExecutor(qiContext, this));
         executors.put("VariableExecutor", new VariableExecutor(qiContext, this));
         qiChatBot.setupExecutors(executors);
-        qiChatBot.setupQiVariable("qiVariable");
+        qiChatBot.setupQiVariables(Arrays.asList("qiVariablePrice","qiVariable")); // qiChatVariable
         currentChatBot = qiChatBot;
-        currentChatBot.chat.async().addOnStartedListener(() -> {
-            setQiVariable("qiVariable", "Pepper"); // this is done here because the chatBot needs to be running for this to work.
+        currentChatBot.chat.async().addOnStartedListener(() -> { //qiChatVariable Pepper
+            setQiVariable("qiVariablePrice", "undefined"); // this is done here because the chatBot needs to be running for this to work.
+            setQiVariable("qiVariable", "Pepper");
             runOnUiThread(() -> {
                 setSpeechBarDisplayStrategy(SpeechBarDisplayStrategy.ALWAYS); // Disable overlay mode for the rest of the app.
                 setFragment(new MainFragment());

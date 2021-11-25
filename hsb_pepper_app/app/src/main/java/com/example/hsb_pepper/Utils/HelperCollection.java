@@ -15,10 +15,19 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.json.JSONObject;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.X509TrustManager;
 
 public class HelperCollection {
     /* Class to store static functions
@@ -70,33 +79,60 @@ public class HelperCollection {
     }
 
     public static String getPrice(String symbol) throws Exception {
-        /* returns price of symbol in quote */
-        String url = "https://informatik.hs-bremerhaven.de/docker-hbv-kms-http/crypto?subject=price&symbol="+symbol;
-        URL obj = new URL(url);
-        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-        // optional default is GET
-        con.setRequestMethod("GET");
-        //add request header
-        con.setRequestProperty("User-Agent", "Mozilla/5.0");
+        try {
+            HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
+                public boolean verify(String hostname, SSLSession session) {
+                    return true;
+                }
+            });
+            SSLContext context = SSLContext.getInstance("TLS");
+            context.init(null, new X509TrustManager[]{new X509TrustManager() {
+                public void checkClientTrusted(X509Certificate[] chain,
+                                               String authType) throws CertificateException {
+                }
 
-        int responseCode = con.getResponseCode();
-        /*
-        System.out.println("\nSending 'GET' request to URL : " + url);
-        System.out.println("Response Code : " + responseCode);
-        */
-        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-        String inputLine;
-        StringBuffer response = new StringBuffer();
-        while ((inputLine = in.readLine()) != null) {
-            response.append(inputLine);
+                public void checkServerTrusted(X509Certificate[] chain,
+                                               String authType) throws CertificateException {
+                }
+
+                public X509Certificate[] getAcceptedIssuers() {
+                    return new X509Certificate[0];
+                }
+            }}, new SecureRandom());
+            HttpsURLConnection.setDefaultSSLSocketFactory(
+                    context.getSocketFactory());
+
+            /* returns price of symbol in quote */
+            String url = "https://informatik.hs-bremerhaven.de/docker-hbv-kms-http/crypto?subject=price&symbol=" + symbol;
+            URL obj = new URL(url);
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+            // optional default is GET
+            con.setRequestMethod("GET");
+            //add request header
+            con.setRequestProperty("User-Agent", "Mozilla/5.0");
+
+            int responseCode = con.getResponseCode();
+            /*
+            System.out.println("\nSending 'GET' request to URL : " + url);
+            System.out.println("Response Code : " + responseCode);
+            */
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+            //System.out.println(response.toString());
+            //Read JSON response and print
+            JSONObject myResponse = new JSONObject(response.toString());
+            String price = new JSONObject(myResponse.getString("data")).getString("price");
+            //System.out.println("Price: " + price);
+            return price;
+        } catch (Exception e) { // should never happen
+            e.printStackTrace();
+            return "undefined";
         }
-        in.close();
-        //System.out.println(response.toString());
-        //Read JSON response and print
-        JSONObject myResponse = new JSONObject(response.toString());
-        String price =  new JSONObject(myResponse.getString("data")).getString("price");
-        //System.out.println("Price: " + price);
-        return price;
     }
 }
 

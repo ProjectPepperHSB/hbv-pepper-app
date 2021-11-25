@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="ProjectModuleManager">
-    <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/hsb_pepper.iml" filepath="$PROJECT_DIR$/.idea/modules/hsb_pepper.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/hsb_pepper.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/hsb_pepper.app.iml" />
-    </modules>
-  </component>
-</project>

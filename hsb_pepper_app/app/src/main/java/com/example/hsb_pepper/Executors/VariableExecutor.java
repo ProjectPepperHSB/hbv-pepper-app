@@ -7,6 +7,7 @@ import com.aldebaran.qi.sdk.QiContext;
 import com.aldebaran.qi.sdk.object.conversation.BaseQiChatExecutor;
 import com.example.hsb_pepper.Fragments.ScreenTwoFragment;
 import com.example.hsb_pepper.MainActivity;
+import com.example.hsb_pepper.Utils.HelperCollection;
 
 import java.util.List;
 
@@ -40,11 +41,31 @@ public class VariableExecutor extends BaseQiChatExecutor {
                 return;
             }
         }
-        Log.d(TAG,"variableName :" + variableName);
+        Log.d(TAG,"variableName: " + variableName);
         switch (variableName){
             case ("qiVariable"):
                 ScreenTwoFragment fragmentTwo  = (ScreenTwoFragment) ma.getFragment();
                 fragmentTwo.setTextQiVariableValue(variableValue);
+                break;
+            case("qiVariablePrice"):
+                String coin = params.get(1);
+                Log.i(TAG,"Looking for price of " + params.get(1));
+
+                if (coin == "bitcoin"){
+                    coin = "btc";
+                } else if (coin == "ethereum"){
+                    coin = "eth";
+                } else {
+                    coin = "sol";
+                }
+
+                try {
+                    String price = HelperCollection.getPrice(coin + "-USDT");
+                    Log.i(TAG, "price of " + coin + " is " + price);
+                    ma.getCurrentChatBot().setQiVariable(variableName, price);
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
                 break;
             default:
                 Log.d(TAG, "I don't know this variable");

@@ -1,10 +1,10 @@
 topic: ~main()
 
 # ----- ----- ----- M A I N - M E N U E ----- ---- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
-proposal: %init I am now in the topic of the main fragment
-u:(~hello) hi ! I am still in the topic of the main fragment
-u:({[~i_want_to ~i_need_to "set" "put" "goto"]} {the} fragment {number} one {please}) ~confirmation ^execute(FragmentExecutor, frag_screen_one)
-u:({[~i_want_to ~i_need_to "set" "put" "goto"]} {the} fragment {number} two {please}) ~confirmation ^execute(FragmentExecutor, frag_screen_two)
+proposal: %init Ich bin im Hauptmenü
+u:(~hello) hi ! Ich bin im Hauptmenü
+u:({[~ich_möchte "setze" "ändere" "gehe zu{m}"]} {dem} abschnitt {nummer} eins {bitte}) ~confirmation ^execute(FragmentExecutor, frag_screen_one)
+u:({[~ich_möchte "setze" "ändere" "gehe zu{m}"]} {dem} abschnitt {nummer} zwei {bitte}) ~confirmation ^execute(FragmentExecutor, frag_screen_two)
 u:(~reset ~bye) ~confirmation ^execute(FragmentExecutor, frag_main)
 
 # ----- ----- ----- H E L L O - W O R L D ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
@@ -15,7 +15,7 @@ u:(Was ist künstliche Intelligenz) Künstliche Intelligenz ist die Studie, wie 
 
 # ----- ----- B A S I C - I N T E R A C T I O N  ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 
-u: (e:Dialog/NotUnderstood) Das habe ich nicht verstanden
+#u: (e:Dialog/NotUnderstood) Das habe ich nicht verstanden
 
 u:(~wie-geht-es-dir) ^rand~fühle-gut und dir?
     u1:(~fühle-gut) Das freut mich.
@@ -26,7 +26,6 @@ u:(~wie-geht-es-dir) ^rand~fühle-gut und dir?
 
 u:(~einsam) Nein, Sie sind doch bei mir.
 u:(~was-kannst-du) %categories Bisher noch nicht viel, vielleicht errätst du ein paar Stichwörter, auf die ich reagieren kann.
-
 
 
 # ----- ----- A B O U T - P E P P E R ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
@@ -48,12 +47,12 @@ u:(e:FrontTactilTouched) Du hast mich berührt, mach das bitte noch einmal.
 # ----- ----- A B O U T - C R Y P T O ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 u:(~krypto) Du stehst auch auf Krypto?
     u1:(~bestaetigung) Nice, ich auch. Magst du den Bitcoin Preis wissen?
-        u2:(~bestaetigung) $price Dollar
-        u2:(~ablehnung) Ich sag es dir trotzdem       $price Dollar
+        u2:(~bestaetigung) $qiVariablePrice Dollar
+        u2:(~ablehnung) Ich sag es dir trotzdem       $qiVariablePrice Dollar
     u1:(~ablehnung) Schade
 
 
-u:(was kostet {ein} _[btc eth]) I will check $1 ^execute(myExecutor, $1) the price is $price dollar per $1
+u:(was kostet {ein} _[bitcoin ethereum solana]) I will check $coin=$1 ^execute(VariableExecutor, qiVariablePrice, $coin) The price is $qiVariablePrice dollar per $coin
 
 # ----- ----- P R O P O S A L S ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 u:(~zurück) ^previousProposal
