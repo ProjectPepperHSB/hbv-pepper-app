@@ -1,0 +1,9 @@
+topic: ~hbvuni_information()
+# topic für allgemeines über die hochschule und bremerhaven
+
+proposal: %init Die Hochschule existiert seit vielen Jahren und auf viele Studienangebote. Neben den Bachelorstudiengängen, werden auch die Angebote für Masterstudiengänge immer weiter ausgebaut.
+
+
+# ----- ----- ----- ----- ----- ----- ----- -----
+# BACK TO MAIN MENU
+u:(~reset) ~bestaetigung ^execute(FragmentExecutor, frag_main)

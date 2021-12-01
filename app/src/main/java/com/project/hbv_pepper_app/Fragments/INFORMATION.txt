@@ -1,0 +1,6 @@
+
+# -> Informationen zu den Fragmentklassen
+
+-   Die Klassennamen der Fragmente müssen den selben namen tragen,
+    wie die dazugehörigen topics, damit diese topics anhand des Klassennamens.toLowercase()
+    gesetzt/aktiviert werden können.

@@ -19,11 +19,14 @@ Use cases:
 ## Requirements
 
 - [Andoird Studio](https://developer.android.com/studio) Arctic Fox v2020.3.1
-- [Pepper QiSDK](https://qisdk.softbankrobotics.com/sdk/doc/pepper-sdk/ch1_gettingstarted/installation.html#installation)
+- Robot SDK API 7
+  - [Pepper QiSDK](https://qisdk.softbankrobotics.com/sdk/doc/pepper-sdk/ch1_gettingstarted/installation.html#installation) (v1.7.5)
+  - Tools (v2.9.6.27)
 
 optional:
 
 - Emulator with Pepper 1.9 API 23
+- Android Virtual Image (v2019-10-29)
 
 ## Installation
 

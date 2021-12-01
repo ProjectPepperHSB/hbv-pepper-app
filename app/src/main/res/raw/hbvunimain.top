@@ -1,0 +1,24 @@
+topic: ~hbvunimain()
+
+proposal: %init Du möchtest also etwas über die Hochschule Bremerhaven wissen
+proposal: %say something
+
+# ----- ----- ----- CONVERSATION ----- ----- ----- ----- -----
+u:({~was-kannst-du} {"mir über"} {die} {Hochschule} [erzählen sagen berichten mitteilen]) Ich kann dir Auskunft über die Hochschule geben, dich bei der Studienfindung beraten oder falls du schon ein Student bist, kann ich dir Auskunft über Stunden und Mensaplan geben.
+    u1:([allgemein{es} informationen generell]) ~bestaetigung dann schauen wir mal, was wir da so haben ^execute(FragmentExecutor, frag_hbv_uni_information)
+    u1:([Studiengänge beratung Studienberatung]) Wir haben sehr viele Studiengänge bei uns zur Auswahl ^execute(FragmentExecutor, frag_hbv_uni_study_counseling)
+    u1:(["für studierende" studenten stundenplan mensaplan ]) ~bestaetigung los gehts ^execute(FragmentExecutor, frag_hbv_uni_for_students)
+
+
+# -----> S W I T C H - V I E W <-----
+u:([allgemein{es} generell informationen]) Dann schauen wir mal, was es da so gibt ^execute(FragmentExecutor, frag_hbv_uni_information)
+u:(["{für studierende}" stundenplan auskunft mensaplan]) ^execute(FragmentExecutor, frag_hbv_uni_for_students)
+u:([{studien}beratug studiengänge]) ^execute(FragmentExecutor, frag_hbv_uni_study_counseling)
+
+
+# keine Ahnung was das kann, ist aber bestimmt irgendwann interessant
+u:({["[~i_want_to ~i_need_to] you to" "{can} you {should}"] "{I would} like you to"} say something {please}) ^enableThenGoto(say)
+
+# ----- ----- ----- ----- ----- ----- ----- -----
+# BACK TO MAIN MENU
+u:(~reset) ~bestaetigung ^execute(FragmentExecutor, frag_main)

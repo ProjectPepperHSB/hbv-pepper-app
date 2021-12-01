@@ -1,0 +1,58 @@
+<resources>
+    <!--app name-->
+    <string name="app_name">hsb_pepper</string>
+
+    <!-- fragment_loading -->
+    <string name="loading">Loading</string>
+
+    <!-- G E N E R A L -->
+    <string name="back">uurück</string>
+    <string name="back2mainMenu">Hauptmenü</string>
+
+    /* ----- ----- M A I N ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
+
+    <!-- fragment_main -->
+    <string name="isMainFragment">Hauptmenü</string>
+    <string name="reset">reset</string>
+    <string name="fragmentOne">Hochschule Bremerhaven</string>
+    <string name="fragmentTwo">Anwendungsfall 2</string>
+
+    /* ----- ----- H O C H S C H U L E - F R A G M E N T ----- ----- ----- ----- ----- ----- */
+
+    <!-- fragment_hbv_main Hochschule Bremerhaven fragment -->
+    <string name="isFragmentHBVMain">Hochschule Bremerhaven</string>
+    <string name="buttontext_hbvmain_information">Informationen</string>
+    <string name="buttontext_hbvmain_for_students">Für Studenten</string>
+    <string name="buttontext_hbvmain_study_counseling">Studienberatung</string>
+
+
+    <!-- fragment_hbv_for_students -->
+    <string name="hbvmain_for_students">Hochschule Bremerhaven: Studentenbereich</string>
+    <string name="hbvmain_for_students_stundenplan">Stundenpläne</string>
+    <string name="hbvmain_for_students_mensaplan">Mensaplan</string>
+    <string name="hbvmain_for_students_sonstiges">sonstiges</string>
+
+    <!-- fragment_hbv_information -->
+    <string name="hbvmain_information">Hochschule Bremerhaven: Informationen</string>
+
+    <!-- fragment_hbv_study_counseling -->
+    <string name="hbvmain_studienberatung">Hochschule Bremerhaven: Studienberatung</string>
+
+    /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
+
+    <!-- fragment_two -->
+    <string name="isFragmentTwo">This is the fragment Two</string>
+    <string name="variableSetTo">The QiVariable is set to : </string>
+    <string name="placeholder">Placeholder</string>
+    <string name="setToA">Set to \"Pepper\"</string>
+    <string name="setToB">Set to \"Nao\"</string>
+    <string name="pepper">Pepper</string>
+    <string name="nao">Nao</string>
+
+    /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
+
+
+
+    <!-- -->
+
+</resources>

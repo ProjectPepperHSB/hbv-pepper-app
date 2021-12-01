@@ -1,0 +1,26 @@
+topic: ~hbvuni_study_counseling()
+
+# ----- ----- ----- CONCEPTS FOR THIS TOPIC ----- ----- ----- ----- -----
+
+# -----> S T U D I E N G Ä N G E <----
+# https://www.hs-bremerhaven.de/studienangebot/studiengaenge-nach-interessensgebieten/
+concept:(winf) [ wirtschaftsinformatik
+"Im Studiengang Wirtschaftsinformatik lernt man neben dem Umgang mit Komplexen Systemen auch die wirtschaftlichen Inhalte, die uns in Zukunft betreffen werden. Alles was ich kann, wurde mir von Studenten aus dem Bereich IT beigebracht."]
+
+concept:(inf) [ informatik
+"Im Studiengang Wirtschaftsinformatik lernt man neben dem Umgang mit Komplexen Systemen auch die wirtschaftlichen Inhalte, die uns in Zukunft betreffen werden. Alles was ich kann, wurde mir von Studenten aus dem Bereich IT beigebracht."]
+
+concept:(twl) [ "{Transportwesen und} Logistik"
+""]
+concept:(bwl) [ betriebswirtschaftslehre
+""]
+
+# ----- ----- ----- S T A R T ----- ----- ----- ----- -----
+
+proposal: %init Alles klar, du möchtest dich also über Studiengänge informieren. Auf meinem Bauch müsstest du nun eine Auflistung unseres Angebotes sehen.
+
+
+
+# ----- ----- ----- ----- ----- ----- ----- -----
+# BACK TO MAIN MENU
+u:(~reset) ~bestaetigung ^execute(FragmentExecutor, frag_main)
