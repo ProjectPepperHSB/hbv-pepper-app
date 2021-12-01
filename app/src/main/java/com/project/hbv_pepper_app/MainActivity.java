@@ -3,6 +3,8 @@ package com.project.hbv_pepper_app;
 
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
@@ -38,6 +40,8 @@ import com.aldebaran.qi.sdk.util.PhraseSetUtil;
 
 import com.aldebaran.qi.sdk.object.conversation.QiChatExecutor;
 
+import java.io.InputStream;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -211,11 +215,12 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         executors.put("FragmentExecutor", new FragmentExecutor(qiContext, this));
         executors.put("VariableExecutor", new VariableExecutor(qiContext, this));
         qiChatBot.setupExecutors(executors);
-        qiChatBot.setupQiVariables(Arrays.asList("qiVariablePrice","qiVariable")); // qiChatVariable
+        qiChatBot.setupQiVariables(Arrays.asList("qiVariablePrice","qiVariable","qiVariableMensa")); // qiChatVariable
         currentChatBot = qiChatBot;
         currentChatBot.chat.async().addOnStartedListener(() -> { //qiChatVariable Pepper
             setQiVariable("qiVariablePrice", "undefined"); // this is done here because the chatBot needs to be running for this to work.
             setQiVariable("qiVariable", "Pepper");
+            setQiVariable("qiVariableMensa", "undefined");
             runOnUiThread(() -> {
                 setSpeechBarDisplayStrategy(SpeechBarDisplayStrategy.ALWAYS); // Disable overlay mode for the rest of the app.
                 setFragment(new MainFragment());
@@ -330,15 +335,7 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         this.ageActiveSpeaker = -1;
         this.emotionActiveSpeaker = this.DEFAULT_STRING;
 
-        /* ----- MENSA ----- ----- ----- ----- ----- */
 
-        GetMensaData getMensaData = new GetMensaData(new AsyncResponse() {
-            @Override
-            public void processFinish(Mensa result) {
-                mensa = result;
-            }
-        });
-        getMensaData.execute(mensaURL);
     }
     /*
     private void initQIChat(){
@@ -650,25 +647,22 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
     // region implement TESTING
 
-    public void TestMensa(QiContext qiContext) {
+    public void setMensaImageView(){
 
-
-        PhraseSet phraseSetYes = PhraseSetBuilder.with(qiContext).withTexts("Mensa", "Mensaplan", "Essen", "Cafetaria").build();
-        Listen listen = ListenBuilder.with(qiContext).withPhraseSets(phraseSetYes).build();
-        ListenResult listenResult = listen.run();
-
-        PhraseSet matchedPhraseSet = listenResult.getMatchedPhraseSet();
-        if (PhraseSetUtil.equals(matchedPhraseSet, phraseSetYes)) {
-
-            Log.i(TAG, listenResult.getHeardPhrase().getText());
+        //Download Img
+        try{
+            String url_str = "https://informatik.hs-bremerhaven.de/docker-hbv-kms-http/mensadata/img";
+            InputStream srt = new URL(url_str).openStream();
+            final Bitmap bitmap = BitmapFactory.decodeStream(srt);
 
             runOnUiThread(() -> {
                 setContentView(R.layout.mensa_layout);
                 imageView = (ImageView) findViewById(R.id.iMensa);
-                imageView.setImageBitmap(mensa.getMensaImg());
+                imageView.setImageBitmap(bitmap);
             });
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        TestMensa(qiContext);
     }
 
     // endregion TESTING

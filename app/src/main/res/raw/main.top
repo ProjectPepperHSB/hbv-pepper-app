@@ -55,6 +55,13 @@ u:(~krypto) Du stehst auch auf Krypto?
 
 u:(was kostet {ein} _[bitcoin ethereum solana]) I will check $coin=$1 ^execute(VariableExecutor, qiVariablePrice, $coin) The price is $qiVariablePrice dollar per $coin
 
+# ----- ----- A B O U T - M E N S A ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
+u:({was} {gibt{s}} {es} {zu} essen {am} _[Montag Dienstag Mittwoch Donnerstag Freitag Morgen Übermorgen]) $day=$1 ^execute(VariableExecutor, qiVariableMensa, $day) $day gibt es entweder $qiVariableMensa
+u:({was} {gibt{s}} {es} {am} _[Montag Dienstag Mittwoch Donnerstag Freitag Morgen Übermorgen] {zu} essen) $day=$1 ^execute(VariableExecutor, qiVariableMensa, $day) $day gibt es entweder $qiVariableMensa
+
+u:({Ich hab{e} hunger} {Zeig {mir} {den} Mensaplan}) ^execute(VariableExecutor, qiVariableMensa, Plan) Hier hast du eine Übersicht über den Mensaplan
+
+
 # ----- ----- P R O P O S A L S ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 
 

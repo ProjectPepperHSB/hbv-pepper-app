@@ -1,0 +1,36 @@
+com/example/hsb_pepper/Fragments/SplashFragment.java
+ com.example.hsb_pepper.Fragments.SplashFragment
+com/example/hsb_pepper/MainActivity.java
+ com.example.hsb_pepper.MainActivity
+com/example/hsb_pepper/Utils/HelperCollection.java
+ com.example.hsb_pepper.Utils.HelperCollection
+ com.example.hsb_pepper.Utils.HelperCollection$1
+ com.example.hsb_pepper.Utils.HelperCollection$2
+com/example/hsb_pepper/Fragments/LoadingFragment.java
+ com.example.hsb_pepper.Fragments.LoadingFragment
+com/example/hsb_pepper/Utils/TimeTableChatBot.java
+ com.example.hsb_pepper.Utils.TimeTableChatBot
+com/example/hsb_pepper/Other/HBV_TimeTable/WeekDay.java
+ com.example.hsb_pepper.Other.HBV_TimeTable.WeekDay
+com/example/hsb_pepper/Fragments/ScreenTwoFragment.java
+ com.example.hsb_pepper.Fragments.ScreenTwoFragment
+com/example/hsb_pepper/BuildConfig.java
+ com.example.hsb_pepper.BuildConfig
+com/example/hsb_pepper/Other/HBV_TimeTable/Person.java
+ com.example.hsb_pepper.Other.HBV_TimeTable.Person
+com/example/hsb_pepper/Utils/CountDownNoInteraction.java
+ com.example.hsb_pepper.Utils.CountDownNoInteraction
+com/example/hsb_pepper/Other/HBV_TimeTable/Lectures.java
+ com.example.hsb_pepper.Other.HBV_TimeTable.Lectures
+com/example/hsb_pepper/Utils/ChatData.java
+ com.example.hsb_pepper.Utils.ChatData
+com/example/hsb_pepper/Fragments/MainFragment.java
+ com.example.hsb_pepper.Fragments.MainFragment
+com/example/hsb_pepper/Other/RouteFinder.java
+ com.example.hsb_pepper.Other.RouteFinder
+com/example/hsb_pepper/Executors/FragmentExecutor.java
+ com.example.hsb_pepper.Executors.FragmentExecutor
+com/example/hsb_pepper/Fragments/ScreenOneFragment.java
+ com.example.hsb_pepper.Fragments.ScreenOneFragment
+com/example/hsb_pepper/Executors/VariableExecutor.java
+ com.example.hsb_pepper.Executors.VariableExecutor

@@ -67,6 +67,23 @@ public class VariableExecutor extends BaseQiChatExecutor {
                     exception.printStackTrace();
                 }
                 break;
+            case("qiVariableMensa"):
+                String day = params.get(1);
+                if(day.equals("Plan")){
+                    System.out.println("Show Plan");
+                    ma.setMensaImageView();
+                    System.out.println("Show Plan End");
+                }
+                else{
+                    try {
+                        String offer = HelperCollection.getOffer(day);
+                        System.out.println(offer);
+                        ma.getCurrentChatBot().setQiVariable(variableName, offer);
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
+                    }
+                }
+                break;
             default:
                 Log.d(TAG, "I don't know this variable");
         }

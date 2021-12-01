@@ -1,0 +1,4 @@
+com/bschwertfeger/pepperappv3/BuildConfig.java
+ com.bschwertfeger.pepperappv3.BuildConfig
+com/bschwertfeger/pepperappv3/MainActivity.java
+ com.bschwertfeger.pepperappv3.MainActivity

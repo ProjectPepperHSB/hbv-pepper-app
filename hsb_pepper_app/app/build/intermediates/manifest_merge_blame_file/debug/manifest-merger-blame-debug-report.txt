@@ -1,0 +1,78 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.example.hsb_pepper"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="23"
+8-->C:\Users\Kristian\AndroidStudioProjects\Git\hsb_pepper\hsb_pepper_app\app\src\main\AndroidManifest.xml
+9        android:targetSdkVersion="31" />
+9-->C:\Users\Kristian\AndroidStudioProjects\Git\hsb_pepper\hsb_pepper_app\app\src\main\AndroidManifest.xml
+10
+11    <uses-permission android:name="android.permission.INTERNET" />
+11-->C:\Users\Kristian\AndroidStudioProjects\Git\hsb_pepper\hsb_pepper_app\app\src\main\AndroidManifest.xml:4:5-67
+11-->C:\Users\Kristian\AndroidStudioProjects\Git\hsb_pepper\hsb_pepper_app\app\src\main\AndroidManifest.xml:4:22-64
+12    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+12-->C:\Users\Kristian\AndroidStudioProjects\Git\hsb_pepper\hsb_pepper_app\app\src\main\AndroidManifest.xml:5:5-81
+12-->C:\Users\Kristian\AndroidStudioProjects\Git\hsb_pepper\hsb_pepper_app\app\src\main\AndroidManifest.xml:5:22-78
+13    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+13-->C:\Users\Kristian\AndroidStudioProjects\Git\hsb_pepper\hsb_pepper_app\app\src\main\AndroidManifest.xml:6:5-80
+13-->C:\Users\Kristian\AndroidStudioProjects\Git\hsb_pepper\hsb_pepper_app\app\src\main\AndroidManifest.xml:6:22-77
+14
+15    <uses-feature android:name="com.softbank.hardware.pepper" />
+15-->C:\Users\Kristian\AndroidStudioProjects\Git\hsb_pepper\hsb_pepper_app\app\src\main\AndroidManifest.xml:29:5-64
+15-->C:\Users\Kristian\AndroidStudioProjects\Git\hsb_pepper\hsb_pepper_app\app\src\main\AndroidManifest.xml:29:19-62
+16
+17    <uses-permission android:name="com.aldebaran.permission.ROBOT" />
+17-->[com.aldebaran:qisdk:1.7.5] C:\Users\Kristian\.gradle\caches\transforms-3\317d6cfd968c61cd82e4decfea90c6c8\transformed\jetified-qisdk-1.7.5\AndroidManifest.xml:10:5-70
+17-->[com.aldebaran:qisdk:1.7.5] C:\Users\Kristian\.gradle\caches\transforms-3\317d6cfd968c61cd82e4decfea90c6c8\transformed\jetified-qisdk-1.7.5\AndroidManifest.xml:10:22-67
+18
+19    <application
+19-->C:\Users\Kristian\AndroidStudioProjects\Git\hsb_pepper\hsb_pepper_app\app\src\main\AndroidManifest.xml:8:5-27:19
+20        android:allowBackup="true"
+20-->C:\Users\Kristian\AndroidStudioProjects\Git\hsb_pepper\hsb_pepper_app\app\src\main\AndroidManifest.xml:9:9-35
+21        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+21-->[androidx.core:core:1.5.0] C:\Users\Kristian\.gradle\caches\transforms-3\255d63c0f9f8f5d12ab3191ffb377750\transformed\core-1.5.0\AndroidManifest.xml:24:18-86
+22        android:debuggable="true"
+23        android:extractNativeLibs="false"
+24        android:icon="@mipmap/ic_launcher"
+24-->C:\Users\Kristian\AndroidStudioProjects\Git\hsb_pepper\hsb_pepper_app\app\src\main\AndroidManifest.xml:11:9-43
+25        android:label="hbv_pepper"
+25-->C:\Users\Kristian\AndroidStudioProjects\Git\hsb_pepper\hsb_pepper_app\app\src\main\AndroidManifest.xml:12:9-35
+26        android:requestLegacyExternalStorage="true"
+26-->C:\Users\Kristian\AndroidStudioProjects\Git\hsb_pepper\hsb_pepper_app\app\src\main\AndroidManifest.xml:10:9-52
+27        android:roundIcon="@mipmap/ic_launcher_round"
+27-->C:\Users\Kristian\AndroidStudioProjects\Git\hsb_pepper\hsb_pepper_app\app\src\main\AndroidManifest.xml:14:9-54
+28        android:supportsRtl="true"
+28-->C:\Users\Kristian\AndroidStudioProjects\Git\hsb_pepper\hsb_pepper_app\app\src\main\AndroidManifest.xml:15:9-35
+29        android:testOnly="true"
+30        android:theme="@style/Theme.AppCompat.Light" >
+30-->C:\Users\Kristian\AndroidStudioProjects\Git\hsb_pepper\hsb_pepper_app\app\src\main\AndroidManifest.xml:16:9-53
+31        <activity
+31-->C:\Users\Kristian\AndroidStudioProjects\Git\hsb_pepper\hsb_pepper_app\app\src\main\AndroidManifest.xml:18:9-26:20
+32            android:name="com.example.hsb_pepper.MainActivity"
+32-->C:\Users\Kristian\AndroidStudioProjects\Git\hsb_pepper\hsb_pepper_app\app\src\main\AndroidManifest.xml:19:13-63
+33            android:exported="true" >
+33-->C:\Users\Kristian\AndroidStudioProjects\Git\hsb_pepper\hsb_pepper_app\app\src\main\AndroidManifest.xml:20:13-36
+34            <intent-filter>
+34-->C:\Users\Kristian\AndroidStudioProjects\Git\hsb_pepper\hsb_pepper_app\app\src\main\AndroidManifest.xml:21:13-25:29
+35                <action android:name="android.intent.action.MAIN" />
+35-->C:\Users\Kristian\AndroidStudioProjects\Git\hsb_pepper\hsb_pepper_app\app\src\main\AndroidManifest.xml:22:17-69
+35-->C:\Users\Kristian\AndroidStudioProjects\Git\hsb_pepper\hsb_pepper_app\app\src\main\AndroidManifest.xml:22:25-66
+36
+37                <category android:name="android.intent.category.LAUNCHER" />
+37-->C:\Users\Kristian\AndroidStudioProjects\Git\hsb_pepper\hsb_pepper_app\app\src\main\AndroidManifest.xml:24:17-77
+37-->C:\Users\Kristian\AndroidStudioProjects\Git\hsb_pepper\hsb_pepper_app\app\src\main\AndroidManifest.xml:24:27-74
+38            </intent-filter>
+39        </activity>
+40
+41        <meta-data
+41-->[com.aldebaran:qisdk:1.7.5] C:\Users\Kristian\.gradle\caches\transforms-3\317d6cfd968c61cd82e4decfea90c6c8\transformed\jetified-qisdk-1.7.5\AndroidManifest.xml:16:9-18:53
+42            android:name="qisdk_version"
+42-->[com.aldebaran:qisdk:1.7.5] C:\Users\Kristian\.gradle\caches\transforms-3\317d6cfd968c61cd82e4decfea90c6c8\transformed\jetified-qisdk-1.7.5\AndroidManifest.xml:17:13-41
+43            android:value="@string/qisdk_version" />
+43-->[com.aldebaran:qisdk:1.7.5] C:\Users\Kristian\.gradle\caches\transforms-3\317d6cfd968c61cd82e4decfea90c6c8\transformed\jetified-qisdk-1.7.5\AndroidManifest.xml:18:13-50
+44    </application>
+45
+46</manifest>
