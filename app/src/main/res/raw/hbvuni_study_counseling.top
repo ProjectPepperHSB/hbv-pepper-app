@@ -22,5 +22,6 @@ proposal: %init Alles klar, du möchtest dich also über Studiengänge informier
 
 
 # ----- ----- ----- ----- ----- ----- ----- -----
+u:(~zurück) ~bestaetigung ^execute(FragmentExecutor, frag_hbv_uni_main)
 # BACK TO MAIN MENU
 u:(~reset) ~bestaetigung ^execute(FragmentExecutor, frag_main)

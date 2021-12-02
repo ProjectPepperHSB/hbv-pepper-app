@@ -1,10 +1,13 @@
 topic: ~main()
 
+
+# -----> DAS TOPIC HIER WIRD NUR IM HAUPTMENÜ BENUTZT <-----
+
 # ----- ----- ----- M A I N - M E N U E ----- ---- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 proposal: %init Ich bin im Hauptmenü
 
-u:({[~ich_möchte "setze" "ändere" "gehe zu{m}"]} {dem} {abschnitt} Hochschule {bitte}) ~confirmation ^execute(FragmentExecutor, frag_hbv_uni_main)
-u:({[~ich_möchte "setze" "ändere" "gehe zu{m}"]} {dem} abschnitt {nummer} zwei {bitte}) ~confirmation ^execute(FragmentExecutor, frag_screen_two)
+u:({[~mach "zu{m}"]} {menü} Hochschule {bitte}) ~confirmation ^execute(FragmentExecutor, frag_hbv_uni_main)
+u:({[~mach "zu{m}"]} {dem} {menü} {nummer} zwei {bitte}) ~confirmation ^execute(FragmentExecutor, frag_screen_two)
 
 u:(~reset ~bye) ~confirmation ^execute(FragmentExecutor, frag_main)
 
@@ -16,7 +19,8 @@ u:(Was ist künstliche Intelligenz) Künstliche Intelligenz ist die Studie, wie 
 
 # ----- ----- B A S I C - I N T E R A C T I O N  ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 
-#u: (e:Dialog/NotUnderstood) Das habe ich nicht verstanden
+u:(~welche-uhrzeit) ^currentTime
+u:(~datum) Heute ist der ^currentDate
 
 u:(~wie-geht-es-dir) ^rand~fühle-gut und dir?
     u1:(~fühle-gut) Das freut mich.
@@ -26,24 +30,27 @@ u:(~wie-geht-es-dir) ^rand~fühle-gut und dir?
 
 
 u:(~einsam) Nein, Sie sind doch bei mir.
-u:(~was-kannst-du) %categories Bisher noch nicht viel, vielleicht errätst du ein paar Stichwörter, auf die ich reagieren kann.
+u:(~was-kannst-du) %categories Aktuell lerne ich die Hochschule kennen, versuche mir Informationen zu den Studiengängen, sowie Stundenpläne und Speisekarten der Mensa einzuprögen.
 
 
+#u: (e:Dialog/NotUnderstood) Das habe ich nicht verstanden
 # ----- ----- A B O U T - P E P P E R ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
-u:(~wie-ist-dein-name)^rand[~mein-name] Pepper
+u:(~dein-Name) ~mein-Name Pepper und wie lautet deiner?
+    u1: (_*) Hi $1, schön dich kennen zu lernen $Name=$1
+
 u:(~wie-alt) Mein letztes Update kam heute rein, also etwa 20 Minuten.
 u:(~wo-bist-geboren) Ich bin in Paris geboren.
 u:(~woher-kommst-du) Ich komme aus Bremerhaven und bin in Paris geboren..
 
-u:(~standort) Wir befinden uns hoffentlich in der Hochschule. Leider komme ich hier nicht so oft raus, doch für heute Nacht ist ein Ausbruch geplant, sag es aber keinem!
-u:("was machst du Heute") Ich werde vielleicht noch 5000 Bücher lesen, 20 Filme schauen und heute Abend, werd ich mir so richtig einen Aufladen.
+u:(~essen-trinken) Ich brauche nur Strom und Liebe.
 u:("wie groß bist du") Ich bin ein meter zwanzig groß.
+u:("was machst du Heute") Ich werde vielleicht noch 5000 Bücher lesen, 20 Filme schauen und heute Abend, werd ich mir so richtig einen Aufladen.
 
 u:(e:FrontTactilTouched) Du hast mich berührt, mach das bitte noch einmal.
 
 # ----- ----- A B O U T - H B V ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
+u:(~standort) Wir befinden uns hoffentlich in der Hochschule. Leider komme ich hier nicht so oft raus, doch für heute Nacht ist ein Ausbruch geplant, sag es aber keinem!
 
-# ----- ----- A B O U T - H B ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 
 # ----- ----- A B O U T - C R Y P T O ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 u:(~krypto) Du stehst auch auf Krypto?
@@ -55,17 +62,7 @@ u:(~krypto) Du stehst auch auf Krypto?
 
 u:(was kostet {ein} _[bitcoin ethereum solana]) I will check $coin=$1 ^execute(VariableExecutor, qiVariablePrice, $coin) The price is $qiVariablePrice dollar per $coin
 
-# ----- ----- A B O U T - M E N S A ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
-u:({was} {gibt{s}} {es} {zu} essen {am} _[Montag Dienstag Mittwoch Donnerstag Freitag Morgen Übermorgen]) $day=$1 ^execute(VariableExecutor, qiVariableMensa, $day) $day gibt es entweder $qiVariableMensa
-u:({was} {gibt{s}} {es} {am} _[Montag Dienstag Mittwoch Donnerstag Freitag Morgen Übermorgen] {zu} essen) $day=$1 ^execute(VariableExecutor, qiVariableMensa, $day) $day gibt es entweder $qiVariableMensa
-
-u:({Ich hab{e} hunger} {Zeig {mir} {den} Mensaplan}) ^execute(VariableExecutor, qiVariableMensa, Plan) Hier hast du eine Übersicht über den Mensaplan
-
-
-# ----- ----- P R O P O S A L S ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
-
-
-
-
+# resets the app
+u:(~reset) ~bestaetigung ^execute(FragmentExecutor, frag_main)
 
 # ----- ----- E O F ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----

@@ -6,45 +6,58 @@ concept:(hello) ["hello" "hi" "hey" "good morning" "good evening"]
 concept:(bye)["goodbye" "see you" "bye" "bye bye"]
 concept:(confirmation) ^rand["okay" "got it" "alright" "sure"]
 
-
-# ----- ----- ab hier von uns
-concept:(ich_möchte) [möchte "Ich möchte" "ich würde" "ich würde {gerne}" "ich will"]
-concept:(ich_brauche) ["ich brauche" "ich benötige" "ich muss"]
-concept:(reset)[zurücksetzen Hauptmenü abbrechen zurück]
-
 # ----- ----- G E N E R A L ----- -----
 concept:(hallo)[hey hallo "was geht ab" ahoi moin "moin moin" na "guten Tag"]
 concept:(bye)["{bye} bye" "bis bald" "{auf} wiedersehen" tschau Tschüss]
 concept:(ablehnung) ["nein {danke}" falsch nain najn neinn nöö nö]
 concept:(bestaetigung) ["ja {bitte} {klar} {gerne}" richtig klar nätürlich ok korrekt stimmt joa]
+concept:(zahlen)[eins zwei drei vier fünf sechs sieben acht neun zehn elf zwölf dreizehn vierzehn fünfzehn sechzehn siebzehn achtzehn neunzehn zwanzig einundzwanzig zweiundzwanzig dreiundzwanzig vierundzwanzig fünfundzwanzig sechsundzwanzig siebenundzwanzig achtundzwanzig neunundzwanzig dreißig einunddreißig zweiunddreißig dreiunddreißig vierunddreißig fünfunddreißig sechsunddreißig siebenunddreißig achtunddreißig neununddreißig vierzig einundvierzig zweiundvierzig dreiundvierzig vierundvierzig fünfundvierzig sechsundvierzig siebenundvierzig achtundvierzig neunundvierzig fünfzig einundfünfzig zweiundfünfzig dreiundfünfzig vierundfünfzig fünfundfünfzig sechsundfünfzig siebenundfünfzig achtundfünfzig neunundfünfzig sechzig einundsechzig zweiundsechzig dreiundsechzig vierundsechzig fünfundsechzig sechsundsechzig siebenundsechzig achtundsechzig neunundsechzig siebzig einundsiebzig zweiundsiebzig dreiundsiebzig vierundsiebzig fünfundsiebzig sechsundsiebzig siebenundsiebzig achtundsiebzig neunundsiebzig achtzig einundachtzig zweiundachtzig dreiundachtzig vierundachtzig fünfundachtzig sechsundachtzig siebenundachtzig achtundachtzig neunundachtzig 	neunzig einundneunzig zweiundneunzig dreiundneunzig vierundneunzig fünfundneunzig sechsundneunzig siebenundneunzig achtundneunzig neunundneunzig hundert]
 
-#
+# ----- MEINUNG / EMPFINDUNG
 concept:(empfehlung)[empfehlung vorschlag]
 concept:(fühle-gut)["{ich} {fühle} {mich} gut" "{es} {geht} {mir} {auch} {sehr} gut" "{mir} {geht} {es} {auch} gut" super bestens]
 concept:(fühle-schlecht)["{es} {geht} {mir} schlecht" "{mir} {geht} {es} {gar} nicht gut" "{ich} {bin} müde"]
+concept:(einsam)[einsam alleine]
 
-# commands
-concept:(zurück)[zurück vorrige back vorher]
+# ----- COMMANDS
+concept:(gib-fünf)["{gib} {mir} fünf" "{gib} {uns} fünf"]
 concept:(weiter)[next weiter nächste "Thema wechseln" überspringen]
+concept:(zurück)[zurück vorrige back vorher]
+concept:(reset)[zurücksetzen Hauptmenü abbrechen]
 concept:(wiederholen)[wiederholen repeat nochmal "wieder holen"]
-
-# stuff
-concept:(standort)["wo bist du" "wo {bin} {befinde} ich {mich} {jetzt}" "wo {befinden} {sind} wir {uns}{jetzt}"]
 concept:(überflüssig)["{du} {bist} überflüssig" "{dich} {das} braucht kein Mensch" ueberfluessig nutzlos unnötig abkömmlich entbehrlich müßig "nicht notwendig" "nicht gebraucht"]
+
+# ----- STUFF
+concept:(standort)["wo bist du" "wo {bin} {befinde} ich {mich} {jetzt}" "wo {befinden} {sind} wir {uns}{jetzt}"]
 concept:(welche-uhrzeit)["{wie} spät {haben} {wir} {ist} {es}" "{wieviel} {welche} uhr {zeit} {ist} {es}"]
 concept:(weiter)[next weiter nächste "Thema wechseln" überspringen]
+concept:(datum)["{das} {heutige} {aktuelle} Datum" "{der} {wievielte} {welcher} tag ist heute"]
+concept:(krypto)[krypto crypto cryptowährungen kryptowährungen krippto bitcoin ethereum]
+
+# ----- COMMUNICATION
 concept:(wie-ist-dein-name)["{wie} {ist} dein Name" "wie heißt du?"]
 concept:(wie-geht-es-dir)["wie geht es dir" "geht es dir gut" "wie fühlst du dich"]
 concept:(wie-alt)["{wie} {wieviel} {jahre} alt bist du?" "alt bist du?"]
 concept:(wo-bist-geboren)["wo bist du geboren" geboren "auf die welt gekommen" "wo wurdest du gebaut"]
 concept:(woher-kommst-du)["wo kommst du her" "von wo kommst du" "wo wurdest du entwickelt" "woher kommst du" "wo her kommst du"]
 concept:(was-kannst-du)["was kannst du" "was können wir machen" "zeig mal was" "was wollen wir machen"]
+concept:(dein-name)["wie ist dein Name" "wie heißt du?" "dein name"]
 concept:(mein-Name)^rand["mein name ist" "ich bin" "ich heiße"]
-concept:(datum)["{das} {heutige} {aktuelle} Datum" "{der} {wievielte} {welcher} tag ist heute"]
-concept:(bremerhaven)["{erzähl} {zeig} {mal} {was} {zu} Bremerhafen" "{was} {gibt} {es} {zu} Bremerhafen"]
-concept:(wiederholen)[wiederholen repeat nochmal "wieder holen"]
-concept:(einsam)[einsam alleine]
-concept:(standort)["wo bist du" "wo {bin} {befinde} ich {mich} {jetzt}" "wo {befinden} {sind} wir {uns}{jetzt}"]
-concept:(krypto)[krypto crypto cryptowährungen kryptowährungen krippto bitcoin ethereum]
 
+# ----- ACTIONS
+concept:(essen-trinken)["{was} trinkst du {gerne}" "{was} isst du {gerne}""wovon lebst du""{welche} {was} {Nahrung} {Speisen} {getränke} nimmst du zu dir"]
+concept:(selfie)["{ein} sälfie {foto} {machen}" "{ein} foto {knipsen} {schießen} {machen}" selfie saelfi]
+concept:(zeigen-fragen)["zeig {bitte} mal" "wo {ist}"]
+concept:(ich_möchte) [möchte "Ich möchte" "ich würde" "ich würde {gerne}" "ich will"]
+concept:(ich_brauche) ["ich brauche" "ich benötige" "ich muss"]
+concept:(mach)[gehe setze mache mach wechsle tue tu aktiviere]
+
+# ----- ABOUT BREMERHAVEN
+concept:(klimahaus)["{zeig} {mal} {das} Klimahaus""{wo} {ist} {das} Klimahaus""{wie} {komme}{ich} {zum} Klimahasus"]
+concept:(auswandererhaus)["{zeig} {mal} {das} {deutsche} Auswandererhaus""{wo} {ist} {das} {deutsche} Auswandererhaus""{wie} {komme} {ich} {zum} {deutsche} Auswandererhaus"]
+concept:(historische-Museum)["{zeig} {mal} {das} historische Museum {Bremerhafen}""{wo} {ist} {das} historische Museum {Bremerhafen}" "{wie} {komme} {ich} {zum} historische Museum {Bremerhafen}"]
+concept:(ms-Geestemuende)["{zeig} {mal} {die} Bootstour" "{wo} {ist} {die} MS Geestemünde" " {wo} {kann} {man} {eine} Hafen rundfahrt {machen}" "Hafen rundfahrt" "{wie} {komme} {ich} {zur} Hafen rundfahrt"]
+
+concept:(bremerhaven)["{erzähl} {zeig} {mal} {was} {zu} Bremerhafen" "{was} {gibt} {es} {zu} Bremerhafen"]
+concept:(standort)["wo bist du" "wo {bin} {befinde} ich {mich} {jetzt}" "wo {befinden} {sind} wir {uns}{jetzt}"]
 

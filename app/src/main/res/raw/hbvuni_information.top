@@ -1,9 +1,16 @@
 topic: ~hbvuni_information()
 # topic für allgemeines über die hochschule und bremerhaven
 
-proposal: %init Die Hochschule existiert seit vielen Jahren und auf viele Studienangebote. Neben den Bachelorstudiengängen, werden auch die Angebote für Masterstudiengänge immer weiter ausgebaut.
+proposal: %init Was möchtest du über die Hochschule wissen?
 
+#Die Hochschule existiert seit vielen Jahren und auf viele Studienangebote. Neben den Bachelorstudiengängen, werden auch die Angebote für Masterstudiengänge immer weiter ausgebaut.
+
+u:("wann wurde die hochschule gegründet") Die Hochschule wurde 1975 gegründet.
+u:("wie viele Studenten {"gibt es an der hochschule"}") Die Hochschule hat laut Wikipedia etwa 3000 Studenten aus 66 Nationen
+u:("{welche } fachbereiche {gibt es} {["an der" "bietet die"] hochschule {an}}") Es gibt zwei Fachbereiche, die die Schwerpunkte Engergie und Meerestechnik, Life Science, Logistik und Dienstleistungen und Autonmatisierung abbilden. Dazu gehören Studienfächer wie Biotechnologie, maritime Technologien, Verfahrenstechnik, Medizintechnik und natürlich auch Wirtschaftsinformatik.
+u:("wie viele mitarbeiter") Derzeit sind 150 Mitarbeiter in Lehre und Verwaltung tätig.
 
 # ----- ----- ----- ----- ----- ----- ----- -----
+u:(~zurück) ~bestaetigung ^execute(FragmentExecutor, frag_hbv_uni_main)
 # BACK TO MAIN MENU
 u:(~reset) ~bestaetigung ^execute(FragmentExecutor, frag_main)

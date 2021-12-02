@@ -47,9 +47,13 @@ public class HBVUNI_for_StudentsFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         /*
         view.findViewById(R.id.button_stundenplan).setOnClickListener((v) -> do something);
-        view.findViewById(R.id.button_mensaplan).setOnClickListener((v) -> do something);
+
         view.findViewById(R.id.button_about_whatever).setOnClickListener((v) -> do something);
         */
+
+        // DAS HIER GEHT NOCH NICHT WEGEN MAIN THREAD
+        view.findViewById(R.id.button_mensaplan).setOnClickListener((v) -> ma.setMensaImageView());
+
 
         // BACK 2 MAIN MENU
         view.findViewById(R.id.button_main_menu).setOnClickListener((v) ->

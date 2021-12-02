@@ -1,7 +1,6 @@
 topic: ~hbvuni_for_students()
 # topic für stundenplan, mensaplan, raumfindung
 
-concept:(studiengänge)[Wirtschaftsinformatik Informatik Betriebswirtschaftslehre]
 concept:(w-words)[wann wo]
 
 concept:(wo) [wo "wo ist" "wo befindet" "wo finde" "wo findet"]
@@ -34,14 +33,35 @@ concept:(IT-Recht) ["it recht"]
 concept:(IT-Sicherheit) ["it sicherheit"]
 
 
-# ----- ----- ----- ----- ------- -------
+concept:(studiengänge) [~Datenbanken-I ~Datenbanken-II ~SWE ~BWL ~IT-Recht ~IT-Sicherheit ~Theoretische-Informatik ~Programmieren-I]
+
+concept:(semester)[eins zwei drei vier fünf sechs sieben acht]
+
 proposal: %init Möchtest du etwas über den Stundenplan oder das aktuelle Angebot in unserer Mensa wissen? ^enableThenGoto(waswillernun)
+
+# ----- ----- G E N E R A L ----- ----- ------- -------
 
 u:(irgendwas) %waswillernun
     u1:(stundenplan) ~bestaetigung ...
 
-u:(_~w-words {findet der} Kurs _~studiengänge {statt}) $w_word=$1 $course=$2 Gib mir einen Moment ^execute(VariableExecutor, $w_word, $course) $w_word findet irgendwann statt
+u:(_~w-words {findet der} Kurs _~studiengänge  {["im semester" semester] _~semester}{statt}) $w_word=$1 $course=$2 $semester=$3 Gib mir einen Moment ^execute(VariableExecutor, $w_word, $course, $semester) $w_word findet irgendwann statt
+
+# ----- ----- A B O U T - T I M E T A B L E --- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
+
+
+# ----- ----- A B O U T - M E N S A ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
+u:({was} {gibt{s}} {es} {zu} essen {am} _[Montag Dienstag Mittwoch Donnerstag Freitag Morgen Übermorgen]) $day=$1 ^execute(VariableExecutor, qiVariableMensa, $day) $day gibt es entweder $qiVariableMensa
+u:({was} {gibt{s}} {es} {am} _[Montag Dienstag Mittwoch Donnerstag Freitag Morgen Übermorgen] {zu} essen) $day=$1 ^execute(VariableExecutor, qiVariableMensa, $day) $day gibt es entweder $qiVariableMensa
+
+u:({Ich hab{e} hunger} {Zeig {mir} {den} Mensaplan}) ^execute(VariableExecutor, qiVariableMensa, Plan) Hier hast du eine Übersicht über den Mensaplan
+
+
 
 # ----- ----- ----- ----- ----- ----- ----- -----
+u:(~zurück) ~bestaetigung ^execute(FragmentExecutor, frag_hbv_uni_main)
+
 # BACK TO MAIN MENU
 u:(~reset) ~bestaetigung ^execute(FragmentExecutor, frag_main)
+
+
+# ----- ----- E O F ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----

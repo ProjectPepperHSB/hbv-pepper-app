@@ -67,14 +67,22 @@ public class VariableExecutor extends BaseQiChatExecutor {
                     exception.printStackTrace();
                 }
                 break;
+            case("qiVariableTimeTable"):
+                String w_word = params.get(1);
+                String course = params.get(2);
+
+                Log.i(TAG,"Looking for w-word " + w_word +" and course " + course);
+
+                if (w_word == "wann"){} else if (w_word == "wo"){}
+
+
             case("qiVariableMensa"):
                 String day = params.get(1);
                 if(day.equals("Plan")){
                     System.out.println("Show Plan");
                     ma.setMensaImageView();
                     System.out.println("Show Plan End");
-                }
-                else{
+                } else{
                     try {
                         String offer = HelperCollection.getOffer(day);
                         System.out.println(offer);

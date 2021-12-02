@@ -656,9 +656,10 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
             final Bitmap bitmap = BitmapFactory.decodeStream(srt);
 
             runOnUiThread(() -> {
-                setContentView(R.layout.mensa_layout);
-                imageView = (ImageView) findViewById(R.id.iMensa);
+                //setContentView(R.layout.mensa_layout);
+                imageView = (ImageView) findViewById(R.id.iMensa2);
                 imageView.setImageBitmap(bitmap);
+                // change visibility if student said "hide" or so
             });
         }catch (Exception e){
             e.printStackTrace();
