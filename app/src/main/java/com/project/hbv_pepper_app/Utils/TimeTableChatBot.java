@@ -9,8 +9,7 @@ import com.aldebaran.qi.sdk.object.conversation.Listen;
 import com.aldebaran.qi.sdk.object.conversation.ListenResult;
 import com.aldebaran.qi.sdk.object.conversation.PhraseSet;
 import com.aldebaran.qi.sdk.util.PhraseSetUtil;
-import com.project.hbv_pepper_app.Other.HBV_TimeTable.Lectures;
-import com.project.hbv_pepper_app.Other.HBV_TimeTable.WeekDay;
+//import com.project.hbv_pepper_app.Other.HBV_TimeTable.Lectures;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -33,7 +32,7 @@ public class TimeTableChatBot {
     private String chosenLecture;
     private String chosenKW = String.valueOf(getWeek());
 
-    ArrayList<WeekDay> week;
+    //ArrayList<WeekDay> week;
     private PhraseSet semesterPhrases;
     private PhraseSet coursesPhrases;
     private PhraseSet lecturesPhrases;
@@ -90,6 +89,7 @@ public class TimeTableChatBot {
             try {
                 boolean lectureFound = false;
                 Log.i(TAG, "---> get Timetables");
+                /*
                 week = this.getTimeTable(chosenCourse, chosenSemester, chosenKW);
                 for (int i = 0; i < week.size(); i++) {
                     WeekDay day = week.get(i);
@@ -106,11 +106,13 @@ public class TimeTableChatBot {
                         Log.i(TAG, day.getName() + ", Kurs: " + lectures.getName() + " Raum: " + lectures.getRoom() + "Beginn: " + lectures.getBegin() + "Uhr Ende: " + lectures.getEnd() + "Uhr.");
                     }
                 }
+
+                 */
                 if(chosenLecture != null && !lectureFound){
                     HelperCollection.Say(this.qiContext, this.chosenLecture + " habe ich für diese Studiengang / Semesterkombination nicht gefunden.");
                 }
                 this.done = true;
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
@@ -146,8 +148,10 @@ public class TimeTableChatBot {
             }
         }
     }
+
     /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
 
+    /*
     private ArrayList<WeekDay> getTimeTable(String _course, String _semester, String _kw) throws IOException {
         String course_str = _course + "_B" + _semester + "_" + _kw;
         String url_str = "https://informatik.hs-bremerhaven.de/docker-hbv-kms-web/timetablesfb2/" + course_str + ".csv";
@@ -180,6 +184,8 @@ public class TimeTableChatBot {
         }
         return weekDays;
     }
+
+     */
 
     private static int getWeek() {
         return Calendar.getInstance().get(Calendar.WEEK_OF_YEAR);

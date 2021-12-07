@@ -1,12 +1,22 @@
 package com.project.hbv_pepper_app.Executors;
 
 
+import android.util.Base64;
 import android.util.Log;
+import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 
 import com.aldebaran.qi.sdk.QiContext;
 import com.aldebaran.qi.sdk.object.conversation.BaseQiChatExecutor;
 import com.project.hbv_pepper_app.Fragments.ScreenTwoFragment;
 import com.project.hbv_pepper_app.MainActivity;
+import com.project.hbv_pepper_app.Other.HBV_TimeTable.TimeTable;
+import com.project.hbv_pepper_app.Other.HBV_TimeTable.TimeTableHandler;
+import com.project.hbv_pepper_app.R;
 import com.project.hbv_pepper_app.Utils.HelperCollection;
 
 import java.util.List;
@@ -19,7 +29,7 @@ import java.util.List;
 
 public class VariableExecutor extends BaseQiChatExecutor {
     private final MainActivity ma;
-    private String TAG = "MSI_VariableExecutor";
+    private final String TAG = "VariableExecutor";
 
     public VariableExecutor(QiContext qiContext, MainActivity mainActivity) {
         super(qiContext);
@@ -34,12 +44,8 @@ public class VariableExecutor extends BaseQiChatExecutor {
             return;
         }else{
             variableName = params.get(0);
-            if(params.size() == 2){
-                variableValue = params.get(1);
-            }else{
-                Log.d(TAG, "no value specified for variable : " + variableName);
-                return;
-            }
+            if(params.size() < 2)  {Log.d(TAG, "no value specified for variable : " + variableName); return;}
+            else variableValue = params.get(1);
         }
         Log.d(TAG,"variableName: " + variableName);
         switch (variableName){
@@ -51,13 +57,9 @@ public class VariableExecutor extends BaseQiChatExecutor {
                 String coin = params.get(1);
                 Log.i(TAG,"Looking for price of " + params.get(1));
 
-                if (coin == "bitcoin"){
-                    coin = "btc";
-                } else if (coin == "ethereum"){
-                    coin = "eth";
-                } else {
-                    coin = "sol";
-                }
+                if (coin.equals("bitcoin")) coin = "btc";
+                else if (coin.equals("ethereum")) coin = "eth";
+                else coin = "sol";
 
                 try {
                     String price = HelperCollection.getPrice(coin + "-USDT");
@@ -67,15 +69,41 @@ public class VariableExecutor extends BaseQiChatExecutor {
                     exception.printStackTrace();
                 }
                 break;
-            case("qiVariableTimeTable"):
-                String w_word = params.get(1);
-                String course = params.get(2);
+            case("timetable"):
+                String course = params.get(1);
+                String semester = params.get(2);
 
-                Log.i(TAG,"Looking for w-word " + w_word +" and course " + course);
+                Log.i("------>","Looking for course " + course + " in semester " + semester);
 
-                if (w_word == "wann"){} else if (w_word == "wo"){}
+                TimeTableHandler tth = new TimeTableHandler("WI"/*course*/, semester);
+                TimeTable timeTable = tth.getTimeTable();
+                /*
+                Log.i("TIMETBALE: ", timeTable.toString());
+
+                for(int i = 0; i < timeTable.Mo.size(); i++){
+                    Log.i(String.valueOf(i), timeTable.Mo.get(i).getCourse());
+                }
+                */
+
+                /*
+                ma.runOnUiThread(() -> {
+                    final WebView webView = (WebView) ma.findViewById(R.id.webview);
+                    WebSettings settings = webView.getSettings();
+                    settings.setJavaScriptEnabled(true);
+                    settings.setDomStorageEnabled(true);
+                    settings.setAllowContentAccess(true);
+                    settings.setAllowFileAccessFromFileURLs(true);
+                    settings.setAllowUniversalAccessFromFileURLs(true);
+                    webView.loadData(tth.getHtmlPage(), "text/html; charset=utf-8", "UTF-8");
+                    webView.setVisibility(View.VISIBLE);
+                });
+                
+                 */
 
 
+                break;
+            case("timetable_detail"):
+                break;
             case("qiVariableMensa"):
                 String day = params.get(1);
                 if(day.equals("Plan")){

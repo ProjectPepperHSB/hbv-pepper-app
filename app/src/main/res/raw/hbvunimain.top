@@ -1,6 +1,6 @@
 topic: ~hbvunimain()
 
-proposal: %init Du möchtest also etwas über die Hochschule Bremerhaven wissen
+proposal: %init #Du möchtest also etwas über die Hochschule Bremerhaven wissen
 
 concept:(hbv_menu_general)[allgemein{es} informationen generell "über {die} Hochschule {[berichten erzählen]}"]
 concept:(hbv_menu_for_students)["{für studierende}" stundenplan auskunft mensaplan mensa]

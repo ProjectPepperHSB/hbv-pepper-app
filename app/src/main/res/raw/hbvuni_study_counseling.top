@@ -17,7 +17,7 @@ concept:(bwl) [ betriebswirtschaftslehre
 
 # ----- ----- ----- S T A R T ----- ----- ----- ----- -----
 
-proposal: %init Alles klar, du möchtest dich also über Studiengänge informieren. Auf meinem Bauch müsstest du nun eine Auflistung unseres Angebotes sehen.
+proposal: %init #Alles klar, du möchtest dich also über Studiengänge informieren. Auf meinem Bauch müsstest du nun eine Auflistung unseres Angebotes sehen.
 
 
 

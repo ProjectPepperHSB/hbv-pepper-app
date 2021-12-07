@@ -110,7 +110,6 @@ public class HelperCollection {
         return con;
     }
 
-
     public static String getPrice(String symbol) throws Exception {
         try {
             HttpURLConnection con = getConnection("https://informatik.hs-bremerhaven.de/docker-hbv-kms-http/crypto?subject=price&symbol=" + symbol);

@@ -1,4 +1,4 @@
-package com.project.hbv_pepper_app.Other.HBV_TimeTable;
+package com.project.hbv_pepper_app.Utils;
 
 public class Person {
     /* Class to store data about a person

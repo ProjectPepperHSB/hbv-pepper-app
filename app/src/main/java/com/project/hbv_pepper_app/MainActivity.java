@@ -17,17 +17,12 @@ import com.aldebaran.qi.Future;
 import com.aldebaran.qi.sdk.QiContext;
 import com.aldebaran.qi.sdk.QiSDK;
 import com.aldebaran.qi.sdk.RobotLifecycleCallbacks;
-import com.aldebaran.qi.sdk.builder.ListenBuilder;
-import com.aldebaran.qi.sdk.builder.PhraseSetBuilder;
 import com.aldebaran.qi.sdk.design.activity.RobotActivity;
 import com.aldebaran.qi.sdk.design.activity.conversationstatus.SpeechBarDisplayStrategy;
 import com.aldebaran.qi.sdk.object.actuation.Actuation;
 import com.aldebaran.qi.sdk.object.actuation.Frame;
 import com.aldebaran.qi.sdk.object.conversation.Bookmark;
 import com.aldebaran.qi.sdk.object.conversation.Chat;
-import com.aldebaran.qi.sdk.object.conversation.Listen;
-import com.aldebaran.qi.sdk.object.conversation.ListenResult;
-import com.aldebaran.qi.sdk.object.conversation.PhraseSet;
 import com.aldebaran.qi.sdk.object.conversation.QiChatVariable;
 import com.aldebaran.qi.sdk.object.conversation.QiChatbot;
 import com.aldebaran.qi.sdk.object.conversation.TopicStatus;
@@ -36,7 +31,6 @@ import com.aldebaran.qi.sdk.object.human.Gender;
 import com.aldebaran.qi.sdk.object.human.Human;
 import com.aldebaran.qi.sdk.object.human.PleasureState;
 import com.aldebaran.qi.sdk.object.human.SmileState;
-import com.aldebaran.qi.sdk.util.PhraseSetUtil;
 
 import com.aldebaran.qi.sdk.object.conversation.QiChatExecutor;
 
@@ -53,10 +47,8 @@ import com.project.hbv_pepper_app.Executors.VariableExecutor;
 import com.project.hbv_pepper_app.Fragments.LoadingFragment;
 import com.project.hbv_pepper_app.Fragments.MainFragment;
 import com.project.hbv_pepper_app.Fragments.SplashFragment;
-import com.project.hbv_pepper_app.Other.HBV_Mensa.AsyncResponse;
-import com.project.hbv_pepper_app.Other.HBV_Mensa.GetMensaData;
 import com.project.hbv_pepper_app.Other.HBV_Mensa.Mensa;
-import com.project.hbv_pepper_app.Other.HBV_TimeTable.Person;
+import com.project.hbv_pepper_app.Utils.Person;
 import com.project.hbv_pepper_app.Utils.ChatData;
 import com.project.hbv_pepper_app.Utils.CountDownNoInteraction;
 import com.project.hbv_pepper_app.Utils.HelperCollection;
@@ -215,7 +207,7 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         executors.put("FragmentExecutor", new FragmentExecutor(qiContext, this));
         executors.put("VariableExecutor", new VariableExecutor(qiContext, this));
         qiChatBot.setupExecutors(executors);
-        qiChatBot.setupQiVariables(Arrays.asList("qiVariablePrice","qiVariable","qiVariableMensa")); // qiChatVariable
+        qiChatBot.setupQiVariables(Arrays.asList("qiVariablePrice", "qiVariable", "qiVariableMensa")); // qiChatVariable
         currentChatBot = qiChatBot;
         currentChatBot.chat.async().addOnStartedListener(() -> { //qiChatVariable Pepper
             setQiVariable("qiVariablePrice", "undefined"); // this is done here because the chatBot needs to be running for this to work.
@@ -232,10 +224,48 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         });
         chatFuture = currentChatBot.chat.async().run();
         humanAwareness = getQiContext().getHumanAwareness();
-        humanAwareness.async().addOnEngagedHumanChangedListener(engagedHuman -> {
+        humanAwareness.async().addOnEngagedHumanChangedListener(human -> {
             if (getFragment() instanceof SplashFragment) {
-                if (engagedHuman != null) {
+                if (human != null) {
                     setFragment(new MainFragment());
+
+                    double distance_format;
+                    if (qiContext.getActuation() != null) {
+                        Actuation actuation = qiContext.getActuation();
+                        Frame robotFrame = actuation.robotFrame();
+                        Frame humanFrame = human.getHeadFrame();
+                        // DecimalFormat format = new DecimalFormat("0.##");
+                        distance_format = HelperCollection.computeDistance(humanFrame, robotFrame);
+                    } else
+                        distance_format = 0;
+
+                    int age = human.getEstimatedAge().getYears();
+                    Gender gender = human.getEstimatedGender();
+                    PleasureState pleasureState = human.getEmotion().getPleasure();
+                    ExcitementState excitementState = human.getEmotion().getExcitement();
+                    String emotion = computeBasicEmotion(String.valueOf(excitementState), String.valueOf(pleasureState));
+                    SmileState smileState = human.getFacialExpressions().getSmile();
+
+                    Log.i(TAG, "ActiveSpeaker Engage : ");
+                    Log.i(TAG, "distance : " + distance_format);
+                    Log.i(TAG, "Age: " + age + " year(s)");
+                    Log.i(TAG, "Gender: " + gender);
+                    Log.i(TAG, "Pleasure state: " + pleasureState);
+                    Log.i(TAG, "Excitement state: " + excitementState);
+                    Log.i(TAG, "Basic Emotion : " + emotion);
+                    Log.i(TAG, "Smile state: " + smileState);
+
+                    if (age != -1)   ageActiveSpeaker = age;
+                    //if (ageActiveSpeaker != -1) qiChatAge.async().setValue(String.valueOf(ageActiveSpeaker));
+                    if (!emotion.equals(this.DEFAULT_STRING)) emotionActiveSpeaker = emotion;
+
+                    //if (!emotionActiveSpeaker.equals(this.DEFAULT_STRING))  qiChatBemot.async().setValue(emotionActiveSpeaker);
+
+                    String smile = String.valueOf(smileState);
+                    if (!smile.equals(this.DEFAULT_STRING)) {
+                        smileActiveSpeaker = smile;
+                        //qiChatSmile.async().setValue(smileActiveSpeaker);
+                    }
                 }
             } else {
                 countDownNoInteraction.reset();
@@ -326,104 +356,6 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     // endregion implements EVENTS
     /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
     // begin implements INIT
-
-    private void initVariables() {
-        /* ----- GENERAL ----- ----- ----- ----- ----- */
-
-        this.status = this.DEFAULT_STRING;
-        this.isSomeone = false;
-        this.ageActiveSpeaker = -1;
-        this.emotionActiveSpeaker = this.DEFAULT_STRING;
-
-
-    }
-    /*
-    private void initQIChat(){
-
-        main_topic = TopicBuilder.with(this.qiContext)
-                .withResource(R.raw.main)
-                .build();
-        oldQiChatBot = QiChatbotBuilder.with(qiContext)
-                .withTopic(main_topic)
-                .build();
-        Map<String, QiChatExecutor> executors = new HashMap<>();
-        qiChatPrice = oldQiChatBot.variable("price");
-        // Map the executor name from the topic to our qiChatExecutor
-        executors.put("myExecutor", new BaseQiChatExecutor(qiContext) {
-            //https://android.aldebaran.com/sdk/doc/pepper-sdk/ch4_api/conversation/reference/baseQiChatExecutor.html#baseqichatexecutor
-            @Override
-            public void runWith(List<String> list) {
-                System.out.println("Looking for price of " + list.get(0));
-                String coin = list.get(0);
-
-                try {
-                    qiChatPrice.setValue(HelperCollection.getPrice(coin+"-USDT"));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void stop() {
-
-            }
-        });
-
-        // Set the executors to the qiChatbot
-        oldQiChatBot.setExecutors(executors);
-
-        chatAction = ChatBuilder.with(qiContext)
-                .withChatbot(oldQiChatBot)
-                .build();
-
-        mainTopicStatus = oldQiChatBot.topicStatus(main_topic);
-
-        bookmarks = main_topic.getBookmarks();
-
-        // chatvariables are to link this code with topics
-        //qiChatStatus = qiChatbot.variable("Status");
-        //qiChatBemot = qiChatbot.variable("Bemot");
-        //qiChatSmile = qiChatbot.variable("Smile");
-        //qiChatAge = qiChatbot.variable("Age");
-
-
-        bookmarks = main_topic.getBookmarks();
-
-        if (this.DEBUG_MODE) {
-            currentChatFuture = chatAction.async().run();
-
-            qiChatStatus.async().setValue("single");
-            qiChatBemot.async().setValue("JOYFUL");
-
-        }
-
-        oldQiChatBot.addOnBookmarkReachedListener(bookmark -> {
-            Log.i(TAG, "QiChatBot Bookmark : " + bookmark.getName());
-
-            switch (bookmark.getName()) {
-                // hier nur, wenn wir auch views haben
-                case START_BOOKMARK_PRIVACY:
-                    runOnUiThread(() -> setContentView(R.layout.privacy));
-                    break;
-                case START_BOOKMARK_CATEGORIES:
-                    runOnUiThread(() -> setContentView(R.layout.categories));
-                    break;
-            }
-        });
-
-        chatAction.addOnNoPhraseRecognizedListener(() -> {
-            Log.i(TAG, HelperCollection.getTimeStamp() + " Robot:  Not Understand");
-        });
-
-        chatAction.addOnHeardListener(heardPhrase -> {
-            Log.i(TAG, HelperCollection.getTimeStamp()  + " Person: " + heardPhrase.getText());
-        });
-
-        chatAction.addOnSayingChangedListener(sayingPhrase -> {
-            Log.i(TAG, HelperCollection.getTimeStamp()  + " Robot: " + sayingPhrase.getText());
-        });
-    }
-    */
 
     /* DAS HIER KÖNNEN WIR NOCH IRGNEDWIE VERARBEITEN
     private void initHumanAwareness() {

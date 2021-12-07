@@ -1,7 +1,7 @@
 topic: ~hbvuni_information()
 # topic für allgemeines über die hochschule und bremerhaven
 
-proposal: %init Was möchtest du über die Hochschule wissen?
+proposal: %init #Was möchtest du über die Hochschule wissen?
 
 #Die Hochschule existiert seit vielen Jahren und auf viele Studienangebote. Neben den Bachelorstudiengängen, werden auch die Angebote für Masterstudiengänge immer weiter ausgebaut.
 

@@ -4,7 +4,7 @@ topic: ~main()
 # -----> DAS TOPIC HIER WIRD NUR IM HAUPTMENÜ BENUTZT <-----
 
 # ----- ----- ----- M A I N - M E N U E ----- ---- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
-proposal: %init Ich bin im Hauptmenü
+proposal: %init #ready
 
 u:({[~mach "zu{m}"]} {menü} Hochschule {bitte}) ~confirmation ^execute(FragmentExecutor, frag_hbv_uni_main)
 u:({[~mach "zu{m}"]} {dem} {menü} {nummer} zwei {bitte}) ~confirmation ^execute(FragmentExecutor, frag_screen_two)
