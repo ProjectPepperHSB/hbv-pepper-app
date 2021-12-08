@@ -77,15 +77,14 @@ public class VariableExecutor extends BaseQiChatExecutor {
 
                 TimeTableHandler tth = new TimeTableHandler("WI"/*course*/, semester);
                 TimeTable timeTable = tth.getTimeTable();
-                /*
+
+
                 Log.i("TIMETBALE: ", timeTable.toString());
 
-                for(int i = 0; i < timeTable.Mo.size(); i++){
-                    Log.i(String.valueOf(i), timeTable.Mo.get(i).getCourse());
-                }
-                */
+                for(int i = 0; i < timeTable.Mo.size(); i++) Log.i(String.valueOf(i), timeTable.Mo.get(i).getCourse());
 
                 /*
+                // das hier stürzt ab, er aktiviert die webview und soll dann den html string dort als data laden
                 ma.runOnUiThread(() -> {
                     final WebView webView = (WebView) ma.findViewById(R.id.webview);
                     WebSettings settings = webView.getSettings();

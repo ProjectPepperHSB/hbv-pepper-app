@@ -81,9 +81,8 @@ concept:(courses)[~WI ~INF]
 concept:(semester)[1 2 3 4 5 6 7 8 eins zwei drei vier fünf sechs sieben acht]
 
 
-
-
 # ----- ----- G E N E R A L ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ---------- ----- ----- -----
+u:(test) check
 proposal: %init #Möchtest du etwas über den Stundenplan oder das aktuelle Angebot in unserer Mensa wissen? ^enableThenGoto(waswillernun)
 u:(irgendwas) %waswillernun
     u1:(stundenplan) ~bestaetigung ...
@@ -92,7 +91,7 @@ u:(irgendwas) %waswillernun
 
 
 # ----- ----- A B O U T - T I M E T A B L E ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
-u:({so} zeig{e} {er} {mir} {den} Stundenplan {für} {den} Studiengang _~courses {im} Semester _~semester)
+u:({so} zeig{e} {er} {mir} {den} Stundenplan {für} {den} Studiengang _~courses {im} Semester _~semester {sofort} {bitte})
     $course=$1 $semester=$2 Sofort mein Meister und Gebieter ^execute(VariableExecutor, timetable, $course, $semester)
 
 u:({~w-words} {"findet der" "ist der"} Kurs $1 ["im semester" "für das semester" semester] _~semester {statt})
