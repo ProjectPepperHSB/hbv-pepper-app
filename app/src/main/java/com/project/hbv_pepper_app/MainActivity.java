@@ -5,10 +5,12 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -36,6 +38,8 @@ import com.aldebaran.qi.sdk.object.conversation.QiChatExecutor;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -53,6 +57,7 @@ import com.project.hbv_pepper_app.Utils.ChatData;
 import com.project.hbv_pepper_app.Utils.CountDownNoInteraction;
 import com.project.hbv_pepper_app.Utils.HelperCollection;
 import com.project.hbv_pepper_app.Utils.TimeTableChatBot;
+
 
 // TODO:
 // ├ Set variable chat to null if focus lost for x seconds
@@ -127,6 +132,91 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     private Person[] persons;
     private TimeTableChatBot TTChatBot = null;
 
+    class ActivePerson {
+        final String DEFAULT_STRING = "UNDEFINED";
+        private String distance = DEFAULT_STRING;
+        private String age = DEFAULT_STRING;
+        private String gender = DEFAULT_STRING;
+        private String pleasure_state = DEFAULT_STRING;
+        private String excitementState = DEFAULT_STRING;
+        private String emotion = DEFAULT_STRING;
+        private String smileState = DEFAULT_STRING;
+        private Long dialog_time = System.currentTimeMillis();
+
+
+        public void saveToDatabase(){
+            this.dialog_time = System.currentTimeMillis() - this.dialog_time;
+            HelperCollection.saveToDatabase(
+                    this.distance, this.age,
+                    this.gender, this.emotion,
+                    this.pleasure_state, this.excitementState,
+                    this.smileState, String.valueOf(this.dialog_time / 1000 ));
+        }
+
+        public String getDistance() {
+            return distance;
+        }
+        public Long getDialog_time(){
+            return dialog_time;
+        }
+        public void setDialog_time(long dialog_time){
+            this.dialog_time = dialog_time;
+        }
+        public void setDistance(String distance) {
+            this.distance = distance;
+        }
+
+        public String getAge() {
+            return age;
+        }
+
+        public void setAge(String age) {
+            this.age = age;
+        }
+
+        public String getGender() {
+            return gender;
+        }
+
+        public void setGender(String gender) {
+            this.gender = gender;
+        }
+
+        public String getPleasure_state() {
+            return pleasure_state;
+        }
+
+        public void setPleasure_state(String pleasure_state) {
+            this.pleasure_state = pleasure_state;
+        }
+
+        public String getExcitementState() {
+            return excitementState;
+        }
+
+        public void setExcitementState(String excitementState) {
+            this.excitementState = excitementState;
+        }
+
+        public String getEmotion() {
+            return emotion;
+        }
+
+        public void setEmotion(String emotion) {
+            this.emotion = emotion;
+        }
+
+        public String getSmileState() {
+            return smileState;
+        }
+
+        public void setSmileState(String smileState) {
+            this.smileState = smileState;
+        }
+    }
+
+    ActivePerson activePerson = new ActivePerson();
+
     // Mensa Stuff
     private String mensaURL = "https://informatik.hs-bremerhaven.de/docker-hbv-kms-web/mensa";
     public Mensa mensa;
@@ -149,11 +239,8 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         countDownNoInteraction.start();
         updateLocale(language);
         setContentView(R.layout.activity_main);
-        // -------- E N D - N E W --------
 
-        // wird nicht mehr benötigt
-        //initVariables();
-        //QiSDK.register(this, this);
+        // -------- E N D - N E W --------
     }
 
     private void updateLocale(String strLocale) {
@@ -167,6 +254,9 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         Log.i(TAG,"Focus lost");
         humanAwareness.async().removeAllOnEngagedHumanChangedListeners();
         this.qiContext = null;
+
+        activePerson.saveToDatabase();
+        activePerson = new ActivePerson();
     }
 
     @Override
@@ -186,20 +276,6 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     public void onRobotFocusGained(QiContext qiContext) {
         this.qiContext = qiContext;
         HelperCollection.Say(qiContext, "jo!");
-
-        /*initQIChat();
-        if (!this.DEBUG_MODE) {
-            initHumanAwareness();
-        } else {
-
-            if(true){
-                TTChatBot = new TimeTableChatBot(qiContext);
-                TTChatBot.start();
-            } else{
-                TestMensa(qiContext);
-            }
-        }
-        */
 
         // -------- N E W --------
         qiChatBot = new ChatData(this, qiContext, new Locale(language), topicNames, true);
@@ -234,10 +310,9 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
                         Actuation actuation = qiContext.getActuation();
                         Frame robotFrame = actuation.robotFrame();
                         Frame humanFrame = human.getHeadFrame();
-                        // DecimalFormat format = new DecimalFormat("0.##");
+                        //DecimalFormat format = new DecimalFormat("0.##");
                         distance_format = HelperCollection.computeDistance(humanFrame, robotFrame);
-                    } else
-                        distance_format = 0;
+                    } else distance_format = 0;
 
                     int age = human.getEstimatedAge().getYears();
                     Gender gender = human.getEstimatedGender();
@@ -255,17 +330,24 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
                     Log.i(TAG, "Basic Emotion : " + emotion);
                     Log.i(TAG, "Smile state: " + smileState);
 
-                    if (age != -1)   ageActiveSpeaker = age;
+                    if (age != -1)   activePerson.setAge(String.valueOf(age));
+
+                    if(!gender.equals(this.DEFAULT_STRING)) activePerson.setGender(gender.toString());
+                    activePerson.setPleasure_state(pleasureState.toString());
+                    activePerson.setExcitementState(excitementState.toString());
+                    activePerson.setEmotion(emotion);
+                    activePerson.setSmileState(smileState.toString());
+
+                    //age
+
                     //if (ageActiveSpeaker != -1) qiChatAge.async().setValue(String.valueOf(ageActiveSpeaker));
-                    if (!emotion.equals(this.DEFAULT_STRING)) emotionActiveSpeaker = emotion;
 
-                    //if (!emotionActiveSpeaker.equals(this.DEFAULT_STRING))  qiChatBemot.async().setValue(emotionActiveSpeaker);
+                    //emotion
+                    // qiChatBemot.async().setValue(emotionActiveSpeaker);
+                    // qiChatSmile.async().setValue(smileActiveSpeaker);
 
-                    String smile = String.valueOf(smileState);
-                    if (!smile.equals(this.DEFAULT_STRING)) {
-                        smileActiveSpeaker = smile;
-                        //qiChatSmile.async().setValue(smileActiveSpeaker);
-                    }
+
+
                 }
             } else {
                 countDownNoInteraction.reset();
@@ -444,7 +526,7 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     // endregion implements INIT
     /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
     // region implement FUN
-
+/*
     private void getEngage() {
         // ist es nicht das selbe wie inithumanawareness?
         Log.i(TAG, "getEngage started.");
@@ -551,17 +633,17 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
 
         if (persons != null && persons.length > 1) {
             Log.i(TAG, "Hier sind aber viele Leute - beep boop");
-            /*
+
             Log.i(TAG, "Status : " + status);
             if (!status.equals(this.DEFAULT_STRING) && !status.equals("kind")) {
                 status_check = true;
                 qiChatStatus.async().setValue(status);
             }
 
-             */
+
         }
     }
-
+*/
     private String computeBasicEmotion(String excitement, String pleasure) {
         if (excitement.equals(this.DEFAULT_STRING) || pleasure.equals(this.DEFAULT_STRING)) {
             return this.DEFAULT_STRING;

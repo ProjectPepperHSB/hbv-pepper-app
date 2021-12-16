@@ -137,7 +137,28 @@ public class HelperCollection {
         }
     }
 
-    public static String getOffer(String day) throws  Exception {
+    public static void saveToDatabase(String distance, String age, String gender, String basic_emotion,
+                                      String pleasure_state, String excitement_state, String smile_state,
+                                      String dialog_time){
+        try {
+            HttpURLConnection con = getConnection(
+                    "https://informatik.hs-bremerhaven.de/docker-hbv-kms-http/collector?subject=save_pepper_data&"
+                            + "distance=" + distance
+                            + "&age=" + age
+                            + "&gender=" + gender
+                            + "&basic_emotion=" + basic_emotion
+                            + "&pleasure_state="+ pleasure_state
+                            + "&excitement_state=" + excitement_state
+                            +"&smile_state=" + smile_state
+                            +"&dialog_time=" + dialog_time
+            );
+            int responseCode = con.getResponseCode();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static String getOffer(String day) {
         try{
             HttpURLConnection con = getConnection("https://informatik.hs-bremerhaven.de/docker-hbv-kms-http/mensadata");
 

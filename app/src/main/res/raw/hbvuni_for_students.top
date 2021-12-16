@@ -91,11 +91,27 @@ u:(irgendwas) %waswillernun
 
 
 # ----- ----- A B O U T - T I M E T A B L E ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
-u:({so} zeig{e} {er} {mir} {den} Stundenplan {für} {den} Studiengang _~courses {im} Semester _~semester {sofort} {bitte})
-    $course=$1 $semester=$2 Sofort mein Meister und Gebieter ^execute(VariableExecutor, timetable, $course, $semester)
+u:({so} zeig{e} {er} {mir} {den} Stundenplan {für} {den} Studiengang _~courses {sofort} {bitte})
+    $course=$1 $semester=$2 Sofort mein Meister und Gebieter ^execute(VariableExecutor, timetable_course, $course)
 
-u:({~w-words} {"findet der" "ist der"} Kurs $1 ["im semester" "für das semester" semester] _~semester {statt})
+u:({so} zeig{e} {er} {mir} {den} Stundenplan {für} {den} Studiengang _~courses {[im "für das"]} semester _~semester {sofort} {bitte})
+    $course=$1 $semester=$2 Sofort mein Meister und Gebieter ^execute(VariableExecutor, timetable_course_semester, $course, $semester)
+
+#def:greets($age) ^first["$age > 18 Mister" "kid"]
+#u:(I am _* years old) Hello ^greets($1)
+
+#u:(input1) answer
+#   u1:(input2) answer
+#   u1:(input3) answer
+#     u2:(input4) answer
+#        u3:(input5) answer
+#     u2:(input6) answer
+
+# spezifischer Kurs
+u:({~w-words} {"findet der" "ist der"} Kurs $1 {statt})
     $course=$1 $semester=$2 Gib mir einen Moment ^execute(VariableExecutor, timetable_detail, $course, $semester) Der Kurs $course im Semester $semester findet irgendwann statt
+
+
 
 
 
