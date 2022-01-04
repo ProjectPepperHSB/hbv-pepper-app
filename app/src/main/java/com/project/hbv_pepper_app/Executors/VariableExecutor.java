@@ -105,7 +105,7 @@ public class VariableExecutor extends BaseQiChatExecutor {
 
 
 
-                List[] weekdays = {timeTable.Mo, timeTable.Di, timeTable.Mi, timeTable.Do, timeTable.Fr};
+                List[] weekdays = {timeTable_.Mo, timeTable_.Di, timeTable_.Mi, timeTable_.Do, timeTable_.Fr};
                 String[] weekdaysStr = {"Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"};
                 short weIdx = 0;
 
@@ -227,7 +227,7 @@ public class VariableExecutor extends BaseQiChatExecutor {
 
                     });
 
-                    String answer = "Hallow asldnfg "+studiengang+" asfghfgdsgf";//HelperCollection.getOffer(day);
+                    String answer = "Studiengang: "+studiengang;
                     System.out.println(answer);
                     ma.getCurrentChatBot().setQiVariable(variableName, answer);
                 } catch (Exception exception) {
