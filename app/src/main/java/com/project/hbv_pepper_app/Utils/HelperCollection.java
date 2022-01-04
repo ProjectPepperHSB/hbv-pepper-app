@@ -19,6 +19,7 @@ import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.json.JSONObject;
@@ -35,6 +36,7 @@ public class HelperCollection {
     */
 
     public static String getUrlContents(String theUrl){
+        System.out.println(theUrl);
         StringBuilder content = new StringBuilder();
         // Use try and catch to avoid the exceptions
         try {
@@ -151,27 +153,51 @@ public class HelperCollection {
 
             JSONObject myResponse = new JSONObject(response.toString());
 
-            String [] weekday = {"Montag","Dienstag","Mittwoch","Donnerstag","Freitag"};
-
             String tmp = myResponse.getString("offer1");
             String [] offer1 = tmp.split("\",\"", -1);
             tmp = myResponse.getString("offer2");
             String [] offer2 = tmp.split("\",\"", -1);
 
+            //System.out.println(offer1);
+
+            String [] daylist = {"Montag","Dienstag","Mittwoch","Donnerstag","Freitag"};
+            String [] spcdays = {"Heute", "Morgen", "Übermorgen"};
+
+            Calendar calendar = Calendar.getInstance();
+            int curday = calendar.get(Calendar.DAY_OF_WEEK) - 2;
+
             String answer = "";
-            for(int i = 0; i < weekday.length; ++i){
-                if(day.equals(weekday[i])){
+
+            //Check if the user wants to know the offer of today, tomorrow or the day after tomorrow
+            for(int i = 0; i < spcdays.length; ++i){
+
+                if(day.equals(spcdays[i])){
+                    if((curday + i) > 5){
+                        answer = "Am Wochenende ist die Mensa leider geschlossen";
+                        break;
+                    }
+                    answer = offer1[curday + i].replaceAll("\"", "").replace("[","").replace("]","");
+                    answer += " oder " + offer2[curday + i].replaceAll("\"", "").replace("[","").replace("]","");
+                    break;
+                }
+            }
+            //Check if the user wants to know the offer of a specific weekday
+            for(int i = 0; i < daylist.length; ++i){
+                if(day.equals(daylist[i])){
                     answer = offer1[i].replaceAll("\"", "").replace("[","").replace("]","");
                     answer += " oder " + offer2[i].replaceAll("\"", "").replace("[","").replace("]","");
                     break;
                 }
             }
+
+
             return answer;
         } catch (Exception e) { // should never happen
             e.printStackTrace();
             return "undefined";
         }
     }
+
 }
 
 /* ----- ----- EOF ----- ----- ----- ----- ----- ----- ----- ----- */

@@ -1,25 +1,41 @@
 package com.project.hbv_pepper_app.Executors;
 
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Build;
+import android.text.Html;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.aldebaran.qi.sdk.QiContext;
+import com.aldebaran.qi.sdk.RobotLifecycleCallbacks;
 import com.aldebaran.qi.sdk.object.conversation.BaseQiChatExecutor;
 import com.project.hbv_pepper_app.Fragments.ScreenTwoFragment;
 import com.project.hbv_pepper_app.MainActivity;
+import com.project.hbv_pepper_app.Other.HBV_TimeTable.Lectures;
 import com.project.hbv_pepper_app.Other.HBV_TimeTable.TimeTable;
 import com.project.hbv_pepper_app.Other.HBV_TimeTable.TimeTableHandler;
 import com.project.hbv_pepper_app.R;
 import com.project.hbv_pepper_app.Utils.HelperCollection;
 
+import org.w3c.dom.Text;
+
+import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.sql.Time;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * VariableExecutor is used when a qiVariable is modified in the qiChat and
@@ -79,25 +95,49 @@ public class VariableExecutor extends BaseQiChatExecutor {
                 TimeTable timeTable = tth.getTimeTable();
 
 
-                Log.i("TIMETBALE: ", timeTable.toString());
+                String htmlStr = "";
 
-                for(int i = 0; i < timeTable.Mo.size(); i++) Log.i(String.valueOf(i), timeTable.Mo.get(i).getCourse());
 
-                /*
-                // das hier stürzt ab, er aktiviert die webview und soll dann den html string dort als data laden
+
+                List[] weekdays = {timeTable.Mo, timeTable.Di, timeTable.Mi, timeTable.Do, timeTable.Fr};
+                String[] weekdaysStr = {"Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"};
+                short weIdx = 0;
+
+
+                //System.out.println(timeTable.Mo.get(0).getCourse());
+
+                for ( List we : weekdays){
+
+                    htmlStr += "<h3>" + weekdaysStr[weIdx++] + "</h3>";   //Extra Textview und dann untereinander
+                    if(we.size() == 0){
+                        System.out.println("Empty");
+                    }else{
+                        for(int i = 0; i < we.size(); ++i){
+                            Lectures tmp = (Lectures) we.get(i);
+                            htmlStr += "<p>" + tmp.getBegin() + " - " + tmp.getEnd()+"&emsp;" +
+                                    tmp.getCourse()+"&emsp;" +
+                                    tmp.getProf()+"</p>";
+                        }
+                    }
+                }
+
+                final String html = htmlStr;
+                System.out.println("#################");
+                System.out.println(html);
                 ma.runOnUiThread(() -> {
-                    final WebView webView = (WebView) ma.findViewById(R.id.webview);
-                    WebSettings settings = webView.getSettings();
-                    settings.setJavaScriptEnabled(true);
-                    settings.setDomStorageEnabled(true);
-                    settings.setAllowContentAccess(true);
-                    settings.setAllowFileAccessFromFileURLs(true);
-                    settings.setAllowUniversalAccessFromFileURLs(true);
-                    webView.loadData(tth.getHtmlPage(), "text/html; charset=utf-8", "UTF-8");
-                    webView.setVisibility(View.VISIBLE);
+
+                    TextView timetableId = (TextView) ma.findViewById(R.id.iTimetable);
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        timetableId.setText(Html.fromHtml(html, Html.FROM_HTML_MODE_COMPACT));
+                    } else {
+                        timetableId.setText(Html.fromHtml(html));
+                    }
+
                 });
-                
-                 */
+
+
+
 
 
                 break;
@@ -106,9 +146,21 @@ public class VariableExecutor extends BaseQiChatExecutor {
             case("qiVariableMensa"):
                 String day = params.get(1);
                 if(day.equals("Plan")){
-                    System.out.println("Show Plan");
-                    ma.setMensaImageView();
-                    System.out.println("Show Plan End");
+                    //Download Img
+                    try{
+                        String url_str = "https://informatik.hs-bremerhaven.de/docker-hbv-kms-http/mensadata/img";
+                        InputStream srt = new URL(url_str).openStream();
+                        final Bitmap bitmap = BitmapFactory.decodeStream(srt);
+
+                        ma.runOnUiThread(() -> {
+                            //setContentView(R.layout.mensa_layout);
+                            ImageView imageView = (ImageView) ma.findViewById(R.id.iMensa2);
+                            imageView.setImageBitmap(bitmap);
+                            // change visibility if student said "hide" or so
+                        });
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                 } else{
                     try {
                         String offer = HelperCollection.getOffer(day);
@@ -119,6 +171,39 @@ public class VariableExecutor extends BaseQiChatExecutor {
                     }
                 }
                 break;
+            case("qiVariableStudium"):
+                String studiengang = params.get(1);
+                System.out.println(studiengang);
+                try {
+                    ma.runOnUiThread(() -> {
+                        //ma.setContentView(R.layout.Course_Info.BWL);
+
+                    });
+
+                    String answer = "Hallow asldnfg "+studiengang+" asfghfgdsgf";//HelperCollection.getOffer(day);
+                    System.out.println(answer);
+                    ma.getCurrentChatBot().setQiVariable(variableName, answer);
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+                break;
+        case("qiVariableNav"):
+            String nav = params.get(1);
+            if(nav.equals("Plan")) {
+                try {
+
+                    ma.runOnUiThread(() -> {
+                        ma.setContentView(R.layout.campus_plan);
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            //....
+
+
+            break;
             default:
                 Log.d(TAG, "I don't know this variable");
         }

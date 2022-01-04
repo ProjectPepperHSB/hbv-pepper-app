@@ -10,6 +10,35 @@ u:("wie viele Studenten {"gibt es an der hochschule"}") Die Hochschule hat laut 
 u:("{welche } fachbereiche {gibt es} {["an der" "bietet die"] hochschule {an}}") Es gibt zwei Fachbereiche, die die Schwerpunkte Engergie und Meerestechnik, Life Science, Logistik und Dienstleistungen und Autonmatisierung abbilden. Dazu gehören Studienfächer wie Biotechnologie, maritime Technologien, Verfahrenstechnik, Medizintechnik und natürlich auch Wirtschaftsinformatik.
 u:("wie viele mitarbeiter") Derzeit sind 150 Mitarbeiter in Lehre und Verwaltung tätig.
 
+# ---- Studiengang infos ----
+#FB 2
+concept:(BWL) [Betriebswirtschaftslehre bwl]
+#concept:(BWL2) [Betriebswirtschaftslehre dual ]
+concept:(CTM) ["Cruise Tourism Management" ctm]
+concept:(DMP) ["Digitale Medienproduktion" dmp]
+concept:(GIF) ["Gründung Innovation Führung" gif]
+concept:(INF) [Informatik inf]
+concept:(TWL) ["Transportwesen Logistik" twl]
+concept:(WI) [Wirtschaftsinformatik wi winf]
+#FB 1
+concept:(ABT) [Anlagenbetriebstechnik abt]
+concept:(BMR) ["Biotechnologie der Marinen Ressourcen" bmr]
+concept:(GET) [Gebäudeenergietechnik get]
+concept:(IW) [Ingenieurwesen iw]    #Kp ob iw stimmt
+concept:(LWT) [Lebensmitteltechnologie Lebensmittelwirtschaft lwt]
+concept:(MAR) ["Maritime Technologien" mar]
+concept:(MT) [Medizintechnik mt]
+concept:(NEU) ["Nachhaltige Energie"  Umwelttechnologien "Nachhaltige Energie und Umwelttechnologien" neu]
+concept:(PT) [Produktionstechnologie pt]
+concept:(SBT) [Schiffsbetriebstechnik sbt]
+
+concept:(Studiengänge) [_~BWL _~CTM _~DMP _~GIF _~INF _~TWL _~WI _~ABT _~BMR _~GET _~IW _~LWT _~MAR _~MT _~NEU _~PT _~SBT]
+
+u:([erzähl sag gib] {mir} {bitte} {etwas} {über} {den} {Studiengang} _[_~Studiengänge])  $studium=$1 ^execute(VariableExecutor, qiVariableStudium, $studium) Hallo $qiVariableStudium
+
+u:([zeig gib] {mir} {bitte} {den} [Gebäudeplan Campusplan Gelände]) ^execute(VariableExecutor, qiVariableNav, Plan) Hier hast du eine Übersicht über das Hochschulgelände $qiVariableNav
+
+
 # ----- ----- ----- ----- ----- ----- ----- -----
 u:(~zurück) ~bestaetigung ^execute(FragmentExecutor, frag_hbv_uni_main)
 # BACK TO MAIN MENU

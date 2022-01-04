@@ -6,8 +6,13 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -72,6 +77,7 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     public static final String language = "de";
 
     ImageView imageView;
+    //public TextView textView;
     private QiChatbot oldQiChatBot;
     private static final String START_BOOKMARK_GREETING = "greeting";
     private static final String START_BOOKMARK_PRIVACY = "privacy";
@@ -127,9 +133,6 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     private Person[] persons;
     private TimeTableChatBot TTChatBot = null;
 
-    // Mensa Stuff
-    private String mensaURL = "https://informatik.hs-bremerhaven.de/docker-hbv-kms-web/mensa";
-    public Mensa mensa;
 
     // endregion implements VARIABLES
     /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
@@ -207,12 +210,14 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         executors.put("FragmentExecutor", new FragmentExecutor(qiContext, this));
         executors.put("VariableExecutor", new VariableExecutor(qiContext, this));
         qiChatBot.setupExecutors(executors);
-        qiChatBot.setupQiVariables(Arrays.asList("qiVariablePrice", "qiVariable", "qiVariableMensa")); // qiChatVariable
+        qiChatBot.setupQiVariables(Arrays.asList("qiVariablePrice", "qiVariable", "qiVariableMensa", "qiVariableStudium", "qiVariableNav")); // qiChatVariable
         currentChatBot = qiChatBot;
         currentChatBot.chat.async().addOnStartedListener(() -> { //qiChatVariable Pepper
             setQiVariable("qiVariablePrice", "undefined"); // this is done here because the chatBot needs to be running for this to work.
             setQiVariable("qiVariable", "Pepper");
             setQiVariable("qiVariableMensa", "undefined");
+            setQiVariable("qiVariableStudium", "undefined");
+            setQiVariable("qiVariableNav", "undefined");
             runOnUiThread(() -> {
                 setSpeechBarDisplayStrategy(SpeechBarDisplayStrategy.ALWAYS); // Disable overlay mode for the rest of the app.
                 setFragment(new MainFragment());
@@ -579,24 +584,6 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
     // region implement TESTING
 
-    public void setMensaImageView(){
-
-        //Download Img
-        try{
-            String url_str = "https://informatik.hs-bremerhaven.de/docker-hbv-kms-http/mensadata/img";
-            InputStream srt = new URL(url_str).openStream();
-            final Bitmap bitmap = BitmapFactory.decodeStream(srt);
-
-            runOnUiThread(() -> {
-                //setContentView(R.layout.mensa_layout);
-                imageView = (ImageView) findViewById(R.id.iMensa2);
-                imageView.setImageBitmap(bitmap);
-                // change visibility if student said "hide" or so
-            });
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
 
     // endregion TESTING
     /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */

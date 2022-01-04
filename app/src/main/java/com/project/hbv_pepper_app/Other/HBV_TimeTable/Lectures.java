@@ -1,7 +1,7 @@
 package com.project.hbv_pepper_app.Other.HBV_TimeTable;
 
 
-public class Lectures {
+public class Lectures extends TimeTable{
     /* --- Class to store information about lectures --- */
 
     private String begin;

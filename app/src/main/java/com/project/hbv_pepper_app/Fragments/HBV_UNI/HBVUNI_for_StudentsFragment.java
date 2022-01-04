@@ -52,7 +52,7 @@ public class HBVUNI_for_StudentsFragment extends Fragment {
         */
 
         // DAS HIER GEHT NOCH NICHT WEGEN MAIN THREAD
-        view.findViewById(R.id.button_mensaplan).setOnClickListener((v) -> ma.setMensaImageView());
+        //view.findViewById(R.id.button_mensaplan).setOnClickListener((v) -> ma.setMensaImageView());
 
 
         // BACK 2 MAIN MENU

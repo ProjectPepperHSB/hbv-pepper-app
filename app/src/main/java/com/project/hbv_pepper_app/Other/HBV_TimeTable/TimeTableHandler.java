@@ -20,7 +20,7 @@ public class TimeTableHandler {
     public TimeTableHandler(String course, String semester){
         this.course = course;
         this.semester = semester;
-        this.kw = String.valueOf(this.getWeek());
+        this.kw = String.valueOf(this.getWeek() - 1);
         this.checkSemester();
     }
 
@@ -45,8 +45,10 @@ public class TimeTableHandler {
 
     public TimeTable getTimeTable() {
         String url = String.format("%s?course=%s&semester=%s&kw=%s", this.URL, this.course, this.semester, this.kw);
-        this.timetable_html = HelperCollection.getUrlContents(String.format(url+"&htmlOnly=true"));
+        //String url = String.format("%s?course=%s&semester=%s", this.URL, this.course, this.semester);
+        //this.timetable_html = HelperCollection.getUrlContents(String.format(url+"&htmlOnly=true"));
         String response_json_str  = HelperCollection.getUrlContents(url);
+
         return new Gson().fromJson(response_json_str, TimeTable.class);
     }
 

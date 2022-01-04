@@ -97,13 +97,14 @@ u:({so} zeig{e} {er} {mir} {den} Stundenplan {für} {den} Studiengang _~courses 
 u:({~w-words} {"findet der" "ist der"} Kurs $1 ["im semester" "für das semester" semester] _~semester {statt})
     $course=$1 $semester=$2 Gib mir einen Moment ^execute(VariableExecutor, timetable_detail, $course, $semester) Der Kurs $course im Semester $semester findet irgendwann statt
 
-
+#zeig Stundenplan Studiengang WI Semester 3
 
 
 
 # ----- ----- A B O U T - M E N S A ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
-u:({was} {gibt{s}} {es} {zu} essen {am} _[Montag Dienstag Mittwoch Donnerstag Freitag Morgen Übermorgen]) $day=$1 ^execute(VariableExecutor, qiVariableMensa, $day) $day gibt es entweder $qiVariableMensa
-u:({was} {gibt{s}} {es} {am} _[Montag Dienstag Mittwoch Donnerstag Freitag Morgen Übermorgen] {zu} essen) $day=$1 ^execute(VariableExecutor, qiVariableMensa, $day) $day gibt es entweder $qiVariableMensa
+
+u:({was} {gibt{s}} {es} {zu} essen {am} _[Montag Dienstag Mittwoch Donnerstag Freitag Heute Morgen Übermorgen]) $day=$1 ^execute(VariableExecutor, qiVariableMensa, $day) $day gibt es entweder $qiVariableMensa
+u:({was} {gibt{s}} {es} {am} _[Montag Dienstag Mittwoch Donnerstag Freitag Heute Morgen Übermorgen] {zu} essen) $day=$1 ^execute(VariableExecutor, qiVariableMensa, $day) $day gibt es entweder $qiVariableMensa
 
 u:({Ich hab{e} hunger} {Zeig {mir} {den} Mensaplan}) ^execute(VariableExecutor, qiVariableMensa, Plan) Hier hast du eine Übersicht über den Mensaplan
 
