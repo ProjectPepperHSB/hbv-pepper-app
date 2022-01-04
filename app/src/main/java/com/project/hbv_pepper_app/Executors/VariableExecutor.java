@@ -12,6 +12,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
+
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -85,15 +86,20 @@ public class VariableExecutor extends BaseQiChatExecutor {
                     exception.printStackTrace();
                 }
                 break;
-            case("timetable"):
+            case("timetable_course"):
                 String course = params.get(1);
-                String semester = params.get(2);
-
-                Log.i("------>","Looking for course " + course + " in semester " + semester);
-
-                TimeTableHandler tth = new TimeTableHandler("WI"/*course*/, semester);
+                TimeTableHandler tth = new TimeTableHandler("WI"/*course*/, "1");
                 TimeTable timeTable = tth.getTimeTable();
 
+                break;
+            case("timetable_course_semester"):
+                String course_ = params.get(1);
+                String semester_ = params.get(2);
+
+                Log.i("------>","Looking for course " + course_ + " in semester " + semester_);
+
+                TimeTableHandler tth_ = new TimeTableHandler("WI"/*course*/, semester_);
+                TimeTable timeTable_ = tth_.getTimeTable();
 
                 String htmlStr = "";
 
@@ -138,6 +144,47 @@ public class VariableExecutor extends BaseQiChatExecutor {
 
 
 
+
+
+                Log.i("TIMETBALE: ", timeTable_.toString());
+
+                for(int i = 0; i < timeTable_.Mo.size(); i++) Log.i(String.valueOf(i), timeTable_.Mo.get(i).getCourse());
+                final WebView webView = (WebView) ma.findViewById(R.id.webview);
+                /*
+                // das hier stürzt ab, er aktiviert die webview und soll dann den html string dort als data laden
+                ma.runOnUiThread(() -> {
+
+                    webView.setWebViewClient(new WebViewClient());
+                    WebSettings settings = webView.getSettings();
+                    settings.setJavaScriptEnabled(true);
+                    settings.setDomStorageEnabled(true);
+                    settings.setAllowContentAccess(true);
+                    settings.setAllowFileAccessFromFileURLs(true);
+                    settings.setAllowUniversalAccessFromFileURLs(true);
+                    webView.loadData(tth.getHtmlPage(), "text/html; charset=utf-8", "UTF-8");
+                    webView.setVisibility(View.VISIBLE);
+                });
+                 */
+
+                webView.setWebViewClient(new WebViewClient(){
+
+                    @Override
+                    public boolean shouldOverrideUrlLoading(WebView view, String url) {
+
+                        view.loadUrl(url);
+
+                        return true;
+                    }
+                    @Override
+                    public void onPageFinished(WebView view, final String url) {
+
+                    }
+                });
+                final String url = "https://informatik.hs-bremerhaven.de/docker-hbv-kms-http/timetable?course="
+                        + course_ + "&semester="
+                        + semester_ + "&htmlOnly=true";
+
+                webView.loadUrl(url);
 
 
                 break;
