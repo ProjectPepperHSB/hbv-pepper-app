@@ -3,19 +3,11 @@ package com.project.hbv_pepper_app;
 
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.os.Bundle;
-import android.text.Html;
 import android.util.Log;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -35,21 +27,20 @@ import com.aldebaran.qi.sdk.object.conversation.QiChatbot;
 import com.aldebaran.qi.sdk.object.conversation.TopicStatus;
 import com.aldebaran.qi.sdk.object.human.ExcitementState;
 import com.aldebaran.qi.sdk.object.human.Gender;
-import com.aldebaran.qi.sdk.object.human.Human;
 import com.aldebaran.qi.sdk.object.human.PleasureState;
 import com.aldebaran.qi.sdk.object.human.SmileState;
 
 import com.aldebaran.qi.sdk.object.conversation.QiChatExecutor;
 
-import java.io.InputStream;
-import java.net.URL;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+import java.net.HttpURLConnection;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.UUID;
+
 import com.aldebaran.qi.sdk.object.humanawareness.HumanAwareness;
 import com.project.hbv_pepper_app.Executors.FragmentExecutor;
 import com.project.hbv_pepper_app.Executors.VariableExecutor;
@@ -127,7 +118,8 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
             "main",
             "hbvunimain", "hbvuni_for_students", "hbvuni_information", "hbvuni_study_counseling",
             "screentwo",
-            "concepts"
+            "concepts",
+            "background"
     );
 
     private String currentFragment, currentTopicName;
@@ -138,7 +130,8 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     private Person[] persons;
     private TimeTableChatBot TTChatBot = null;
 
-    class ActivePerson {
+    public class ActivePerson {
+
         final String DEFAULT_STRING = "UNDEFINED";
         private String distance = DEFAULT_STRING;
         private String age = DEFAULT_STRING;
@@ -148,11 +141,21 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         private String emotion = DEFAULT_STRING;
         private String smileState = DEFAULT_STRING;
         private Long dialog_time = System.currentTimeMillis();
+        private String uuidStr = DEFAULT_STRING;
+/*
+        public ActivePerson(){
+            this.uuidStr = uuidHash.toString();
+        }
+*/
+        //New UND EMAL AND FOTZENBERG
+        private String semester = DEFAULT_STRING;
+        private String course = DEFAULT_STRING;
 
 
         public void saveToDatabase(){
             this.dialog_time = System.currentTimeMillis() - this.dialog_time;
-            HelperCollection.saveToDatabase(
+            HelperCollection.saveConversationData(
+                    this.uuidStr,
                     this.distance, this.age,
                     this.gender, this.emotion,
                     this.pleasure_state, this.excitementState,
@@ -219,13 +222,26 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         public void setSmileState(String smileState) {
             this.smileState = smileState;
         }
+
+        public String getCourse() { return course; }
+
+        public void setCourse(String course) { this.course = course; }
+
+        public String getSemester() { return semester; }
+
+        public void setSemester(String semester) { this.semester = semester; }
+
     }
 
-    ActivePerson activePerson = new ActivePerson();
+    public ActivePerson activePerson = new ActivePerson();
+    public UUID uuidHash;
+
+    public final String[] varNames = {"qiVariableMensa", "qiVariableStudium", "qiVariableNav"};
 
     // Mensa Stuff
     private String mensaURL = "https://informatik.hs-bremerhaven.de/docker-hbv-kms-web/mensa";
     public Mensa mensa;
+
 
     // endregion implements VARIABLES
     /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
@@ -282,6 +298,11 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     public void onRobotFocusGained(QiContext qiContext) {
         this.qiContext = qiContext;
         HelperCollection.Say(qiContext, "jo!");
+        //Generate new Universally Unique Identifier
+        uuidHash = UUID.randomUUID();//##SENDTOSERVER##
+        //System.out.println(uuidHash.toString());
+
+
 
         // -------- N E W --------
         qiChatBot = new ChatData(this, qiContext, new Locale(language), topicNames, true);
@@ -289,23 +310,44 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         executors.put("FragmentExecutor", new FragmentExecutor(qiContext, this));
         executors.put("VariableExecutor", new VariableExecutor(qiContext, this));
         qiChatBot.setupExecutors(executors);
-        qiChatBot.setupQiVariables(Arrays.asList("qiVariablePrice", "qiVariable", "qiVariableMensa", "qiVariableStudium", "qiVariableNav")); // qiChatVariable
+
+        List allQiVars = new ArrayList(Arrays.asList("qiVariablePrice", "qiVariable"));
+        allQiVars.addAll(Arrays.asList(varNames));
+
+        qiChatBot.setupQiVariables(allQiVars); // qiChatVariable
         currentChatBot = qiChatBot;
         currentChatBot.chat.async().addOnStartedListener(() -> { //qiChatVariable Pepper
             setQiVariable("qiVariablePrice", "undefined"); // this is done here because the chatBot needs to be running for this to work.
             setQiVariable("qiVariable", "Pepper");
-            setQiVariable("qiVariableMensa", "undefined");
-            setQiVariable("qiVariableStudium", "undefined");
-            setQiVariable("qiVariableNav", "undefined");
+            for(int i = 0; i < varNames.length; ++i){
+                setQiVariable(varNames[i], "undefined");
+            }
             runOnUiThread(() -> {
                 setSpeechBarDisplayStrategy(SpeechBarDisplayStrategy.ALWAYS); // Disable overlay mode for the rest of the app.
                 setFragment(new MainFragment());
             });
         });
 
+
         currentChatBot.chat.async().addOnNormalReplyFoundForListener(input -> {
             countDownNoInteraction.reset();
         });
+
+        //If pepper detects human voice but cannot determine the content of the phrase
+        currentChatBot.chat.addOnNoReplyFoundForListener(cantReply -> {
+            try {
+                HttpURLConnection con = HelperCollection.getConnection(
+                        "https://informatik.hs-bremerhaven.de/docker-hbv-kms-http/collector?subject=did_not_understand_data"
+                                + "&identifier=" + uuidHash
+                                + "&phrase=" + cantReply.getText()
+                );
+                int responseCode = con.getResponseCode();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+
         chatFuture = currentChatBot.chat.async().run();
         humanAwareness = getQiContext().getHumanAwareness();
         humanAwareness.async().addOnEngagedHumanChangedListener(human -> {

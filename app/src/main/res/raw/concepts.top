@@ -28,10 +28,11 @@ concept:(wiederholen)[wiederholen repeat nochmal "wieder holen"]
 concept:(überflüssig)["{du} {bist} überflüssig" "{dich} {das} braucht kein Mensch" ueberfluessig nutzlos unnötig abkömmlich entbehrlich müßig "nicht notwendig" "nicht gebraucht"]
 
 # ----- STUFF
+concept:(week) [Montag Dienstag Mittwoch Donnerstag Freitag Heute Morgen Übermorgen]
 concept:(standort)["wo bist du" "wo {bin} {befinde} ich {mich} {jetzt}" "wo {befinden} {sind} wir {uns}{jetzt}"]
 concept:(welche-uhrzeit)["{wie} spät {haben} {wir} {ist} {es}" "{wieviel} {welche} uhr {zeit} {ist} {es}"]
 concept:(weiter)[next weiter nächste "Thema wechseln" überspringen]
-concept:(datum)["{das} {heutige} {aktuelle} Datum" "{der} {wievielte} {welcher} tag ist heute"]
+concept:(datum)["{das} {heutige} {aktuelle} Datum" "{der} {wievielte} {welcher} tag ist heute" "welchen haben wir heute"]
 concept:(krypto)[krypto crypto cryptowährungen kryptowährungen krippto bitcoin ethereum]
 
 # ----- COMMUNICATION
@@ -41,7 +42,7 @@ concept:(wie-alt)["{wie} {wieviel} {jahre} alt bist du?" "alt bist du?"]
 concept:(wo-bist-geboren)["wo bist du geboren" geboren "auf die welt gekommen" "wo wurdest du gebaut"]
 concept:(woher-kommst-du)["wo kommst du her" "von wo kommst du" "wo wurdest du entwickelt" "woher kommst du" "wo her kommst du"]
 concept:(was-kannst-du)["was kannst du" "was können wir machen" "zeig mal was" "was wollen wir machen"]
-concept:(dein-name)["wie ist dein Name" "wie heißt du?" "dein name"]
+concept:(dein-name)["wie {ist lautet} dein Name" "wie heißt du?" "dein name"]
 concept:(mein-Name)^rand["mein name ist" "ich bin" "ich heiße"]
 
 # ----- ACTIONS
@@ -61,3 +62,26 @@ concept:(ms-Geestemuende)["{zeig} {mal} {die} Bootstour" "{wo} {ist} {die} MS Ge
 concept:(bremerhaven)["{erzähl} {zeig} {mal} {was} {zu} Bremerhafen" "{was} {gibt} {es} {zu} Bremerhafen"]
 concept:(standort)["wo bist du" "wo {bin} {befinde} ich {mich} {jetzt}" "wo {befinden} {sind} wir {uns}{jetzt}"]
 
+
+# ----- ABOUT STUDIENGÄNGE
+concept:(BWL) [Betriebswirtschaftslehre bwl]
+#concept:(BWL2) [Betriebswirtschaftslehre dual ]
+concept:(CTM) ["Cruise Tourism Management" ctm]
+concept:(DMP) ["Digitale Medienproduktion" dmp]
+concept:(GIF) ["Gründung Innovation Führung" gif]
+concept:(INF) [Informatik inf]
+concept:(TWL) ["Transportwesen Logistik" twl]
+concept:(WI) [Wirtschaftsinformatik wi winf]
+#FB 1
+concept:(ABT) [Anlagenbetriebstechnik abt]
+concept:(BMR) ["Biotechnologie der Marinen Ressourcen" bmr]
+concept:(GET) [Gebäudeenergietechnik get]
+concept:(IW) [Ingenieurwesen iw]    #Kp ob iw stimmt
+concept:(LWT) [Lebensmitteltechnologie Lebensmittelwirtschaft lwt]
+concept:(MAR) ["Maritime Technologien" mar]
+concept:(MT) [Medizintechnik mt]
+concept:(NEU) ["Nachhaltige Energie"  Umwelttechnologien "Nachhaltige Energie und Umwelttechnologien" neu]
+concept:(PT) [Produktionstechnologie pt]
+concept:(SBT) [Schiffsbetriebstechnik sbt]
+
+concept:(Studiengänge) [_~BWL _~CTM _~DMP _~GIF _~INF _~TWL _~WI _~ABT _~BMR _~GET _~IW _~LWT _~MAR _~MT _~NEU _~PT _~SBT]

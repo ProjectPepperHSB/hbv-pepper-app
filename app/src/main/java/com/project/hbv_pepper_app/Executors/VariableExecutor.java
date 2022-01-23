@@ -7,6 +7,7 @@ import android.os.Build;
 import android.text.Html;
 import android.util.Base64;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -28,15 +29,40 @@ import com.project.hbv_pepper_app.Other.HBV_TimeTable.TimeTableHandler;
 import com.project.hbv_pepper_app.R;
 import com.project.hbv_pepper_app.Utils.HelperCollection;
 
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.sql.Time;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
+
+/*
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpHeaders;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+*/
 
 /**
  * VariableExecutor is used when a qiVariable is modified in the qiChat and
@@ -47,6 +73,7 @@ import java.util.Scanner;
 public class VariableExecutor extends BaseQiChatExecutor {
     private final MainActivity ma;
     private final String TAG = "VariableExecutor";
+
 
     public VariableExecutor(QiContext qiContext, MainActivity mainActivity) {
         super(qiContext);
@@ -65,14 +92,32 @@ public class VariableExecutor extends BaseQiChatExecutor {
             else variableValue = params.get(1);
         }
         Log.d(TAG,"variableName: " + variableName);
-        switch (variableName){
+
+
+        for(int i = 0;i<ma.varNames.length; ++i){   //##SENDTOSERVER##
+            if(variableName.equals(ma.varNames)){
+                //Erhöhe den Counter beim Nodeserver
+                try {
+                    HttpURLConnection con = HelperCollection.getConnection(
+                            "https://informatik.hs-bremerhaven.de/docker-hbv-kms-http/collector?subject=save_use_case_counter"
+                            + "&identifier=" + ma.uuidHash
+                            + "&use_case=" + variableName
+                    );
+                    int responseCode = con.getResponseCode();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        switch (variableName) {
             case ("qiVariable"):
-                ScreenTwoFragment fragmentTwo  = (ScreenTwoFragment) ma.getFragment();
+                ScreenTwoFragment fragmentTwo = (ScreenTwoFragment) ma.getFragment();
                 fragmentTwo.setTextQiVariableValue(variableValue);
                 break;
-            case("qiVariablePrice"):
+            case ("qiVariablePrice"):
                 String coin = params.get(1);
-                Log.i(TAG,"Looking for price of " + params.get(1));
+                Log.i(TAG, "Looking for price of " + params.get(1));
 
                 if (coin.equals("bitcoin")) coin = "btc";
                 else if (coin.equals("ethereum")) coin = "eth";
@@ -86,105 +131,82 @@ public class VariableExecutor extends BaseQiChatExecutor {
                     exception.printStackTrace();
                 }
                 break;
-            case("timetable_course"):
+            case ("timetable_course"):
                 String course = params.get(1);
                 TimeTableHandler tth = new TimeTableHandler("WI"/*course*/, "1");
                 TimeTable timeTable = tth.getTimeTable();
 
                 break;
-            case("timetable_course_semester"):
+            case ("timetable_course_semester"):
                 String course_ = params.get(1);
                 String semester_ = params.get(2);
-
                 Log.i("------>","Looking for course " + course_ + " in semester " + semester_);
 
-                TimeTableHandler tth_ = new TimeTableHandler("WI"/*course*/, semester_);
-                TimeTable timeTable_ = tth_.getTimeTable();
+                //Send Post data
+                ma.activePerson.setSemester(semester_);
+                ma.activePerson.setCourse(course_);
 
-                String htmlStr = "";
+                try {
+                    URL url = new URL("https://informatik.hs-bremerhaven.de/docker-hbv-kms-http/collector");
 
+                    JSONObject jdata = new JSONObject();
+                    jdata.put("course", course_);
+                    jdata.put("semester", semester_);
 
+                    Map<String, Object> params2 = new LinkedHashMap<>();
+                    params2.put("subject", "conversation_data");
+                    params2.put("identifier", ma.uuidHash.toString());
+                    params2.put("data", jdata);
 
-                List[] weekdays = {timeTable_.Mo, timeTable_.Di, timeTable_.Mi, timeTable_.Do, timeTable_.Fr};
-                String[] weekdaysStr = {"Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"};
-                short weIdx = 0;
-
-
-                //System.out.println(timeTable.Mo.get(0).getCourse());
-
-                for ( List we : weekdays){
-
-                    htmlStr += "<h3>" + weekdaysStr[weIdx++] + "</h3>";   //Extra Textview und dann untereinander
-                    if(we.size() == 0){
-                        System.out.println("Empty");
-                    }else{
-                        for(int i = 0; i < we.size(); ++i){
-                            Lectures tmp = (Lectures) we.get(i);
-                            htmlStr += "<p>" + tmp.getBegin() + " - " + tmp.getEnd()+"&emsp;" +
-                                    tmp.getCourse()+"&emsp;" +
-                                    tmp.getProf()+"</p>";
-                        }
+                    StringBuilder postData = new StringBuilder();
+                    for (Map.Entry<String, Object> param : params2.entrySet()) {
+                        if (postData.length() != 0) postData.append('&');
+                        postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
+                        postData.append('=');
+                        postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
                     }
+                    byte[] postDataBytes = postData.toString().getBytes("UTF-8");
+
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("POST");
+                    conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                    conn.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
+                    conn.setDoOutput(true);
+                    conn.getOutputStream().write(postDataBytes);
+
+                    Reader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+
+                    for (int c; (c = in.read()) >= 0; ){
+                        System.out.print((char) c);
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
+                System.out.println("Post Data sended");
 
-                final String html = htmlStr;
-                System.out.println("#################");
-                System.out.println(html);
-                ma.runOnUiThread(() -> {
-
-                    TextView timetableId = (TextView) ma.findViewById(R.id.iTimetable);
-
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        timetableId.setText(Html.fromHtml(html, Html.FROM_HTML_MODE_COMPACT));
-                    } else {
-                        timetableId.setText(Html.fromHtml(html));
-                    }
-
-                });
-
-
-
-
-
-                Log.i("TIMETBALE: ", timeTable_.toString());
-
-                for(int i = 0; i < timeTable_.Mo.size(); i++) Log.i(String.valueOf(i), timeTable_.Mo.get(i).getCourse());
-                final WebView webView = (WebView) ma.findViewById(R.id.webview);
-                /*
-                // das hier stürzt ab, er aktiviert die webview und soll dann den html string dort als data laden
-                ma.runOnUiThread(() -> {
-
-                    webView.setWebViewClient(new WebViewClient());
-                    WebSettings settings = webView.getSettings();
-                    settings.setJavaScriptEnabled(true);
-                    settings.setDomStorageEnabled(true);
-                    settings.setAllowContentAccess(true);
-                    settings.setAllowFileAccessFromFileURLs(true);
-                    settings.setAllowUniversalAccessFromFileURLs(true);
-                    webView.loadData(tth.getHtmlPage(), "text/html; charset=utf-8", "UTF-8");
-                    webView.setVisibility(View.VISIBLE);
-                });
-                 */
-
-                webView.setWebViewClient(new WebViewClient(){
-
-                    @Override
-                    public boolean shouldOverrideUrlLoading(WebView view, String url) {
-
-                        view.loadUrl(url);
-
-                        return true;
-                    }
-                    @Override
-                    public void onPageFinished(WebView view, final String url) {
-
-                    }
-                });
                 final String url = "https://informatik.hs-bremerhaven.de/docker-hbv-kms-http/timetable?course="
                         + course_ + "&semester="
                         + semester_ + "&htmlOnly=true";
 
-                webView.loadUrl(url);
+/*
+                try{
+                    ma.runOnUiThread(() -> {
+                        ma.setContentView(R.layout.webtest);
+
+                        WebView web = (WebView) ma.findViewById(R.id.webView);
+                        WebSettings webSettings = web.getSettings();
+                        webSettings.setJavaScriptEnabled(true);
+                        web.setWebViewClient(new Callback());
+                        web.loadUrl("http://beta.html5test.com/");
+
+                        // change visibility if student said "hide" or so
+                    });
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                */
+
+//From HERE
 
 
                 break;
@@ -224,7 +246,6 @@ public class VariableExecutor extends BaseQiChatExecutor {
                 try {
                     ma.runOnUiThread(() -> {
                         //ma.setContentView(R.layout.Course_Info.BWL);
-
                     });
 
                     String answer = "Studiengang: "+studiengang;
@@ -238,7 +259,6 @@ public class VariableExecutor extends BaseQiChatExecutor {
             String nav = params.get(1);
             if(nav.equals("Plan")) {
                 try {
-
                     ma.runOnUiThread(() -> {
                         ma.setContentView(R.layout.campus_plan);
                     });
@@ -255,9 +275,63 @@ public class VariableExecutor extends BaseQiChatExecutor {
                 Log.d(TAG, "I don't know this variable");
         }
     }
+/*
+    private void sendPostReq(String stringURL, String course_, String semester_) {
+        try {
+            URL url = new URL(stringURL);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+            connection.setRequestProperty("Accept","application/json");
+            //connection.setRequestProperty("Content-Length", Integer.toString(urlParameters.getBytes().length));
+            //connection.setRequestProperty("Connection", "Keep-Alive");
+            connection.setReadTimeout(10*1000);
+            connection.setUseCaches(false);
+            connection.setDoInput(true);
+            connection.setDoOutput(true);
 
+            Map<String,Object> params = new LinkedHashMap<>();
+
+            params.put("subject", "conversation_data");
+            params.put("identifier", ma.uuidHash.toString());
+            params.put("data", "{\"course\":\""+ course_ + "\",\"semester\":\""+ semester_ + "\"}");
+
+
+            //Request
+            DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
+            wr.writeBytes(params[1]);
+            wr.flush();
+            wr.close();
+
+            //Response
+            InputStream is = connection.getInputStream();
+            BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+            String line;
+            response = new StringBuffer();
+            //Expecting answer of type JSON single line {"json_items":[{"status":"OK","message":"<Message>"}]}
+            while ((line = rd.readLine()) != null) {
+                response.append(line);
+            }
+            rd.close();
+            System.out.println(response.toString()+"\n");
+            connection.disconnect(); // close the connection after usage
+
+        } catch (Exception e){
+            System.out.println(this.getClass().getSimpleName() + " ERROR - Request failed");
+        }
+    }
+*/
     @Override
     public void stop() {
 
     }
+
+    private class Callback extends WebViewClient {
+        @Override
+        public boolean shouldOverrideKeyEvent(WebView view, KeyEvent event){
+            return false;
+        }
+    }
 }
+
+

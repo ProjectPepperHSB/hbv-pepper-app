@@ -3,6 +3,8 @@ plugins {
 }
 
 android {
+
+
     compileSdk 31
 
     defaultConfig {
@@ -27,6 +29,7 @@ android {
     }
     compileSdkVersion 31
     buildToolsVersion '31.0.0'
+
 }
 
 dependencies {
@@ -40,4 +43,5 @@ dependencies {
 	implementation 'com.aldebaran:qisdk:1.7.5'
 	implementation 'com.aldebaran:qisdk-design:1.7.5'
     implementation 'com.google.code.gson:gson:2.8.9'
+
 }

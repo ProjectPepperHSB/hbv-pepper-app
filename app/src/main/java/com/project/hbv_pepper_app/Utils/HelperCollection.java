@@ -139,12 +139,13 @@ public class HelperCollection {
         }
     }
 
-    public static void saveToDatabase(String distance, String age, String gender, String basic_emotion,
-                                      String pleasure_state, String excitement_state, String smile_state,
-                                      String dialog_time){
+    public static void saveConversationData(String uuidStr, String distance, String age, String gender, String basic_emotion,
+                                            String pleasure_state, String excitement_state, String smile_state,
+                                            String dialog_time){
         try {
             HttpURLConnection con = getConnection(
                     "https://informatik.hs-bremerhaven.de/docker-hbv-kms-http/collector?subject=save_pepper_data&"
+                            + "identifier" + uuidStr
                             + "distance=" + distance
                             + "&age=" + age
                             + "&gender=" + gender

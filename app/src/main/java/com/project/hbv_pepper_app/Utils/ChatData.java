@@ -100,7 +100,7 @@ public class ChatData {
         topicStatuses = new HashMap<>();
         for (Topic t : qiChatbot.getTopics()) {
             TopicStatus tmpStat = qiChatbot.topicStatus(t);
-            tmpStat.setEnabled(false);
+            if(!(t.getName().equals("background"))) tmpStat.setEnabled(false);
             topicStatuses.put(t.getName(), tmpStat);
         }
 
@@ -273,7 +273,7 @@ public class ChatData {
      */
 
     public void setQiVariable(String variableName, String value) {
-        Log.d(TAG, "size va : " + variables.size());
+        //Log.d(TAG, "size va : " + variables.size());
         variables.get(variableName).async().setValue(value);
     }
 

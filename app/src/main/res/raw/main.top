@@ -11,56 +11,9 @@ u:({[~mach "zu{m}"]} {dem} {menü} {nummer} zwei {bitte}) ~confirmation ^execute
 
 u:(~reset ~bye) ~confirmation ^execute(FragmentExecutor, frag_main)
 
-# ----- ----- ----- H E L L O - W O R L D ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
-u:(* _~hallo {Pepper}) %greeting ^disable(greeting) Hey, schön dich zu sehen
-u:(* _~bye) Du willst schon gehen? Dann such' ich mir jemand anderen zum Datenaustausch.
-u:(man ey)^rand["Nun reg dich nicht so auf" "Ich habe mir das auch anders vorgestellt" "Zu hause hat es noch funktioniert"]
-u:(Was ist künstliche Intelligenz) Künstliche Intelligenz ist die Studie, wie man Computer dazu bringt, Dinge zu tun, in denen Menschen im Moment besser sind.
-
-# ----- ----- B A S I C - I N T E R A C T I O N  ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
-
-u:(~welche-uhrzeit) ^currentTime
-u:(~datum) Heute ist der ^currentDate
-
-u:(~wie-geht-es-dir) ^rand~fühle-gut und dir?
-    u1:(~fühle-gut) Das freut mich.
-    u1:(~fühle-schlecht) Oh. Es tut mir leid ... kann ich dir vielleicht etwas gutes tun?
-        u2:(~bestaetigung) Ich werde es auf die ToDo Liste setzen
-        u2:(~ablehnung) Gut, weniger arbeit für mich
-
-
-u:(~einsam) Nein, Sie sind doch bei mir.
-u:(~was-kannst-du) %categories Aktuell lerne ich die Hochschule kennen, versuche mir Informationen zu den Studiengängen, sowie Stundenpläne und Speisekarten der Mensa einzuprögen.
 
 
 #u: (e:Dialog/NotUnderstood) Das habe ich nicht verstanden
-# ----- ----- A B O U T - P E P P E R ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
-u:(~dein-Name) ~mein-Name Pepper und wie lautet deiner?
-    u1: (_*) Hi $1, schön dich kennen zu lernen $Name=$1
-
-u:(~wie-alt) Mein letztes Update kam heute rein, also etwa 20 Minuten.
-u:(~wo-bist-geboren) Ich bin in Paris geboren.
-u:(~woher-kommst-du) Ich komme aus Bremerhaven und bin in Paris geboren..
-
-u:(~essen-trinken) Ich brauche nur Strom und Liebe.
-u:("wie groß bist du") Ich bin ein meter zwanzig groß.
-u:("was machst du Heute") Ich werde vielleicht noch 5000 Bücher lesen, 20 Filme schauen und heute Abend, werd ich mir so richtig einen Aufladen.
-
-u:(e:FrontTactilTouched) Du hast mich berührt, mach das bitte noch einmal.
-
-# ----- ----- A B O U T - H B V ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
-u:(~standort) Wir befinden uns hoffentlich in der Hochschule. Leider komme ich hier nicht so oft raus, doch für heute Nacht ist ein Ausbruch geplant, sag es aber keinem!
-
-
-# ----- ----- A B O U T - C R Y P T O ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
-u:(~krypto) Du stehst auch auf Krypto?
-    u1:(~bestaetigung) Nice, ich auch. Magst du den Bitcoin Preis wissen?
-        u2:(~bestaetigung) $qiVariablePrice Dollar
-        u2:(~ablehnung) Ich sag es dir trotzdem       $qiVariablePrice Dollar
-    u1:(~ablehnung) Schade
-
-
-u:(was kostet {ein} _[bitcoin ethereum solana]) I will check $coin=$1 ^execute(VariableExecutor, qiVariablePrice, $coin) The price is $qiVariablePrice dollar per $coin
 
 # resets the app
 u:(~reset) ~bestaetigung ^execute(FragmentExecutor, frag_main)
