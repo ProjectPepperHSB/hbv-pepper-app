@@ -1,9 +1,6 @@
 topic: ~background()
 
 
-# ----- provisional implementation for the video -------
-
-u:(wo ist die Mensa) Die Mensa ist 75 Meter von hier entfernt. Du brauchst ungefähr 50 sekunden um sie zu erreichen. Eine genau Wegbeschreibung siehst du auf meinem Display. Gerne kannst du den qrcode einscannen um die wegbeschreibung auf deinem smartphone anzusehen.
 
 # ----- ----- B A S I C - I N T E R A C T I O N  ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 
@@ -76,6 +73,15 @@ u:({~was-kannst-du} {"mir über"} {die} {Hochschule} [erzählen sagen berichten 
     u1:(~hbv_menu_general) ~bestaetigung dann schauen wir mal, was wir da so haben ^execute(FragmentExecutor, frag_hbv_uni_information)
     u1:(~hbv_menu_study_counseling) Wir haben sehr viele Studiengänge bei uns zur Auswahl ^execute(FragmentExecutor, frag_hbv_uni_study_counseling)
     u1:(~hbv_menu_for_students) ~bestaetigung los gehts ^execute(FragmentExecutor, frag_hbv_uni_for_students)
+
+
+# ----- ----- A B O U T - R O O M F I N D E R ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
+
+u:(Wie komme ich von Haus K zur Mensa) ^execute(VariableExecutor, qiVariableNav, Test) Die Mensa ist 75 Meter von hier entfernt. Du brauchst ungefähr 50 sekunden um sie zu erreichen. Eine genau Wegbeschreibung siehst du auf meinem Display. Gerne kannst du den qrcode einscannen um die wegbeschreibung auf deinem smartphone anzusehen. $qiVariableNav
+
+
+
+
 
 
 # ----- ----- A B O U T - T I M E T A B L E ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----

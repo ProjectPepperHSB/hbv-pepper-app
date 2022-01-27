@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import com.aldebaran.qi.sdk.QiContext;
 import com.aldebaran.qi.sdk.RobotLifecycleCallbacks;
@@ -263,6 +264,22 @@ public class VariableExecutor extends BaseQiChatExecutor {
                         ma.setContentView(R.layout.campus_plan);
                     });
                 } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }else if(nav.equals("Test")) {
+                try{
+                    ma.runOnUiThread(() -> {
+                        ma.setContentView(R.layout.webtest);
+
+                        WebView web = (WebView) ma.findViewById(R.id.webView);
+                        WebSettings webSettings = web.getSettings();
+                        webSettings.setJavaScriptEnabled(true);
+                        web.setWebViewClient(new Callback());
+                        web.loadUrl("https://drive.google.com/file/d/15vyETsIkbsxw3xczk3Lnim0eziVTB094/view");
+
+                        // change visibility if student said "hide" or so
+                    });
+                }catch (Exception e){
                     e.printStackTrace();
                 }
             }
