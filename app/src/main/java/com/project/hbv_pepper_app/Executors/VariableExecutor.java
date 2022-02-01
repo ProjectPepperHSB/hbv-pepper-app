@@ -223,8 +223,8 @@ public class VariableExecutor extends BaseQiChatExecutor {
                         final Bitmap bitmap = BitmapFactory.decodeStream(srt);
 
                         ma.runOnUiThread(() -> {
-                            //setContentView(R.layout.mensa_layout);
-                            ImageView imageView = (ImageView) ma.findViewById(R.id.iMensa2);
+                            setContentView(R.layout.mensa_layout);
+                            ImageView imageView = (ImageView) ma.findViewById(R.id.imageView_mensaplan);
                             imageView.setImageBitmap(bitmap);
                             // change visibility if student said "hide" or so
                         });

@@ -64,7 +64,6 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         ├ Creates chatBots, handles interactions
         └ Some more magic with "AI"
      */
-
     /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
     // region implements VARIABLES
 

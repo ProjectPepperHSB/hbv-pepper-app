@@ -36,4 +36,3 @@ public class CountDownNoInteraction extends CountDownTimer {
         super.start();
     }
 }
-
