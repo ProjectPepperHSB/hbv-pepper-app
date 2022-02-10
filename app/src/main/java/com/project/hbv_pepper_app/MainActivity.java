@@ -64,6 +64,7 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         ├ Creates chatBots, handles interactions
         └ Some more magic with "AI"
      */
+
     /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
     // region implements VARIABLES
 
@@ -141,11 +142,11 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         private String smileState = DEFAULT_STRING;
         private Long dialog_time = System.currentTimeMillis();
         private String uuidStr = DEFAULT_STRING;
-/*
-        public ActivePerson(){
-            this.uuidStr = uuidHash.toString();
-        }
-*/
+        /*
+                public ActivePerson(){
+                    this.uuidStr = uuidHash.toString();
+                }
+        */
         //New UND EMAL AND FOTZENBERG
         private String semester = DEFAULT_STRING;
         private String course = DEFAULT_STRING;
@@ -238,7 +239,7 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     public final String[] varNames = {"qiVariableMensa", "qiVariableStudium", "qiVariableNav"};
 
     // Mensa Stuff
-    private String mensaURL = "https://informatik.hs-bremerhaven.de/docker-hbv-kms-web/mensa";
+    private String mensaURL = "https://informatik.hs-bremerhaven.de/docker-hbv-kms-web/api/v1/mensa";
     public Mensa mensa;
 
 
@@ -255,9 +256,12 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         config = res.getConfiguration();
         this.fragmentManager = getSupportFragmentManager();
         QiSDK.register(this, this);
+
         countDownNoInteraction = new CountDownNoInteraction(this, new SplashFragment(),
                 45000, 35000);
         countDownNoInteraction.start();
+
+
         updateLocale(language);
         setContentView(R.layout.activity_main);
 
@@ -296,7 +300,7 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     @Override
     public void onRobotFocusGained(QiContext qiContext) {
         this.qiContext = qiContext;
-        HelperCollection.Say(qiContext, "jo!");
+        HelperCollection.Say(qiContext, "Hallihallo!");
         //Generate new Universally Unique Identifier
         uuidHash = UUID.randomUUID();//##SENDTOSERVER##
         //System.out.println(uuidHash.toString());
@@ -479,7 +483,7 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.setCustomAnimations(R.anim.enter_fade_in_right, R.anim.exit_fade_out_left,
                 R.anim.enter_fade_in_left, R.anim.exit_fade_out_right);
-        transaction.replace(R.id.placeholder, fragment, "currentFragment");
+        //transaction.replace(R.id.placeholder, fragment, "currentFragment");
         transaction.addToBackStack(null);
         transaction.commit();
     }

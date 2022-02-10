@@ -100,9 +100,9 @@ public class VariableExecutor extends BaseQiChatExecutor {
                 //Erhöhe den Counter beim Nodeserver
                 try {
                     HttpURLConnection con = HelperCollection.getConnection(
-                            "https://informatik.hs-bremerhaven.de/docker-hbv-kms-http/collector?subject=save_use_case_counter"
-                            + "&identifier=" + ma.uuidHash
-                            + "&use_case=" + variableName
+                            "https://informatik.hs-bremerhaven.de/docker-hbv-kms-http/api/v1/saveUseCaseData"
+                                    + "&identifier=" + ma.uuidHash
+                                    + "&use_case=" + variableName
                     );
                     int responseCode = con.getResponseCode();
                 } catch (Exception e) {
@@ -148,14 +148,13 @@ public class VariableExecutor extends BaseQiChatExecutor {
                 ma.activePerson.setCourse(course_);
 
                 try {
-                    URL url = new URL("https://informatik.hs-bremerhaven.de/docker-hbv-kms-http/collector");
+                    URL url = new URL("https://informatik.hs-bremerhaven.de/docker-hbv-kms-http/api/v1/saveAttributeData");
 
                     JSONObject jdata = new JSONObject();
                     jdata.put("course", course_);
                     jdata.put("semester", semester_);
 
                     Map<String, Object> params2 = new LinkedHashMap<>();
-                    params2.put("subject", "conversation_data");
                     params2.put("identifier", ma.uuidHash.toString());
                     params2.put("data", jdata);
 
@@ -185,7 +184,7 @@ public class VariableExecutor extends BaseQiChatExecutor {
                 }
                 System.out.println("Post Data sended");
 
-                final String url = "https://informatik.hs-bremerhaven.de/docker-hbv-kms-http/timetable?course="
+                final String url = "https://informatik.hs-bremerhaven.de/docker-hbv-kms-http/api/v1/timetable?course="
                         + course_ + "&semester="
                         + semester_ + "&htmlOnly=true";
 
@@ -218,13 +217,13 @@ public class VariableExecutor extends BaseQiChatExecutor {
                 if(day.equals("Plan")){
                     //Download Img
                     try{
-                        String url_str = "https://informatik.hs-bremerhaven.de/docker-hbv-kms-http/mensadata/img";
+                        String url_str = "https://informatik.hs-bremerhaven.de/docker-hbv-kms-http/api/v1/mensadata/img";
                         InputStream srt = new URL(url_str).openStream();
                         final Bitmap bitmap = BitmapFactory.decodeStream(srt);
 
                         ma.runOnUiThread(() -> {
-                            setContentView(R.layout.mensa_layout);
-                            ImageView imageView = (ImageView) ma.findViewById(R.id.imageView_mensaplan);
+                            //setContentView(R.layout.mensa_layout);
+                            ImageView imageView = (ImageView) ma.findViewById(R.id.iMensa2);
                             imageView.setImageBitmap(bitmap);
                             // change visibility if student said "hide" or so
                         });
@@ -256,88 +255,88 @@ public class VariableExecutor extends BaseQiChatExecutor {
                     exception.printStackTrace();
                 }
                 break;
-        case("qiVariableNav"):
-            String nav = params.get(1);
-            if(nav.equals("Plan")) {
-                try {
-                    ma.runOnUiThread(() -> {
-                        ma.setContentView(R.layout.campus_plan);
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
+            case("qiVariableNav"):
+                String nav = params.get(1);
+                if(nav.equals("Plan")) {
+                    try {
+                        ma.runOnUiThread(() -> {
+                            ma.setContentView(R.layout.campus_plan);
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }else if(nav.equals("Test")) {
+                    try{
+                        ma.runOnUiThread(() -> {
+                            ma.setContentView(R.layout.webtest);
+
+                            WebView web = (WebView) ma.findViewById(R.id.webView);
+                            WebSettings webSettings = web.getSettings();
+                            webSettings.setJavaScriptEnabled(true);
+                            web.setWebViewClient(new Callback());
+                            web.loadUrl("https://drive.google.com/file/d/15vyETsIkbsxw3xczk3Lnim0eziVTB094/view");
+
+                            // change visibility if student said "hide" or so
+                        });
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
-            }else if(nav.equals("Test")) {
-                try{
-                    ma.runOnUiThread(() -> {
-                        ma.setContentView(R.layout.webtest);
 
-                        WebView web = (WebView) ma.findViewById(R.id.webView);
-                        WebSettings webSettings = web.getSettings();
-                        webSettings.setJavaScriptEnabled(true);
-                        web.setWebViewClient(new Callback());
-                        web.loadUrl("https://drive.google.com/file/d/15vyETsIkbsxw3xczk3Lnim0eziVTB094/view");
-
-                        // change visibility if student said "hide" or so
-                    });
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
-
-            //....
+                //....
 
 
-            break;
+                break;
             default:
                 Log.d(TAG, "I don't know this variable");
         }
     }
-/*
-    private void sendPostReq(String stringURL, String course_, String semester_) {
-        try {
-            URL url = new URL(stringURL);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
-            connection.setRequestProperty("Accept","application/json");
-            //connection.setRequestProperty("Content-Length", Integer.toString(urlParameters.getBytes().length));
-            //connection.setRequestProperty("Connection", "Keep-Alive");
-            connection.setReadTimeout(10*1000);
-            connection.setUseCaches(false);
-            connection.setDoInput(true);
-            connection.setDoOutput(true);
+    /*
+        private void sendPostReq(String stringURL, String course_, String semester_) {
+            try {
+                URL url = new URL(stringURL);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("POST");
+                connection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+                connection.setRequestProperty("Accept","application/json");
+                //connection.setRequestProperty("Content-Length", Integer.toString(urlParameters.getBytes().length));
+                //connection.setRequestProperty("Connection", "Keep-Alive");
+                connection.setReadTimeout(10*1000);
+                connection.setUseCaches(false);
+                connection.setDoInput(true);
+                connection.setDoOutput(true);
 
-            Map<String,Object> params = new LinkedHashMap<>();
+                Map<String,Object> params = new LinkedHashMap<>();
 
-            params.put("subject", "conversation_data");
-            params.put("identifier", ma.uuidHash.toString());
-            params.put("data", "{\"course\":\""+ course_ + "\",\"semester\":\""+ semester_ + "\"}");
+                params.put("subject", "conversation_data");
+                params.put("identifier", ma.uuidHash.toString());
+                params.put("data", "{\"course\":\""+ course_ + "\",\"semester\":\""+ semester_ + "\"}");
 
 
-            //Request
-            DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
-            wr.writeBytes(params[1]);
-            wr.flush();
-            wr.close();
+                //Request
+                DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
+                wr.writeBytes(params[1]);
+                wr.flush();
+                wr.close();
 
-            //Response
-            InputStream is = connection.getInputStream();
-            BufferedReader rd = new BufferedReader(new InputStreamReader(is));
-            String line;
-            response = new StringBuffer();
-            //Expecting answer of type JSON single line {"json_items":[{"status":"OK","message":"<Message>"}]}
-            while ((line = rd.readLine()) != null) {
-                response.append(line);
+                //Response
+                InputStream is = connection.getInputStream();
+                BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+                String line;
+                response = new StringBuffer();
+                //Expecting answer of type JSON single line {"json_items":[{"status":"OK","message":"<Message>"}]}
+                while ((line = rd.readLine()) != null) {
+                    response.append(line);
+                }
+                rd.close();
+                System.out.println(response.toString()+"\n");
+                connection.disconnect(); // close the connection after usage
+
+            } catch (Exception e){
+                System.out.println(this.getClass().getSimpleName() + " ERROR - Request failed");
             }
-            rd.close();
-            System.out.println(response.toString()+"\n");
-            connection.disconnect(); // close the connection after usage
-
-        } catch (Exception e){
-            System.out.println(this.getClass().getSimpleName() + " ERROR - Request failed");
         }
-    }
-*/
+    */
     @Override
     public void stop() {
 

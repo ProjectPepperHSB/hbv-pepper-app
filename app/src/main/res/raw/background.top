@@ -1,7 +1,6 @@
 topic: ~background()
 
 
-
 # ----- ----- B A S I C - I N T E R A C T I O N  ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 
 u:(* _~hallo {Pepper}) %greeting ^disable(greeting) Hey, schön dich zu sehen
@@ -25,7 +24,7 @@ u:(~datum) Heute ist der ^currentDate
 u:(~einsam) Nein, Sie sind doch bei mir.
 u:(~was-kannst-du) %categories Aktuell lerne ich die Hochschule kennen, versuche mir Informationen zu den Studiengängen, sowie Stundenpläne und Speisekarten der Mensa einzuprögen.
 
-u:([Erzähl Sag] {mir} {ein} Witz) [
+u:([Erzähl Sag] {mir} {ein} Witz) ^rand[
     "Kommt ein Pferd in die Bar. Fragt der Barkeeper, Hey warum so ein langes Gesicht"
     "Vater zum Sohn. Wie eine 6 in Deutsch? Hab doch geübt mit du"
     "Eine dicke Frau geht zum Bäcker und sagt. Ich möchte gerne Rumkugeln. Sagt der Bäcker. Aber nicht in meinem Laden!"
@@ -42,8 +41,8 @@ u:([Erzähl Sag] {mir} {ein} Witz) [
 
 
 # ----- ----- A B O U T - P E P P E R ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
-u:(~dein-Name) ~mein-Name Pepper und wie lautet deiner?
-    u1: (_*) Hi $1, schön dich kennen zu lernen $Name=$1
+#u:(~dein-Name) ~mein-Name Pepper und wie lautet deiner?
+#    u1: (_*) Hi $1, schön dich kennen zu lernen.
 
 u:(~wie-alt) Mein letztes Update kam heute rein, also etwa 20 Minuten.
 u:(~wo-bist-geboren) Ich bin in Paris geboren.
@@ -67,7 +66,7 @@ u:("wie viele mitarbeiter") Derzeit sind 150 Mitarbeiter in Lehre und Verwaltung
 
 u:([erzähl sag gib] {mir} {bitte} {etwas} {über} {den} {Studiengang} _[_~Studiengänge])  $studium=$1 ^execute(VariableExecutor, qiVariableStudium, $studium) Hallo $qiVariableStudium
 
-u:([zeig gib] {mir} {bitte} {den} [Gebäudeplan Campusplan Gelände]) ^execute(VariableExecutor, qiVariableNav, Plan) Hier hast du eine Übersicht über das Hochschulgelände $qiVariableNav
+u:([zeig gib] {mir} {bitte} {den} [Gebäudeplan Campusplan Gelände]) ^execute(VariableExecutor, qiVariableNav, Plan) Hier hast du eine Übersicht über das Hochschulgelände ##$qiVariableNav
 
 u:({~was-kannst-du} {"mir über"} {die} {Hochschule} [erzählen sagen berichten mitteilen]) Ich kann dir Auskunft über die Hochschule geben, dich bei der Studienfindung beraten oder falls du schon ein Student bist, kann ich dir Auskunft über Stunden und Mensaplan geben.
     u1:(~hbv_menu_general) ~bestaetigung dann schauen wir mal, was wir da so haben ^execute(FragmentExecutor, frag_hbv_uni_information)
