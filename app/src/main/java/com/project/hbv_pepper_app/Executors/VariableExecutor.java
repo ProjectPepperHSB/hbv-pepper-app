@@ -184,11 +184,12 @@ public class VariableExecutor extends BaseQiChatExecutor {
                 }
                 System.out.println("Post Data sended");
 
-                final String url = "https://informatik.hs-bremerhaven.de/docker-hbv-kms-http/api/v1/timetable?course="
+                final String url = "https://informatik.hs-bremerhaven.de/api/v1/docker-hbv-kms-http/timetable?course="
                         + course_ + "&semester="
                         + semester_ + "&htmlOnly=true";
 
-/*
+                System.out.println(url);
+
                 try{
                     ma.runOnUiThread(() -> {
                         ma.setContentView(R.layout.webtest);
@@ -197,17 +198,11 @@ public class VariableExecutor extends BaseQiChatExecutor {
                         WebSettings webSettings = web.getSettings();
                         webSettings.setJavaScriptEnabled(true);
                         web.setWebViewClient(new Callback());
-                        web.loadUrl("http://beta.html5test.com/");
-
-                        // change visibility if student said "hide" or so
+                        web.loadUrl(url);
                     });
                 }catch (Exception e){
                     e.printStackTrace();
                 }
-                */
-
-//From HERE
-
 
                 break;
             case("timetable_detail"):
@@ -217,18 +212,26 @@ public class VariableExecutor extends BaseQiChatExecutor {
                 if(day.equals("Plan")){
                     //Download Img
                     try{
-                        String url_str = "https://informatik.hs-bremerhaven.de/docker-hbv-kms-http/api/v1/mensadata/img";
+                        String url_str = "https://informatik.hs-bremerhaven.de/api/v1/docker-hbv-kms-http/mensadata/img";
                         InputStream srt = new URL(url_str).openStream();
                         final Bitmap bitmap = BitmapFactory.decodeStream(srt);
 
                         ma.runOnUiThread(() -> {
-                            //setContentView(R.layout.mensa_layout);
-                            ImageView imageView = (ImageView) ma.findViewById(R.id.iMensa2);
+                            ma.setContentView(R.layout.mensa_layout);
+
+                            ImageView imageView = (ImageView) ma.findViewById(R.id.iMensa);
                             imageView.setImageBitmap(bitmap);
                             // change visibility if student said "hide" or so
                         });
                     }catch (Exception e){
                         e.printStackTrace();
+                        try{
+                            ma.runOnUiThread(() -> {
+                                ma.setContentView(R.layout.mensa_layout);
+                            });
+                        }catch (Exception e2) {
+                            e2.printStackTrace();
+                        }
                     }
                 } else{
                     try {
@@ -286,6 +289,18 @@ public class VariableExecutor extends BaseQiChatExecutor {
                 //....
 
 
+                break;
+            case("qiVariableBack"):
+                String opt = params.get(1);
+                if(opt.equals("back")){
+                    try {
+                        ma.runOnUiThread(() -> {
+                            ma.setContentView(R.layout.selfie);
+                        });
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
+                    }
+                }
                 break;
             default:
                 Log.d(TAG, "I don't know this variable");

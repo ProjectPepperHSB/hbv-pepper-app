@@ -32,6 +32,7 @@ import com.aldebaran.qi.sdk.object.human.SmileState;
 
 import com.aldebaran.qi.sdk.object.conversation.QiChatExecutor;
 
+import java.io.Console;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -236,11 +237,12 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     public ActivePerson activePerson = new ActivePerson();
     public UUID uuidHash;
 
-    public final String[] varNames = {"qiVariableMensa", "qiVariableStudium", "qiVariableNav"};
+    //All qiVariables should be initialized here. These must be called at least once with $qiVariableXXX in the topics.
+    public final String[] varNames = {"qiVariableMensa", "qiVariableStudium", "qiVariableNav", "qiVariableBack"};
 
     // Mensa Stuff
-    private String mensaURL = "https://informatik.hs-bremerhaven.de/docker-hbv-kms-web/api/v1/mensa";
-    public Mensa mensa;
+    //private String mensaURL = "https://informatik.hs-bremerhaven.de/docker-hbv-kms-web/api/v1/mensa";
+    //public Mensa mensa;
 
 
     // endregion implements VARIABLES
@@ -263,7 +265,7 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
 
 
         updateLocale(language);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.selfie);
 
         // -------- E N D - N E W --------
     }

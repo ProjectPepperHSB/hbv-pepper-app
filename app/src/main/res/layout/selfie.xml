@@ -35,6 +35,15 @@
                 android:layout_marginLeft="600dp"
                 android:layout_marginTop="200dp"
                 app:srcCompat="@drawable/kitz_logo" />
+
+            <ImageView
+                android:id="@+id/imageView7"
+                android:layout_width="350dp"
+                android:layout_height="200dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="200dp"
+                app:srcCompat="@drawable/logo_hs" />
+
         </RelativeLayout>
 
     </LinearLayout>

@@ -1,7 +1,15 @@
 topic: ~background()
 
+# ----- ----- I N I T - Q I V A R  ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
+# These variables must be called at least once for the executer to work
+# Since they have the value undefined, it makes no sense to include them in a real conversation.
+u:(QIVARIABLEBALUEXYCH) $qiVariableBack $qiVariableNav
+
 
 # ----- ----- B A S I C - I N T E R A C T I O N  ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
+
+u:({[geh gehe]} {bitte} [zurück zurueck]) ^execute(VariableExecutor, qiVariableBack, back) ~bestaetigung2
+
 
 u:(* _~hallo {Pepper}) %greeting ^disable(greeting) Hey, schön dich zu sehen
 u:(* _~bye) Du willst schon gehen? Dann such' ich mir jemand anderen zum Datenaustausch.
@@ -76,7 +84,7 @@ u:({~was-kannst-du} {"mir über"} {die} {Hochschule} [erzählen sagen berichten 
 
 # ----- ----- A B O U T - R O O M F I N D E R ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 
-u:(Wie komme ich von Haus K zur Mensa) ^execute(VariableExecutor, qiVariableNav, Test) Die Mensa ist 75 Meter von hier entfernt. Du brauchst ungefähr 50 sekunden um sie zu erreichen. Eine genau Wegbeschreibung siehst du auf meinem Display. Gerne kannst du den qrcode einscannen um die wegbeschreibung auf deinem smartphone anzusehen. $qiVariableNav
+u:(Wie komme ich von Haus K zur Mensa) ^execute(VariableExecutor, qiVariableNav, Test) Die Mensa ist 75 Meter von hier entfernt. Du brauchst ungefähr 50 sekunden um sie zu erreichen. Eine genau Wegbeschreibung siehst du auf meinem Display. Gerne kannst du den qrcode einscannen um die wegbeschreibung auf deinem smartphone anzusehen.
 
 
 
