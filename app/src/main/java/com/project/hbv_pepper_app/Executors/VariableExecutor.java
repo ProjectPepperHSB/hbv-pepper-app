@@ -184,11 +184,9 @@ public class VariableExecutor extends BaseQiChatExecutor {
                 }
                 System.out.println("Post Data sended");
 
-                final String url = "https://informatik.hs-bremerhaven.de/api/v1/docker-hbv-kms-http/timetable?course="
+                final String url = "https://informatik.hs-bremerhaven.de/docker-hbv-kms-http/api/v1/timetable?course="
                         + course_ + "&semester="
                         + semester_ + "&htmlOnly=true";
-
-                System.out.println(url);
 
                 try{
                     ma.runOnUiThread(() -> {
@@ -212,16 +210,14 @@ public class VariableExecutor extends BaseQiChatExecutor {
                 if(day.equals("Plan")){
                     //Download Img
                     try{
-                        String url_str = "https://informatik.hs-bremerhaven.de/api/v1/docker-hbv-kms-http/mensadata/img";
+                        String url_str = "https://informatik.hs-bremerhaven.de/docker-hbv-kms-http/api/v1/mensadata/img";
                         InputStream srt = new URL(url_str).openStream();
                         final Bitmap bitmap = BitmapFactory.decodeStream(srt);
 
                         ma.runOnUiThread(() -> {
                             ma.setContentView(R.layout.mensa_layout);
-
                             ImageView imageView = (ImageView) ma.findViewById(R.id.iMensa);
                             imageView.setImageBitmap(bitmap);
-                            // change visibility if student said "hide" or so
                         });
                     }catch (Exception e){
                         e.printStackTrace();
