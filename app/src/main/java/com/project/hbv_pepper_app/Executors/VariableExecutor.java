@@ -22,6 +22,7 @@ import android.widget.VideoView;
 import com.aldebaran.qi.sdk.QiContext;
 import com.aldebaran.qi.sdk.RobotLifecycleCallbacks;
 import com.aldebaran.qi.sdk.object.conversation.BaseQiChatExecutor;
+import com.google.gson.Gson;
 import com.project.hbv_pepper_app.Fragments.ScreenTwoFragment;
 import com.project.hbv_pepper_app.MainActivity;
 import com.project.hbv_pepper_app.Other.HBV_TimeTable.Lectures;
@@ -132,15 +133,17 @@ public class VariableExecutor extends BaseQiChatExecutor {
                     exception.printStackTrace();
                 }
                 break;
+                /*
             case ("timetable_course"):
                 String course = params.get(1);
-                TimeTableHandler tth = new TimeTableHandler("WI"/*course*/, "1");
+                TimeTableHandler tth = new TimeTableHandler("WI", "1");
                 TimeTable timeTable = tth.getTimeTable();
-
                 break;
+                */
             case ("timetable_course_semester"):
                 String course_ = params.get(1);
                 String semester_ = params.get(2);
+
                 Log.i("------>","Looking for course " + course_ + " in semester " + semester_);
 
                 //Send Post data
@@ -187,6 +190,8 @@ public class VariableExecutor extends BaseQiChatExecutor {
                 final String url = "https://informatik.hs-bremerhaven.de/docker-hbv-kms-http/api/v1/timetable?course="
                         + course_ + "&semester="
                         + semester_ + "&htmlOnly=true";
+
+                System.out.println(url);
 
                 try{
                     ma.runOnUiThread(() -> {
@@ -264,7 +269,10 @@ public class VariableExecutor extends BaseQiChatExecutor {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                }else if(nav.equals("Test")) {
+                }else if(nav.equals("KzuMensa")) {
+                    //Hier die richtige URL rein packen
+
+                    /*
                     try{
                         ma.runOnUiThread(() -> {
                             ma.setContentView(R.layout.webtest);
@@ -277,12 +285,62 @@ public class VariableExecutor extends BaseQiChatExecutor {
 
                             // change visibility if student said "hide" or so
                         });
+
                     }catch (Exception e){
                         e.printStackTrace();
                     }
-                }
+                     */
 
-                //....
+
+                }else{
+                    //Routefinder
+                    System.out.println("Jojo");
+                    String room = nav;
+                    String handicapped = "M0000";
+
+                    if(params.size() == 3){
+                        handicapped = "M0001";
+                    }
+
+                    Log.i("------>","Looking for room " + room + ". handicapped: " + handicapped);
+                    try{
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(ma.getAssets().open("route_metadata.json")));
+                        String[] routeParams = {"video_path", "location", "distance", "time"};
+
+                        String response = new String();
+                        for (String line; (line = reader.readLine()) != null; response += line);
+
+                        Map jsonJavaRootObject = new Gson().fromJson(response, Map.class);
+
+
+                        for(int i = 0; i< routeParams.length; ++i){
+                            String param_ = ((Map)((Map)(jsonJavaRootObject.get(room))).get(handicapped)).get(routeParams[i]).toString();
+                            System.out.println(param_);
+                        }
+                        String path = ((Map)((Map)(jsonJavaRootObject.get(room))).get(handicapped)).get("video_path").toString();
+                        String urlVideo = "https://informatik.hs-bremerhaven.de/hbv-kms/"+ path;
+                        System.out.println(urlVideo);
+                        /*
+                        try{
+                            ma.runOnUiThread(() -> {
+                                ma.setContentView(R.layout.webtest);
+
+                                WebView web = (WebView) ma.findViewById(R.id.webView);
+                                WebSettings webSettings = web.getSettings();
+                                webSettings.setJavaScriptEnabled(true);
+                                web.setWebViewClient(new Callback());
+                                web.loadUrl(urlVideo);
+                            });
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+*/
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
 
 
                 break;

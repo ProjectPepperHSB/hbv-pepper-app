@@ -74,7 +74,7 @@ u:("wie viele mitarbeiter") Derzeit sind 150 Mitarbeiter in Lehre und Verwaltung
 
 u:([erzähl sag gib] {mir} {bitte} {etwas} {über} {den} {Studiengang} _[_~Studiengänge])  $studium=$1 ^execute(VariableExecutor, qiVariableStudium, $studium) Hallo $qiVariableStudium
 
-u:([zeig gib] {mir} {bitte} {den} [Gebäudeplan Campusplan Gelände]) ^execute(VariableExecutor, qiVariableNav, Plan) Hier hast du eine Übersicht über das Hochschulgelände ##$qiVariableNav
+
 
 u:({~was-kannst-du} {"mir über"} {die} {Hochschule} [erzählen sagen berichten mitteilen]) Ich kann dir Auskunft über die Hochschule geben, dich bei der Studienfindung beraten oder falls du schon ein Student bist, kann ich dir Auskunft über Stunden und Mensaplan geben.
     u1:(~hbv_menu_general) ~bestaetigung dann schauen wir mal, was wir da so haben ^execute(FragmentExecutor, frag_hbv_uni_information)
@@ -84,19 +84,33 @@ u:({~was-kannst-du} {"mir über"} {die} {Hochschule} [erzählen sagen berichten 
 
 # ----- ----- A B O U T - R O O M F I N D E R ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 
-u:(Wie komme ich von Haus K zur Mensa) ^execute(VariableExecutor, qiVariableNav, Test) Die Mensa ist 75 Meter von hier entfernt. Du brauchst ungefähr 50 sekunden um sie zu erreichen. Eine genau Wegbeschreibung siehst du auf meinem Display. Gerne kannst du den qrcode einscannen um die wegbeschreibung auf deinem smartphone anzusehen.
+u:([zeig gib] {mir} {bitte} {den} [Gebäudeplan Campusplan Gelände])
+    ^execute(VariableExecutor, qiVariableNav, Plan) Hier hast du eine Übersicht über das Hochschulgelände
+
+u:(Wie komme ich von Haus K zur Mensa)
+    ^execute(VariableExecutor, qiVariableNav, KzuMensa) Die Mensa ist 75 Meter von hier entfernt. Du brauchst ungefähr 50 sekunden um sie zu erreichen. Eine genau Wegbeschreibung siehst du auf meinem Display. Gerne kannst du den qrcode einscannen um die wegbeschreibung auf deinem smartphone anzusehen.
 
 
+u:(["{Kannst du {mir} [sagen erzählen]} Wo [befindet ist] {sich} der Raum _~rooms {befindet}"
+    "{Kannst du {mir} [sagen erzählen]} Wie {komme} ich zu {[den dem]} Raum _~rooms {[komme gelange]}"])
+        $room=$1 Sofort du kek ^execute(VariableExecutor, qiVariableNav, $room)
+
+u:(Zeig mir {bitte} einen _~handicapped Weg [zu in] {dem} Raum _~rooms)
+    $handicap=$1 $room=$2 Alles klar ^execute(VariableExecutor, qiVariableNav, $room, $handicap)
 
 
 
 
 # ----- ----- A B O U T - T I M E T A B L E ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
-u:({so} zeig{e} {er} {mir} {den} Stundenplan {für} {den} Studiengang _~courses {sofort} {bitte})
-    $course=$1 $semester=$2 Sofort mein Meister und Gebieter ^execute(VariableExecutor, timetable_course, $course)
+#u:({so} zeig{e} {er} {mir} {den} Stundenplan {für} {den} Studiengang _~courses {sofort} {bitte})
+#    $course=$1 $semester=$2 Sofort mein Meister und Gebieter ^execute(VariableExecutor, timetable_course, $course)
 
-u:({so} zeig{e} {er} {mir} {den} Stundenplan {für} {den} Studiengang _~courses {[im "für das"]} semester _~semester {sofort} {bitte})
+#u:({so} zeig{e} {er} {mir} {den} Stundenplan {für} {den} Studiengang _~courses {[im "für das"]} semester _~semester {sofort} {bitte})
+#    $course=$1 $semester=$2 Sofort mein Meister und Gebieter ^execute(VariableExecutor, timetable_course_semester, $course, $semester)
+
+u:({so} zeig{e} {er} {mir} {den} Stundenplan {für} {den} Studiengang _~Studiengänge {[im "für das"]} semester _~semester {sofort} {bitte})
     $course=$1 $semester=$2 Sofort mein Meister und Gebieter ^execute(VariableExecutor, timetable_course_semester, $course, $semester)
+
 
 u:({~w-words} {"findet der" "ist der"} Kurs $1 {statt})
     $course=$1 $semester=$2 Gib mir einen Moment ^execute(VariableExecutor, timetable_detail, $course, $semester) Der Kurs $course im Semester $semester findet irgendwann statt
@@ -108,7 +122,7 @@ u:({~w-words} {"findet der" "ist der"} Kurs $1 {statt})
 u:({was} {gibt{s}} {es} {zu} essen {am} _[~week]) $day=$1 ^execute(VariableExecutor, qiVariableMensa, $day) $day gibt es entweder $qiVariableMensa
 u:({was} {gibt{s}} {es} {am} _[~week] {zu} essen) $day=$1 ^execute(VariableExecutor, qiVariableMensa, $day) $day gibt es entweder $qiVariableMensa
 
-u:({Ich hab{e} hunger} {Zeig {mir} {den} Mensaplan} {hunger}) ^execute(VariableExecutor, qiVariableMensa, Plan) Hier hast du eine Übersicht über den Mensaplan
+u:(["Ich hab{e} hunger" "Zeig {mir} {den} Mensaplan"] ) ^execute(VariableExecutor, qiVariableMensa, Plan) Hier hast du eine Übersicht über den Mensaplan
 
 
 # ----- ----- A B O U T - C R Y P T O ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----

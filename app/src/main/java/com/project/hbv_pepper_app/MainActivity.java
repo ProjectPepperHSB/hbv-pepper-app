@@ -32,6 +32,13 @@ import com.aldebaran.qi.sdk.object.human.SmileState;
 
 import com.aldebaran.qi.sdk.object.conversation.QiChatExecutor;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,6 +49,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.aldebaran.qi.sdk.object.humanawareness.HumanAwareness;
+import com.google.gson.Gson;
 import com.project.hbv_pepper_app.Executors.FragmentExecutor;
 import com.project.hbv_pepper_app.Executors.VariableExecutor;
 import com.project.hbv_pepper_app.Fragments.LoadingFragment;
@@ -54,6 +62,8 @@ import com.project.hbv_pepper_app.Utils.CountDownNoInteraction;
 import com.project.hbv_pepper_app.Utils.HelperCollection;
 import com.project.hbv_pepper_app.Utils.TimeTableChatBot;
 
+
+import java.io.FileReader;
 
 // TODO:
 // ├ Set variable chat to null if focus lost for x seconds
@@ -299,8 +309,56 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         HelperCollection.Say(qiContext, "Hallihallo!");
         //Generate new Universally Unique Identifier
         uuidHash = UUID.randomUUID();//##SENDTOSERVER##
-        //System.out.println(uuidHash.toString());
+        //System.out.println(uuidHash.toString())
 
+
+
+
+        /*
+        RouteFinderHandler rfh_ = new RouteFinderHandler(this);
+        RouteFinder routefinder = rfh_.getRouteFinder();
+        System.out.println("##########################################");
+        System.out.println(routefinder);
+        System.out.println("##########################################");
+*/
+
+        /*
+
+        JSONParser parser = new JSONParser();
+        try {
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(getAssets().open("route_metadata.json")));
+            JSONObject jsonObject = (JSONObject) parser.parse(reader);
+
+            //JSONObject jsonObjec1 = new JSONObject(reader.trim());
+            System.out.println(jsonObject);
+
+            System.out.println("\n");
+            JSONObject room = jsonObject.getJSONObject("C0006");
+
+            String pageName = jsonObject.getJSONObject("C006").getJSONObject("M0000").getString("location");
+
+
+            //List<String> list = new ArrayList<String>();
+            //Object obj = jsonObject.get("C006");
+            //System.out.println(obj);
+
+
+            String name = (String) jsonObject.get("C006");
+            System.out.println(name);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+/*
+            JSONArray arr = obj.getJSONArray("posts"); // notice that `"posts": [...]`
+            for (int i = 0; i < arr.length(); i++)
+            {
+                String post_id = arr.getJSONObject(i).getString("post_id");
+            }
+*/
 
 
         // -------- N E W --------
@@ -717,3 +775,5 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
 
 
 /* ----- ----- E O F ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
+
+

@@ -14,6 +14,10 @@ concept:(bestaetigung) ["ja {bitte} {klar} {gerne}" richtig klar nätürlich ok 
 concept:(bestaetigung2) ["Habe verstanden" "Alles klar" "Wird gemacht"]
 concept:(zahlen)[eins zwei drei vier fünf sechs sieben acht neun zehn elf zwölf dreizehn vierzehn fünfzehn sechzehn siebzehn achtzehn neunzehn zwanzig einundzwanzig zweiundzwanzig dreiundzwanzig vierundzwanzig fünfundzwanzig sechsundzwanzig siebenundzwanzig achtundzwanzig neunundzwanzig dreißig einunddreißig zweiunddreißig dreiunddreißig vierunddreißig fünfunddreißig sechsunddreißig siebenunddreißig achtunddreißig neununddreißig vierzig einundvierzig zweiundvierzig dreiundvierzig vierundvierzig fünfundvierzig sechsundvierzig siebenundvierzig achtundvierzig neunundvierzig fünfzig einundfünfzig zweiundfünfzig dreiundfünfzig vierundfünfzig fünfundfünfzig sechsundfünfzig siebenundfünfzig achtundfünfzig neunundfünfzig sechzig einundsechzig zweiundsechzig dreiundsechzig vierundsechzig fünfundsechzig sechsundsechzig siebenundsechzig achtundsechzig neunundsechzig siebzig einundsiebzig zweiundsiebzig dreiundsiebzig vierundsiebzig fünfundsiebzig sechsundsiebzig siebenundsiebzig achtundsiebzig neunundsiebzig achtzig einundachtzig zweiundachtzig dreiundachtzig vierundachtzig fünfundachtzig sechsundachtzig siebenundachtzig achtundachtzig neunundachtzig 	neunzig einundneunzig zweiundneunzig dreiundneunzig vierundneunzig fünfundneunzig sechsundneunzig siebenundneunzig achtundneunzig neunundneunzig hundert]
 
+concept:(w-words)[wann wo]
+concept:(wo) [wo "wo ist" "wo befindet" "wo finde" "wo findet"]
+concept:(wann) [wann "wann ist" "wo ist" "wo finde" "wo findet"]
+
 # ----- MEINUNG / EMPFINDUNG
 concept:(empfehlung)[empfehlung vorschlag]
 concept:(fühle-gut)["{ich} {fühle} {mich} gut" "{es} {geht} {mir} {auch} {sehr} gut" "{mir} {geht} {es} {auch} gut" super bestens]
@@ -86,3 +90,38 @@ concept:(PT) [Produktionstechnologie pt]
 concept:(SBT) [Schiffsbetriebstechnik sbt]
 
 concept:(Studiengänge) [_~BWL _~CTM _~DMP _~GIF _~INF _~TWL _~WI _~ABT _~BMR _~GET _~IW _~LWT _~MAR _~MT _~NEU _~PT _~SBT]
+
+
+#concept:(courses)[~WI ~INF]
+concept:(semester)[1 2 3 4 5 6 7 8 eins zwei drei vier fünf sechs sieben acht]
+
+
+# ----- ABOUT RAUMFINDER
+
+concept:(handicapped) [behindertengerechten behindertengerecht barrierefrei barrierefreien]
+
+concept:(rooms) [C006 C007 C01 C010 C011 C012 C013 C014 C017 C02 C1 C10 C101 C103 C104 C105 C109 C11 C110
+C12 C13 C15 C20 C201 C201.1 C203 C203.1 C204 C204.1 C205 C205.1 C209 C209.1 C210 C22 C23 C301 C302 C303 C304
+C304.1 C305 C306 C306.1 C4 C401 C402 C403 C404 C405 C406 C7 C8 C9 K01 K010 K011 K012 K013 K02 K020 K021 K03
+K05 K06 K07 K08 K09 K101 K104 K105 K107 K107 108 K110 K111 K112 113 K114 K115 K116 K118 K120 K121 K122 K124
+K125 K201 K202 K205 K207 K209 K301 K302 K305 K306 K308 K309 K310 K311 K313 K314 K315 K316 K321 K322 K323 K326
+K327 K328 K329 K330 K401 K491 K492 L001 L002 L003 L004 L007 L008 L009 L101/102 L201/202 L203 L204 L205 L206
+L207 L208 L209 L210 L211 L300 L301 L302 L303 L304 M0100 M0110 M0120 M0200 M1010 M1020 M1030 M1040 M1050
+M1060 M1070 M1080 M1090 M1100 M2010 M2030 M2050 M2060 M3010 M3020 M3030 M3040 M4010 M4020 M4030 M4040 M5010
+M5020 M5030 M5040 M5050 S0.06 S0.07 S0.08 S0.12 S0.13 S0.14 S0.15 S0.16 S0.20 S0.22 S1.03 S1.04 S1.17 S1.23
+S1.24 S1.25 S2.01 S2.02 S2.07 S2.09 S2.10 S2.13 S2.14 S2.15 S2.16 S2.17 S2.18 S3.01 S3.02 S3.06 S3.08 S3.10
+S3.11 S3.14 S3.15 S3.16 S3.17 S3.18 S4.01 S4.02 S4.04 S4.08 S4.09 S4.12 S4.13 S4.14 S4.15 S4.16 S4.17 S4.18
+S5.01 S5.02 S5.03 S5.06 S5.07 S5.08 S5.09 S5.10 S5.11 S5.12 S5.13 S5.17 S5.19 S5.20 S5.21 S5.22 S5.23 S5.24
+S5.25 S5.26 S5.27 S5.28 S5.29 S5.30 S5.31 S5.32 S5.33 S5.34 S5.35 S5.36 S5.37 Speisesaal Mensa T 0001 T 0002
+T0003 T0004 T0520 T0523 T1001 T1005 T1006 T1007 T1007a T1008 T1009 T1010 T1015 T1016 T1501 T2001 T2002 T2003
+T2006 T2008 T2009 T2009a T2009b T2009c T2010 T2011 T2012 T2013 T2014 T2015 T2016 T2018 T2019 T2022 T2023 T2052
+T2057 T2502 T2521 T3019 T3057 T3058 T3100 T3103 T3104 T3105 T3106 T3107a T3110 T3111 T3504 T3522 T3602 T3603
+T3604 T3605 T3606 T3607 T3608 T3609 T3610 T3611 T3612 T3613 T3614 V001 V002 V003 V004 V005.1 V005.2 V101 V102
+V103 V104 V105 V106 V107 V108 V109 V201 V202 V203 V204 V205 V206 V207 V208 V209 V300 V301 V302 V303 V304 V305 V306
+V307 V400 V401 V402 V403 V404 V405 V406 V407 Z0020 Z0040 Z0060 Z0070 Z0090 Z0100 Z0110 Z0120 Z0130 Z0140 Z0150 Z0160
+Z0170 Z0172 Z0174 Z1010 Z1020 Z1030 Z1040 Z1050 Z1060 Z1080 Z1090 Z1110 Z1120 Z1130 Z1140 Z1150 Z1160 Z1170 Z1180
+Z1200 Z1201 Z1220 Z1230 Z1240 Z1250 Z1260 Z1280 Z1290 Z1310 Z1330 Z1340 Z1350 Z1360 Z1370 Z1400 Z1410 Z2010 Z2020
+Z2030 Z2040 Z2050 Z2060 Z2070 Z2080 Z2100 Z2110 Z2130 Z2140 Z2150 Z2160 Z2170 Z2180 Z2190 Z2200 Z2210 Z2220 Z2230 Z2240
+Z2250 Z2260 Z2270 Z2280 Z2290 Z2300 Z2310 Z2320 Z2330 Z2340 Z2350 Z2360 Z2370 Z2380 Z2390 Z2400 Z3010 Z3020 Z3030
+Z3040 Z3060 Z3070 Z3090 Z3130 Z3140 Z3150 Z3160 Z3170 Z3190 Z3200 Z3210 Z3220 Z3230 Z3240 Z3250 Z3260 Z3270 Z3310
+Z4010 Z4020 Z4030 Z4100 Z4110 Z4120 Z4130 Z4160 Z4170 Z4180 Z5040 Z5110 Z5120 Z5130 Z5140 Z5150 Z5160 ]

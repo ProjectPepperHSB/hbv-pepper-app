@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.fragment.app.Fragment;
 
 import com.project.hbv_pepper_app.MainActivity;
+import com.project.hbv_pepper_app.R;
 
 public class CountDownNoInteraction extends CountDownTimer {
 
@@ -27,7 +28,14 @@ public class CountDownNoInteraction extends CountDownTimer {
     @Override
     public void onFinish() {
         Log.d(TAG, "Timer Finished");
-        mainActivity.setFragment(fragment);
+        //mainActivity.setFragment(fragment);
+        try {
+            mainActivity.runOnUiThread(() -> {
+                mainActivity.setContentView(R.layout.selfie);
+            });
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 
     public void reset() {
