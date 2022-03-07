@@ -35,13 +35,10 @@ public class FragmentExecutor extends BaseQiChatExecutor {
     public void runWith(List<String> params) {
         String fragmentName;
         String optionalData; //use this if you need to pass on data when setting the fragment.
-        if (params == null || params.isEmpty()) {
-            return;
-        }else{
+        if (params == null || params.isEmpty()) return;
+        else {
             fragmentName = params.get(0);
-            if(params.size() == 2){
-                optionalData = params.get(1);
-            }
+            if(params.size() == 2) optionalData = params.get(1);
         }
         Fragment fragment;
         Log.d(TAG,"fragmentName :" + fragmentName);
@@ -80,7 +77,5 @@ public class FragmentExecutor extends BaseQiChatExecutor {
     }
 
     @Override
-    public void stop() {
-
-    }
+    public void stop() {}
 }

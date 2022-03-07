@@ -9,14 +9,10 @@ import com.aldebaran.qi.sdk.object.conversation.Listen;
 import com.aldebaran.qi.sdk.object.conversation.ListenResult;
 import com.aldebaran.qi.sdk.object.conversation.PhraseSet;
 import com.aldebaran.qi.sdk.util.PhraseSetUtil;
-//import com.project.hbv_pepper_app.Other.HBV_TimeTable.Lectures;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
+
+//import com.project.hbv_pepper_app.Other.HBV_TimeTable.Lectures;
 
 public class TimeTableChatBot {
     /* Class to interact with the focused User
@@ -38,12 +34,8 @@ public class TimeTableChatBot {
     private PhraseSet lecturesPhrases;
 
     // TODO: Arrays als json in /res hinzufügen
-    private String[] allSemester = {
-            "1", "2", "3", "4", "5", "6", "7"
-    };
-    private String[] allCourses = {
-            "WI", "Wirtschaftsinformatik"
-    };
+    private String[] allSemester = { "1", "2", "3", "4", "5", "6", "7" };
+    private String[] allCourses = { "WI", "Wirtschaftsinformatik" };
     private String[] allLectures = { // das hier als json für jeden Kurs - / Semester Kombination
             "Programmierung", "BWL", "Graphen und Endliche Automaten", "Diskrete Mathematik", "SWE", // 1, Semester
             "Vernetze Systeme", "Datenbanken I", "Software Engineering III", "Theoretische Informatik", "Standardsoftware", "Controlling", // 3. Semester
@@ -56,9 +48,7 @@ public class TimeTableChatBot {
     private boolean cancelExists;
     private PhraseSet cancelPhrases;
 
-    private String[] cancelStrings = {
-            "abbrechen", "abbruch", "hör auf", "zurück", "hä"
-    };
+    private String[] cancelStrings = { "abbrechen", "abbruch", "hör auf", "zurück", "hä" };
 
     /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
 
@@ -74,7 +64,6 @@ public class TimeTableChatBot {
         while(this.chosenSemester == null || this.chosenCourse == null || !done){
             Log.i("!","_");
             checkInput();
-
             if(this.cancelExists) {
                 HelperCollection.Say(this.qiContext, "Okay, ich breche den Vorgang ab.");
                 return;
@@ -89,28 +78,7 @@ public class TimeTableChatBot {
             try {
                 boolean lectureFound = false;
                 Log.i(TAG, "---> get Timetables");
-                /*
-                week = this.getTimeTable(chosenCourse, chosenSemester, chosenKW);
-                for (int i = 0; i < week.size(); i++) {
-                    WeekDay day = week.get(i);
-                    for (int j = 0; j < day.getLectures().size(); j++) {
-                        Lectures lectures = day.getLectures().get(j);
-                        if (this.chosenLecture != null && lectures.getName().contains(chosenLecture)) {
-                            String msg = this.chosenLecture + " findet am " + day.getName() + " im Zeitraum von "
-                                    + lectures.getBegin() + " bis " + lectures.getEnd() + " Uhr im Raum "
-                                    + lectures.getRoom() + " statt.";
-                            HelperCollection.Say(this.qiContext, msg);
-                            lectureFound = true;
-                        }
-                        // DISPLAY ALL COURSES OF THIS WEEK ON THE TABLET
-                        Log.i(TAG, day.getName() + ", Kurs: " + lectures.getName() + " Raum: " + lectures.getRoom() + "Beginn: " + lectures.getBegin() + "Uhr Ende: " + lectures.getEnd() + "Uhr.");
-                    }
-                }
-
-                 */
-                if(chosenLecture != null && !lectureFound){
-                    HelperCollection.Say(this.qiContext, this.chosenLecture + " habe ich für diese Studiengang / Semesterkombination nicht gefunden.");
-                }
+                if(chosenLecture != null && !lectureFound) HelperCollection.Say(this.qiContext, this.chosenLecture + " habe ich für diese Studiengang / Semesterkombination nicht gefunden.");
                 this.done = true;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -141,51 +109,12 @@ public class TimeTableChatBot {
                 Log.i(TAG, "Heard Course -> " + this.chosenCourse);
             }
 
-            if (this.chosenSemester == null) {
-                HelperCollection.Say(this.qiContext, "Welches Semester?");
-            } else if (this.chosenCourse == null) {
-                HelperCollection.Say(this.qiContext, "Welcher Studiengang?");
-            }
+            if (this.chosenSemester == null) HelperCollection.Say(this.qiContext, "Welches Semester?");
+            else if (this.chosenCourse == null) HelperCollection.Say(this.qiContext, "Welcher Studiengang?");
         }
     }
 
     /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
-
-    /*
-    private ArrayList<WeekDay> getTimeTable(String _course, String _semester, String _kw) throws IOException {
-        String course_str = _course + "_B" + _semester + "_" + _kw;
-        String url_str = "https://informatik.hs-bremerhaven.de/docker-hbv-kms-web/timetablesfb2/" + course_str + ".csv";
-        String response_str  = HelperCollection.getUrlContents(url_str);
-
-        ArrayList<WeekDay> weekDays = new ArrayList<WeekDay>(Arrays.asList(new WeekDay[]{new WeekDay("Mo")}));
-        BufferedReader reader = new BufferedReader(new StringReader(response_str));
-        String line;
-
-        int line_idx = 0;
-        while ((line = reader.readLine()) != null) {
-            line_idx++;
-            if(line_idx == 1)
-                continue;
-
-            String[] content =  line.split(";");
-            Lectures lectures = new Lectures(
-                    content[3],
-                    content[1],
-                    content[2],
-                    content[4],
-                    content[5]
-            );
-
-            if(!weekDays.get(weekDays.size() - 1).getName().equals(content[0])){ // neuer Tag
-                weekDays.add(new WeekDay(content[0], lectures));
-            } else { // selber Tag, anderer Kurs / Eintrag
-                weekDays.get(weekDays.size() - 1).addCourse(lectures);
-            }
-        }
-        return weekDays;
-    }
-
-     */
 
     private static int getWeek() {
         return Calendar.getInstance().get(Calendar.WEEK_OF_YEAR);

@@ -17,9 +17,7 @@ public class Person {
     /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
     // region implements INIT
 
-    public void Person(){
-
-    }
+    public void Person(){}
 
     // endregion implements INIT
     /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
@@ -28,15 +26,13 @@ public class Person {
     public int getAge() {
         return age;
     }
-
     public void setAge(int age) {
         this.age = age;
     }
 
-    public boolean isGender() {
+    public boolean getGender() {
         return gender;
     }
-
     public void setGender(boolean gender) {
         this.gender = gender;
     }
@@ -44,7 +40,6 @@ public class Person {
     public String getEmotion() {
         return emotion;
     }
-
     public void setEmotion(String emotion) {
         this.emotion = emotion;
     }

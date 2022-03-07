@@ -31,7 +31,7 @@ optional:
 ## Installation
 
 ```bash
-git clone https://github.com/ProjectPepperHSB/hsb_pepper
+git clone https://github.com/ProjectPepperHSB/hbv-pepper-app
 ```
 
 ## References

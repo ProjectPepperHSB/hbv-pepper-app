@@ -86,15 +86,14 @@ public class VariableExecutor extends BaseQiChatExecutor {
     public void runWith(List<String> params) {
         String variableName;
         String variableValue;
-        if (params == null || params.isEmpty()) {
-            return;
-        }else{
+        if (params == null || params.isEmpty()) return;
+        else {
             variableName = params.get(0);
             if(params.size() < 2)  {Log.d(TAG, "no value specified for variable : " + variableName); return;}
             else variableValue = params.get(1);
         }
-        Log.d(TAG,"variableName: " + variableName);
 
+        Log.d(TAG,"variableName: " + variableName);
 
         for(int i = 0;i<ma.varNames.length; ++i){   //##SENDTOSERVER##
             if(variableName.equals(ma.varNames)){
@@ -105,7 +104,7 @@ public class VariableExecutor extends BaseQiChatExecutor {
                                     + "&identifier=" + ma.uuidHash
                                     + "&use_case=" + variableName
                     );
-                    int responseCode = con.getResponseCode();
+                    //int responseCode = con.getResponseCode();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -179,9 +178,8 @@ public class VariableExecutor extends BaseQiChatExecutor {
 
                     Reader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
 
-                    for (int c; (c = in.read()) >= 0; ){
-                        System.out.print((char) c);
-                    }
+                    for (int c; (c = in.read()) >= 0;) System.out.print((char) c);
+
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -298,9 +296,7 @@ public class VariableExecutor extends BaseQiChatExecutor {
                     String room = nav;
                     String handicapped = "M0000";
 
-                    if(params.size() == 3){
-                        handicapped = "M0001";
-                    }
+                    if(params.size() == 3) handicapped = "M0001";
 
                     Log.i("------>","Looking for room " + room + ". handicapped: " + handicapped);
                     try{
@@ -311,7 +307,6 @@ public class VariableExecutor extends BaseQiChatExecutor {
                         for (String line; (line = reader.readLine()) != null; response += line);
 
                         Map jsonJavaRootObject = new Gson().fromJson(response, Map.class);
-
 
                         for(int i = 0; i< routeParams.length; ++i){
                             String param_ = ((Map)((Map)(jsonJavaRootObject.get(room))).get(handicapped)).get(routeParams[i]).toString();
@@ -338,10 +333,7 @@ public class VariableExecutor extends BaseQiChatExecutor {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
-
                 }
-
 
                 break;
             case("qiVariableBack"):
@@ -407,9 +399,7 @@ public class VariableExecutor extends BaseQiChatExecutor {
         }
     */
     @Override
-    public void stop() {
-
-    }
+    public void stop() {}
 
     private class Callback extends WebViewClient {
         @Override

@@ -3,13 +3,13 @@ package com.project.hbv_pepper_app.Fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.project.hbv_pepper_app.MainActivity;
@@ -35,9 +35,7 @@ public class SplashFragment extends Fragment {
                 final Context contextThemeWrapper = new ContextThemeWrapper(ma, themeId);
                 LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
                 return localInflater.inflate(fragmentId, container, false);
-            } else {
-                return inflater.inflate(fragmentId, container, false);
-            }
+            } else  return inflater.inflate(fragmentId, container, false);
         } else {
             Log.e(TAG, "could not get mainActivity, can't create fragment");
             return null;

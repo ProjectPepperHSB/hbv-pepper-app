@@ -10,6 +10,8 @@ import com.aldebaran.qi.sdk.object.geometry.Transform;
 import com.aldebaran.qi.sdk.object.geometry.TransformTime;
 import com.aldebaran.qi.sdk.object.geometry.Vector3;
 
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -21,8 +23,6 @@ import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-
-import org.json.JSONObject;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -47,9 +47,7 @@ public class HelperCollection {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), "latin1"));
             String line;
             // reading from the urlconnection using the bufferedreader
-            while ((line = bufferedReader.readLine()) != null) {
-                content.append(line + "\n");
-            }
+            while ((line = bufferedReader.readLine()) != null) content.append(line + "\n");
             bufferedReader.close();
         } catch(Exception e)  {
             e.printStackTrace();
@@ -88,20 +86,13 @@ public class HelperCollection {
         });
         SSLContext context = SSLContext.getInstance("TLS");
         context.init(null, new X509TrustManager[]{new X509TrustManager() {
-            public void checkClientTrusted(X509Certificate[] chain,
-                                           String authType) throws CertificateException {
-            }
-
-            public void checkServerTrusted(X509Certificate[] chain,
-                                           String authType) throws CertificateException {
-            }
-
+            public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException { }
+            public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException { }
             public X509Certificate[] getAcceptedIssuers() {
                 return new X509Certificate[0];
             }
         }}, new SecureRandom());
-        HttpsURLConnection.setDefaultSSLSocketFactory(
-                context.getSocketFactory());
+        HttpsURLConnection.setDefaultSSLSocketFactory(context.getSocketFactory());
 
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -123,9 +114,7 @@ public class HelperCollection {
             BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
             String inputLine;
             StringBuffer response = new StringBuffer();
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
+            while ((inputLine = in.readLine()) != null) { response.append(inputLine); }
             in.close();
             //System.out.println(response.toString());
             //Read JSON response and print
@@ -168,20 +157,16 @@ public class HelperCollection {
             BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
             String inputLine;
             StringBuffer response = new StringBuffer();
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
+            while ((inputLine = in.readLine()) != null) { response.append(inputLine); }
             in.close();
 
             JSONObject myResponse = new JSONObject(response.toString());
-
             String tmp = myResponse.getString("offer1");
             String [] offer1 = tmp.split("\",\"", -1);
             tmp = myResponse.getString("offer2");
             String [] offer2 = tmp.split("\",\"", -1);
 
             //System.out.println(offer1);
-
             String [] daylist = {"Montag","Dienstag","Mittwoch","Donnerstag","Freitag"};
             String [] spcdays = {"Heute", "Morgen", "Übermorgen"};
 
@@ -192,7 +177,6 @@ public class HelperCollection {
 
             //Check if the user wants to know the offer of today, tomorrow or the day after tomorrow
             for(int i = 0; i < spcdays.length; ++i){
-
                 if(day.equals(spcdays[i])){
                     if((curday + i) > 5){
                         answer = "Am Wochenende ist die Mensa leider geschlossen";
@@ -212,14 +196,12 @@ public class HelperCollection {
                 }
             }
 
-
             return answer;
         } catch (Exception e) { // should never happen
             e.printStackTrace();
             return "undefined";
         }
     }
-
 }
 
 /* ----- ----- EOF ----- ----- ----- ----- ----- ----- ----- ----- */

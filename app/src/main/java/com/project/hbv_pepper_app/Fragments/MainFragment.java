@@ -35,9 +35,8 @@ public class MainFragment extends Fragment {
                 final Context contextThemeWrapper = new ContextThemeWrapper(ma, themeId);
                 LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
                 return localInflater.inflate(fragmentId, container, false);
-            } else {
-                return inflater.inflate(fragmentId, container, false);
-            }
+            } else return inflater.inflate(fragmentId, container, false);
+
         } else {
             Log.e(TAG, "could not get mainActivity, can't create fragment");
             return null;

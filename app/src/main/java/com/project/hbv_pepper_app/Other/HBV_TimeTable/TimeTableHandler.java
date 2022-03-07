@@ -34,13 +34,8 @@ public class TimeTableHandler {
     private void checkSemester(){
         // sets the value of semester to a number as string
         final List<String> semester_list = Arrays.asList("eins", "zwei", "drei", "vier", "fünf", "sechs", "sieben", "acht");
-        if (semester_list.contains(this.semester)) {
-            for(int i = 1; i < semester_list.size() + 1; i++) {
-                if (semester_list.get(i-1).equals(this.semester)) {
-                    this.semester = String.valueOf(i);
-                }
-            }
-        }
+        if (semester_list.contains(this.semester))
+            for(int i = 1; i < semester_list.size() + 1; i++) if (semester_list.get(i-1).equals(this.semester)) this.semester = String.valueOf(i);
     }
 
     public TimeTable getTimeTable() {
