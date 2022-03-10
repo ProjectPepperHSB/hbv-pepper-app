@@ -42,23 +42,24 @@ public class RealTimeDashboardAPI {
             public void run() {
                 try {
                     URL url = new URL(destinationURL);
-                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                    conn.setRequestMethod("POST");
-                    conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-                    conn.setRequestProperty("Accept", "application/json");
-                    conn.setDoOutput(true);
+                        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                        conn.setRequestMethod("POST");
+                        conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+                        conn.setRequestProperty("Accept", "application/json");
+                        conn.setDoOutput(true);
 
-                    JSONObject payload_wrapper = new JSONObject();
-                    payload_wrapper.put("data", payload.toString());
+                        JSONObject payload_wrapper = new JSONObject();
+                        payload_wrapper.put("data", payload.toString());
 
-                    try(OutputStream os = conn.getOutputStream()) {
-                        byte[] input = payload_wrapper.toString().getBytes("UTF-8");
-                        os.write(input, 0, input.length);
-                        os.flush();
-                    }
-                    // dont comment the following out, bc sometimes requests get lost; idk why
-                    Log.i("Request " + reference + " status", String.valueOf(conn.getResponseCode()) + " " + conn.getResponseMessage());
-                    conn.disconnect();
+                        try(OutputStream os = conn.getOutputStream()) {
+                            byte[] input = payload_wrapper.toString().getBytes("UTF-8");
+                            os.write(input, 0, input.length);
+                            os.flush();
+                        }
+                        // dont comment the following out, bc sometimes requests get lost; idk why
+                        Log.i("Request " + reference + " status", String.valueOf(conn.getResponseCode()) + " " + conn.getResponseMessage());
+                        conn.disconnect();
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

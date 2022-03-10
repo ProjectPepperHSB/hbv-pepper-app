@@ -125,7 +125,6 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     private String currentFragment, currentTopicName;
     private TopicStatus currentTopicStatus;
     private Future<Void> chatFuture;
-    // ---- E N D - N E W ----- ------
 
     private Person[] persons;
     private TimeTableChatBot TTChatBot = null;
@@ -215,10 +214,11 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         countDownNoInteraction.start();
 
         String url;
-        if (Build.DEVICE.equals("generic_x86")) url = "10.0.2.2";
-        else url = "127.0.0.1";
+        String local_ip="192.168.8.140";
+        if (Build.DEVICE.equals("generic_x86")) url = "http://10.0.2.2:3000/api/data";
+        else url = String.format("http://%s:3000/api/data",local_ip);
 
-        dashboardAPI = new RealTimeDashboardAPI(String.format("http://%s:3000/api/data", url));
+        dashboardAPI = new RealTimeDashboardAPI(url);
         dashboardAPI.send2RealtimeDashboard("Event", "message", "onCreate!");
 
         updateLocale(language);
