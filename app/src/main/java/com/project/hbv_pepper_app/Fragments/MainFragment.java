@@ -15,6 +15,10 @@ import com.project.hbv_pepper_app.Fragments.HBV_UNI.HBVUNIMainFragment;
 import com.project.hbv_pepper_app.MainActivity;
 import com.project.hbv_pepper_app.R;
 
+/**
+ * Template source of this file: https://github.com/softbankrobotics-labs/App-Template (March 2022)
+ *  Modified by Benjamin T. Schwertfeger, Kristian Kellermann, Jacob B. Menge
+ */
 public class MainFragment extends Fragment {
 
     private static final String TAG = "MSI_MainFragment";
