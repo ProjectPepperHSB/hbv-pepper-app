@@ -268,9 +268,8 @@ public class VariableExecutor extends BaseQiChatExecutor {
                         e.printStackTrace();
                     }
                 }else if(nav.equals("KzuMensa")) {
-                    //Hier die richtige URL rein packen
 
-                    /*
+                    String urlVideo = "https://informatik.hs-bremerhaven.de/hbv-kms/video/L00P1133-L40P1000-M0000.mp4";
                     try{
                         ma.runOnUiThread(() -> {
                             ma.setContentView(R.layout.webtest);
@@ -279,20 +278,13 @@ public class VariableExecutor extends BaseQiChatExecutor {
                             WebSettings webSettings = web.getSettings();
                             webSettings.setJavaScriptEnabled(true);
                             web.setWebViewClient(new Callback());
-                            web.loadUrl("https://drive.google.com/file/d/15vyETsIkbsxw3xczk3Lnim0eziVTB094/view");
-
-                            // change visibility if student said "hide" or so
+                            web.loadUrl(urlVideo);
                         });
-
                     }catch (Exception e){
                         e.printStackTrace();
                     }
-                     */
-
-
                 }else{
                     //Routefinder
-                    System.out.println("Jojo");
                     String room = nav;
                     String handicapped = "M0000";
 
@@ -301,21 +293,30 @@ public class VariableExecutor extends BaseQiChatExecutor {
                     Log.i("------>","Looking for room " + room + ". handicapped: " + handicapped);
                     try{
                         BufferedReader reader = new BufferedReader(new InputStreamReader(ma.getAssets().open("route_metadata.json")));
-                        String[] routeParams = {"video_path", "location", "distance", "time"};
 
                         String response = new String();
                         for (String line; (line = reader.readLine()) != null; response += line);
 
                         Map jsonJavaRootObject = new Gson().fromJson(response, Map.class);
 
-                        for(int i = 0; i< routeParams.length; ++i){
-                            String param_ = ((Map)((Map)(jsonJavaRootObject.get(room))).get(handicapped)).get(routeParams[i]).toString();
-                            System.out.println(param_);
+                        String answer = "Der Raum befindet sich in " + ((Map)((Map)(jsonJavaRootObject.get(room))).get(handicapped)).get("location").toString();
+                        answer += " und ist von meinem Standpunkt aus genau " + ((Map)((Map)(jsonJavaRootObject.get(room))).get(handicapped)).get("distance").toString();
+                        answer += " Meter entfernt. Du brauchst ungefähr " + ((Map)((Map)(jsonJavaRootObject.get(room))).get(handicapped)).get("time").toString();
+                        answer += " Minuten, um diesen Raum zu erreichen. Auf meinem Tablet findest du eine geneau Wegbeschreibung.";
+
+                        try {
+                            System.out.println(answer);
+                            ma.getCurrentChatBot().setQiVariable(variableName, answer);
+                        } catch (Exception exception) {
+                            exception.printStackTrace();
                         }
+
                         String path = ((Map)((Map)(jsonJavaRootObject.get(room))).get(handicapped)).get("video_path").toString();
                         String urlVideo = "https://informatik.hs-bremerhaven.de/hbv-kms/"+ path;
+
+
                         System.out.println(urlVideo);
-                        /*
+
                         try{
                             ma.runOnUiThread(() -> {
                                 ma.setContentView(R.layout.webtest);
@@ -329,7 +330,7 @@ public class VariableExecutor extends BaseQiChatExecutor {
                         }catch (Exception e){
                             e.printStackTrace();
                         }
-*/
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

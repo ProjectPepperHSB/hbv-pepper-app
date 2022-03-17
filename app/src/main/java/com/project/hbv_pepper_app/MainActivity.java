@@ -1,8 +1,12 @@
 package com.project.hbv_pepper_app;
 
 
+import static com.project.hbv_pepper_app.Utils.HelperCollection.getTimeStamp;
+
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,10 +20,12 @@ import com.aldebaran.qi.Future;
 import com.aldebaran.qi.sdk.QiContext;
 import com.aldebaran.qi.sdk.QiSDK;
 import com.aldebaran.qi.sdk.RobotLifecycleCallbacks;
+import com.aldebaran.qi.sdk.builder.TakePictureBuilder;
 import com.aldebaran.qi.sdk.design.activity.RobotActivity;
 import com.aldebaran.qi.sdk.design.activity.conversationstatus.SpeechBarDisplayStrategy;
 import com.aldebaran.qi.sdk.object.actuation.Actuation;
 import com.aldebaran.qi.sdk.object.actuation.Frame;
+import com.aldebaran.qi.sdk.object.camera.TakePicture;
 import com.aldebaran.qi.sdk.object.conversation.Bookmark;
 import com.aldebaran.qi.sdk.object.conversation.Chat;
 import com.aldebaran.qi.sdk.object.conversation.QiChatExecutor;
@@ -32,6 +38,9 @@ import com.aldebaran.qi.sdk.object.human.Human;
 import com.aldebaran.qi.sdk.object.human.PleasureState;
 import com.aldebaran.qi.sdk.object.human.SmileState;
 import com.aldebaran.qi.sdk.object.humanawareness.HumanAwareness;
+import com.aldebaran.qi.sdk.object.image.EncodedImage;
+import com.aldebaran.qi.sdk.object.image.EncodedImageHandle;
+import com.aldebaran.qi.sdk.object.image.TimestampedImageHandle;
 import com.project.hbv_pepper_app.Executors.FragmentExecutor;
 import com.project.hbv_pepper_app.Executors.VariableExecutor;
 import com.project.hbv_pepper_app.Fragments.LoadingFragment;
@@ -45,6 +54,7 @@ import com.project.hbv_pepper_app.Utils.RealTimeDashboardAPI;
 import com.project.hbv_pepper_app.Utils.TimeTableChatBot;
 
 import java.net.HttpURLConnection;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -125,7 +135,7 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     private String currentFragment, currentTopicName;
     private TopicStatus currentTopicStatus;
     private Future<Void> chatFuture;
-
+    Future<TakePicture> takePictureFuture;
     private Person[] persons;
     private TimeTableChatBot TTChatBot = null;
 
@@ -260,7 +270,7 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     @Override
     public void onRobotFocusGained(QiContext qiContext) {
         this.qiContext = qiContext;
-        HelperCollection.Say(qiContext, "Hallihallo kann man mich hören!?");
+        HelperCollection.Say(qiContext, "Hallihallo!?");
         dashboardAPI.send2RealtimeDashboard("Event", "message", "Focus gained");
 
         //Generate new Universally Unique Identifier
@@ -268,42 +278,9 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         // create active person instance using the UUID
         activePerson = new ActivePerson(uuidHash.toString());
 
-        /*
-        RouteFinderHandler rfh_ = new RouteFinderHandler(this);
-        RouteFinder routefinder = rfh_.getRouteFinder();
-        System.out.println("##########################################");
-        System.out.println(routefinder);
-        System.out.println("##########################################");
 
-        JSONParser parser = new JSONParser();
-        try {
+        Future<TakePicture> takePictureFuture = TakePictureBuilder.with(qiContext).buildAsync();
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(getAssets().open("route_metadata.json")));
-            JSONObject jsonObject = (JSONObject) parser.parse(reader);
-
-            //JSONObject jsonObjec1 = new JSONObject(reader.trim());
-            System.out.println(jsonObject);
-
-            System.out.println("\n");
-            JSONObject room = jsonObject.getJSONObject("C0006");
-            String pageName = jsonObject.getJSONObject("C006").getJSONObject("M0000").getString("location");
-
-            //List<String> list = new ArrayList<String>();
-            //Object obj = jsonObject.get("C006");
-            //System.out.println(obj);
-
-            String name = (String) jsonObject.get("C006");
-            System.out.println(name);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-            JSONArray arr = obj.getJSONArray("posts"); // notice that `"posts": [...]`
-            for (int i = 0; i < arr.length(); i++)
-                String post_id = arr.getJSONObject(i).getString("post_id");
-
-*/
 
         qiChatBot = new ChatData(this, qiContext, new Locale(language), topicNames, true);
         Map<String, QiChatExecutor> executors = new HashMap<>();
@@ -353,6 +330,7 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
             handle_new_human(human);
         });
     }
+
 
     @Override
     public void onPause() {
@@ -405,6 +383,20 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         Log.i(TAG, "Excitement state: " + excitementState);
         Log.i(TAG, "Basic Emotion : " + emotion);
         Log.i(TAG, "Smile state: " + smileState);
+
+
+        // Take a Picture of the current user
+        ByteBuffer facePictureBuffer = engagedHuman.getFacePicture().getImage().getData();
+        facePictureBuffer.rewind();
+        int pictureBufferSize = facePictureBuffer.remaining();
+        byte[] facePictureArray = new byte[pictureBufferSize];
+        facePictureBuffer.get(facePictureArray);
+        // Test if the robot has an empty picture
+        if (pictureBufferSize != 0) {
+            Log.i(TAG, "Face Person is available");
+            Bitmap facePicture = BitmapFactory.decodeByteArray(facePictureArray, 0, pictureBufferSize);
+            //saveBitArray(getTimeStamp() + "Approach_faceRecognized", facePicture);
+        }
 
         dashboardAPI.send2RealtimeDashboard("gender", "gender", gender.toString());
         dashboardAPI.send2RealtimeDashboard("age", "age", String.valueOf(age));

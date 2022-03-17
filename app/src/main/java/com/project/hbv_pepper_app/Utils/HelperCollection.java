@@ -152,7 +152,7 @@ public class HelperCollection {
 
     public static String getOffer(String day) {
         try{
-            HttpURLConnection con = getConnection("https://informatik.hs-bremerhaven.de/docker-hbv-kms-http/mensadata");
+            HttpURLConnection con = getConnection("https://informatik.hs-bremerhaven.de/docker-hbv-kms-http/api/v1/mensadata");
 
             BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
             String inputLine;

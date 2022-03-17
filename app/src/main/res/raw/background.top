@@ -93,10 +93,10 @@ u:(Wie komme ich von Haus K zur Mensa)
 
 u:(["{Kannst du {mir} [sagen erzählen]} Wo [befindet ist] {sich} der Raum _~rooms {befindet}"
     "{Kannst du {mir} [sagen erzählen]} Wie {komme} ich zu {[den dem]} Raum _~rooms {[komme gelange]}"])
-        $room=$1 Sofort du kek ^execute(VariableExecutor, qiVariableNav, $room)
+        $room=$1 Habe verstanden, such nach Raum $room wird eingeleitet ^execute(VariableExecutor, qiVariableNav, $room) $qiVariableNav
 
 u:(Zeig mir {bitte} einen _~handicapped Weg [zu in] {dem} Raum _~rooms)
-    $handicap=$1 $room=$2 Alles klar ^execute(VariableExecutor, qiVariableNav, $room, $handicap)
+    $handicap=$1 $room=$2 Habe verstanden, such nach Raum $room wird eingeleitet ^execute(VariableExecutor, qiVariableNav, $room, $handicap) $qiVariableNav
 
 
 
