@@ -12,7 +12,6 @@ import com.aldebaran.qi.sdk.util.PhraseSetUtil;
 
 import java.util.Calendar;
 
-//import com.project.hbv_pepper_app.Other.HBV_TimeTable.Lectures;
 
 public class TimeTableChatBot {
     /* Class to interact with the focused User

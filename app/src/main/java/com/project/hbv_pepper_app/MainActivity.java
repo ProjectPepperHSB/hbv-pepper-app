@@ -53,15 +53,21 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
-// TODO:
-//https://github.com/softbankrobotics-labs/App-Template
-// ├ Set variable chat to null if focus lost for x seconds
-// └ outsource classes and not-main functions
+/**
+ *
+ *  __  __       _          _        _   _       _ _
+ * |  \/  | __ _(_)_ __    / \   ___| |_(_)_   _(_) |_ _   _
+ * | |\/| |/ _` | | '_ \  / _ \ / __| __| \ \ / / | __| | | |
+ * | |  | | (_| | | | | |/ ___ \ (__| |_| |\ V /| | |_| |_| |
+ * |_|  |_|\__,_|_|_| |_/_/   \_\___|\__|_| \_/ |_|\__|\__, |
+ *                                                     |___/
+ *
+ */
 
 public class MainActivity extends RobotActivity implements RobotLifecycleCallbacks {
      /* Main Function of this Applications
         ├ Creates chatBots, handles interactions
-        └ Some more magic with "AI"
+        └ Sends data to Backend
      */
 
     /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
@@ -74,9 +80,6 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
 
     ImageView imageView;
     private QiChatbot oldQiChatBot;
-    private static final String START_BOOKMARK_GREETING = "greeting";
-    private static final String START_BOOKMARK_PRIVACY = "privacy";
-    private static final String START_BOOKMARK_CATEGORIES = "categories";
 
     private Chat chat;
     private QiContext qiContext = null;
@@ -86,28 +89,11 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     private boolean isChatActive = false;
 
     private Future<Void> currentChatFuture;
-
-    private QiChatVariable qiChatStatus;
-    private QiChatVariable qiChatBemot;
-    private QiChatVariable qiChatSmile;
-    private QiChatVariable qiChatAge;
     public QiChatVariable qiVariablePrice;
 
-    private StringBuilder personDetails;
-
-    private int ageActiveSpeaker;
-    private String emotionActiveSpeaker;
-
-    private Bookmark proposalBookmark;
     private Map<String, Bookmark> bookmarks;
-
-    private String status;
     private final String DEFAULT_STRING = "UNKNOWN";
-    private boolean isSomeone;
 
-    private String smileActiveSpeaker;
-
-    // ---- N E W ---- ---- ----
     RealTimeDashboardAPI dashboardAPI;
     private FragmentManager fragmentManager;
     private android.content.res.Configuration config;
@@ -131,7 +117,7 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
 
     public class ActivePerson {
 
-        final String DEFAULT_STRING = "UNDEFINED";
+        final String DEFAULT_STRING = "UNKNOWN";
         private String distance = DEFAULT_STRING;
         private String age = DEFAULT_STRING;
         private String gender = DEFAULT_STRING;
@@ -141,12 +127,13 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         private String smileState = DEFAULT_STRING;
         private Long dialog_time = System.currentTimeMillis();
         private String uuidStr = DEFAULT_STRING;
-
+        private UUID uuid;
         private String semester = DEFAULT_STRING;
         private String course = DEFAULT_STRING;
 
-        public ActivePerson(String uuid){
-            this.uuidStr = uuid;
+        public ActivePerson(){
+            this.uuid = UUID.randomUUID();
+            this.uuidStr = this.uuid.toString();
         }
 
         public void saveToDatabase(){
@@ -159,39 +146,52 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
                     this.smileState, String.valueOf(this.dialog_time / 1000 ));
         }
 
-        public String getDistance() { return distance; }
-        public void setDistance(String distance) { this.distance = distance; }
+        public String getDistance() {return distance; }
 
-        public Long getDialog_time(){ return dialog_time;  }
+        public Long getDialog_time(){ return dialog_time; }
+
         public void setDialog_time(long dialog_time){ this.dialog_time = dialog_time; }
 
+        public void setDistance(String distance) { this.distance = distance; }
+
         public String getAge() { return age; }
+
         public void setAge(String age) { this.age = age; }
 
         public String getGender() { return gender; }
-        public void setGender(String gender) { this.gender = gender;}
 
-        public String getPleasure_state() {return pleasure_state; }
+        public void setGender(String gender) { this.gender = gender; }
+
+        public String getPleasure_state() { return pleasure_state; }
+
         public void setPleasure_state(String pleasure_state) { this.pleasure_state = pleasure_state; }
 
-        public String getExcitementState() {  return excitementState; }
+        public String getExcitementState() { return excitementState; }
+
         public void setExcitementState(String excitementState) { this.excitementState = excitementState; }
 
         public String getEmotion() { return emotion; }
+
         public void setEmotion(String emotion) { this.emotion = emotion; }
 
         public String getSmileState() { return smileState; }
+
         public void setSmileState(String smileState) { this.smileState = smileState; }
 
         public String getCourse() { return course; }
+
         public void setCourse(String course) { this.course = course; }
 
         public String getSemester() { return semester; }
+
         public void setSemester(String semester) { this.semester = semester; }
+
+        public String getUUIDstr(){ return uuidStr; }
+
+        public UUID getUUID(){ return uuid; }
     }
 
     public ActivePerson activePerson;
-    public UUID uuidHash;
 
     //All qiVariables should be initialized here. These must be called at least once with $qiVariableXXX in the topics.
     public final String[] varNames = {"qiVariableMensa", "qiVariableStudium", "qiVariableNav", "qiVariableBack"};
@@ -200,6 +200,15 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
     // region implements EVENTS
 
+    /**
+     *               ____                _
+     *   ___  _ __  / ___|_ __ ___  __ _| |_ ___
+     *  / _ \| '_ \| |   | '__/ _ \/ _` | __/ _ \
+     * | (_) | | | | |___| | |  __/ (_| | ||  __/
+     *  \___/|_| |_|\____|_|  \___|\__,_|\__\___|
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -216,7 +225,7 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         String url;
         String local_ip="192.168.8.140";
         if (Build.DEVICE.equals("generic_x86")) url = "http://10.0.2.2:3000/api/data";
-        else url = String.format("http://%s:3000/api/data",local_ip);
+        else url = String.format("http://%s:3000/api/data", local_ip);
 
         dashboardAPI = new RealTimeDashboardAPI(url);
         dashboardAPI.send2RealtimeDashboard("Event", "message", "onCreate!");
@@ -225,12 +234,19 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         setContentView(R.layout.selfie);
     }
 
+    /**
+     * Sets language
+     * @param strLocale
+     */
     private void updateLocale(String strLocale) {
         Locale locale = new Locale(strLocale);
         config.setLocale(locale);
         res.updateConfiguration(config, res.getDisplayMetrics());
     }
 
+    /**
+     * Called when focus lost, sends final data to backend.
+     */
     @Override
     public void onRobotFocusLost() {
         Log.i(TAG,"Focus lost");
@@ -242,12 +258,19 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         dashboardAPI.send2RealtimeDashboard("Event", "message", "Focus lost");
     }
 
+    /**
+     * Computer sagt "nein".
+     * @param reason
+     */
     @Override
     public void onRobotFocusRefused(String reason) {
         Log.d(TAG, "onRobotFocusRefused");
         dashboardAPI.send2RealtimeDashboard("Event", "message", "Focus refused");
     }
 
+    /**
+     * Destructor of main
+     */
     @Override
     protected void onDestroy() {
         // Unregister the RobotLifecycleCallbacks for this Activity.
@@ -257,16 +280,17 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         super.onDestroy();
     }
 
+    /**
+     * New perosn detected; init variables and Chatbot
+     * @param qiContext
+     */
     @Override
     public void onRobotFocusGained(QiContext qiContext) {
         this.qiContext = qiContext;
         HelperCollection.Say(qiContext, "Hallihallo kann man mich hören!?");
         dashboardAPI.send2RealtimeDashboard("Event", "message", "Focus gained");
 
-        //Generate new Universally Unique Identifier
-        uuidHash = UUID.randomUUID();
-        // create active person instance using the UUID
-        activePerson = new ActivePerson(uuidHash.toString());
+        activePerson = new ActivePerson();
 
         /*
         RouteFinderHandler rfh_ = new RouteFinderHandler(this);
@@ -327,7 +351,6 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
             });
         });
 
-        // Wenn er was verstanden hat
         currentChatBot.chat.async().addOnNormalReplyFoundForListener(input -> {
             countDownNoInteraction.reset();
         });
@@ -335,7 +358,10 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         // If pepper detects human voice but cannot determine the content of the phrase
         currentChatBot.chat.addOnNoReplyFoundForListener(cantReply -> {
             try {
-                HttpURLConnection con = HelperCollection.getConnection("https://informatik.hs-bremerhaven.de/docker-hbv-kms-http/collector?subject=did_not_understand_data" + "&identifier=" + uuidHash + "&phrase=" + cantReply.getText());
+                HttpURLConnection con = HelperCollection.getConnection(
+                        "https://informatik.hs-bremerhaven.de/docker-hbv-kms-http/collector?subject=did_not_understand_data"
+                                + "&identifier=" + activePerson.getUUIDstr()
+                                + "&phrase=" + cantReply.getText());
                 //int responseCode = con.getResponseCode();
                 dashboardAPI.send2RealtimeDashboard("Not Understand", "Phrase", cantReply.getText());
             } catch (Exception e) {
@@ -354,12 +380,18 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         });
     }
 
+    /**
+     * No interaction for long time
+     */
     @Override
     public void onPause() {
         countDownNoInteraction.cancel();
         super.onPause();
     }
 
+    /**
+     * new interaction after pause
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -367,6 +399,9 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         this.setFragment(new LoadingFragment());
     }
 
+    /**
+     * if user touches screen in pause mode
+     */
     @Override
     public void onUserInteraction() {
         if (getFragment() instanceof SplashFragment) {
@@ -378,6 +413,12 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     // endregion implements EVENTS
     /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
     // region implement FUN
+
+    /**
+     * Checks gender, age and other attributes, saves known params and send to dashboard and backend
+     * @param engagedHuman
+     * @return
+     */
     public int handle_new_human(Human engagedHuman){
         if (engagedHuman == null) return 1;
         if (getFragment() instanceof SplashFragment) setFragment(new MainFragment());
@@ -399,27 +440,38 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
 
         Log.i(TAG, "ActiveSpeaker Engage : ");
         Log.i(TAG, "distance : " + distance_format);
-        Log.i(TAG, "Age: " + age + " year(s)");
-        Log.i(TAG, "Gender: " + gender);
-        Log.i(TAG, "Pleasure state: " + pleasureState);
-        Log.i(TAG, "Excitement state: " + excitementState);
-        Log.i(TAG, "Basic Emotion : " + emotion);
-        Log.i(TAG, "Smile state: " + smileState);
+        activePerson.setDistance(String.valueOf(distance_format));
 
-        if(gender.toString().toLowerCase() != "unknown") dashboardAPI.send2RealtimeDashboard("gender", "gender", gender.toString());
-        if(String.valueOf(age).toLowerCase() != "unknown" && age != -1) dashboardAPI.send2RealtimeDashboard("age", "age", String.valueOf(age));
-        if(pleasureState.toString().toLowerCase() != "unknown") dashboardAPI.send2RealtimeDashboard("pleasure_state", "state", pleasureState.toString());
-        if(excitementState.toString().toLowerCase() != "unknown") dashboardAPI.send2RealtimeDashboard("excitement_state", "state", excitementState.toString());
-        if(emotion.toLowerCase() != "unknown") dashboardAPI.send2RealtimeDashboard("emotion_state", "state", emotion);
-        if(smileState.toString().toLowerCase() != "unknown") dashboardAPI.send2RealtimeDashboard("smile_state", "state", smileState.toString());
-
-        if (age != -1) activePerson.setAge(String.valueOf(age));
-
-        if (!gender.equals(this.DEFAULT_STRING)) activePerson.setGender(gender.toString());
-        activePerson.setPleasure_state(pleasureState.toString());
-        activePerson.setExcitementState(excitementState.toString());
-        activePerson.setEmotion(emotion);
-        activePerson.setSmileState(smileState.toString());
+        if(gender.toString().toLowerCase() != "unknown") {
+            Log.i(TAG, "Gender: " + gender);
+            activePerson.setGender(gender.toString());
+            dashboardAPI.send2RealtimeDashboard("gender", "gender", gender.toString());
+        }
+        if(String.valueOf(age).toLowerCase() != "unknown" && age != -1){
+            Log.i(TAG, "Age: " + age + " year(s)");
+            dashboardAPI.send2RealtimeDashboard("age", "age", String.valueOf(age));
+            activePerson.setAge(String.valueOf(age));
+        }
+        if(pleasureState.toString().toLowerCase() != "unknown") {
+            Log.i(TAG, "Pleasure state: " + pleasureState);
+            activePerson.setPleasure_state(pleasureState.toString());
+            dashboardAPI.send2RealtimeDashboard("pleasure_state", "state", pleasureState.toString());
+        }
+        if(excitementState.toString().toLowerCase() != "unknown") {
+            Log.i(TAG, "Excitement state: " + excitementState);
+            activePerson.setExcitementState(excitementState.toString());
+            dashboardAPI.send2RealtimeDashboard("excitement_state", "state", excitementState.toString());
+        }
+        if(emotion.toLowerCase() != "unknown") {
+            Log.i(TAG, "Basic Emotion : " + emotion);
+            activePerson.setEmotion(emotion);
+            dashboardAPI.send2RealtimeDashboard("emotion_state", "state", emotion);
+        }
+        if(smileState.toString().toLowerCase() != "unknown") {
+            Log.i(TAG, "Smile state: " + smileState);
+            activePerson.setSmileState(smileState.toString());
+            dashboardAPI.send2RealtimeDashboard("smile_state", "state", smileState.toString());
+        }
         return 0;
     }
 
@@ -429,20 +481,31 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
      * @param variableName the name of the variable
      * @param value        the value that needs to be set
      */
-
     public void setQiVariable(String variableName, String value) {
         Log.d(TAG, "size va : " + currentChatBot.variables.size());
         currentChatBot.variables.get(variableName).async().setValue(value);
     }
 
+    /**
+     * returns the chatbot
+     * @return
+     */
     public ChatData getCurrentChatBot() {
         return currentChatBot;
     }
 
+    /**
+     * returns the qiContext
+     * @return
+     */
     public QiContext getQiContext() {
         return qiContext;
     }
 
+    /**
+     * returns the ID of this app
+     * @return
+     */
     public Integer getThemeId() {
         try {
             return getPackageManager().getActivityInfo(getComponentName(), 0).getThemeResource();
@@ -452,6 +515,10 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         return null;
     }
 
+    /**
+     * returns the current fragment / view
+     * @return
+     */
     public Fragment getFragment() {
         return fragmentManager.findFragmentByTag("currentFragment");
     }
@@ -478,6 +545,9 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         transaction.commit();
     }
 
+    /**
+     * should detect people around the robot
+     */
     private void findHumansAround() {
         Log.i(TAG, "findHumansAround");
         // Get the humans around the robot.
@@ -488,6 +558,10 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         });
     }
 
+    /**
+     * Processes the information about people around the robot
+     * @param humans
+     */
     private void retrieveCharacteristics(final List<Human> humans) {
         Log.i(TAG, "retrieveCharacteristics");
         persons = new Person[humans.size()];
@@ -521,7 +595,7 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
             persons[i].setAge(age);
             persons[i].setEmotion(emotion);
         }
-
+        /*
         if (persons != null && persons.length > 1) {
             Log.i(TAG, "Hier sind aber viele Leute - beep boop");
             Log.i(TAG, "Status : " + status);
@@ -530,8 +604,15 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
                 qiChatStatus.async().setValue(status);
             }
         }
+        */
     }
 
+    /**
+     * returns the basic emotion
+     * @param excitement
+     * @param pleasure
+     * @return
+     */
     private String computeBasicEmotion(String excitement, String pleasure) {
         if (excitement.equals(this.DEFAULT_STRING) || pleasure.equals(this.DEFAULT_STRING)) return this.DEFAULT_STRING;
         switch (pleasure) {

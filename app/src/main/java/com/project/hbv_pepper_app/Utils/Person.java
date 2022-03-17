@@ -1,5 +1,6 @@
 package com.project.hbv_pepper_app.Utils;
 
+// Unused class
 public class Person {
     /* Class to store data about a person
         ├ setting

@@ -84,7 +84,7 @@ public class VariableExecutor extends BaseQiChatExecutor {
                 try {
                     HttpURLConnection con = HelperCollection.getConnection(
                             "https://informatik.hs-bremerhaven.de/docker-hbv-kms-http/api/v1/saveUseCaseData"
-                                    + "&identifier=" + ma.uuidHash
+                                    + "&identifier=" + ma.activePerson.getUUIDstr()
                                     + "&use_case=" + variableName
                     );
                     //int responseCode = con.getResponseCode();
@@ -140,7 +140,7 @@ public class VariableExecutor extends BaseQiChatExecutor {
                     jdata.put("semester", semester_);
 
                     Map<String, Object> params2 = new LinkedHashMap<>();
-                    params2.put("identifier", ma.uuidHash.toString());
+                    params2.put("identifier", ma.activePerson.getUUIDstr());
                     params2.put("data", jdata);
 
                     StringBuilder postData = new StringBuilder();

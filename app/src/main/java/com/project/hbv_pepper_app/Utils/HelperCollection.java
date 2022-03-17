@@ -30,11 +30,22 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.X509TrustManager;
 
+/**
+ *  _   _      _                  ____      _           _   _
+ * | | | | ___| |_ __   ___ _ __ / ___|___ | | ___  ___| |_(_) ___  _ __
+ * | |_| |/ _ \ | '_ \ / _ \ '__| |   / _ \| |/ _ \/ __| __| |/ _ \| '_ \
+ * |  _  |  __/ | |_) |  __/ |  | |__| (_) | |  __/ (__| |_| | (_) | | | |
+ * |_| |_|\___|_| .__/ \___|_|   \____\___/|_|\___|\___|\__|_|\___/|_| |_|
+ *              |_|
+ * functions and utils that could not be assigned to a specifig context
+ */
 public class HelperCollection {
-    /* Class to store static functions
-       └ Accessable from everywhere
-    */
 
+    /**
+     * Prepares content for a GET / POST Request
+     * @param theUrl
+     * @return
+     */
     public static String getUrlContents(String theUrl){
         System.out.println(theUrl);
         StringBuilder content = new StringBuilder();
@@ -55,15 +66,30 @@ public class HelperCollection {
         return content.toString();
     }
 
+    /**
+     * Lets the Robot say some phrase
+     * @param qiContext
+     * @param message
+     */
     public static void Say(QiContext qiContext, String message){
         SayBuilder.with(qiContext).withPhrase(new Phrase(message)).build().run();
     }
 
+    /**
+     * returns the timestamp in date form
+     * @return
+     */
     @SuppressLint("SimpleDateFormat")
     public static String getTimeStamp() {
         return new SimpleDateFormat("HHmmss_SSS").format(new Date());
     }
 
+    /**
+     * Returns the distance between pepper and the active person
+     * @param humanFrame
+     * @param robotFrame
+     * @return
+     */
     public static double computeDistance(Frame humanFrame, Frame robotFrame) {
         // Get the TransformTime between the human frame and the robot frame.
         TransformTime transformTime = humanFrame.computeTransform(robotFrame);
@@ -78,6 +104,12 @@ public class HelperCollection {
         return Math.sqrt(x * x + y * y);
     }
 
+    /**
+     * Creates a HTTP Connection to send GET Requests
+     * @param url
+     * @return
+     * @throws Exception
+     */
     public static HttpURLConnection getConnection(String url) throws  Exception {
         HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
             public boolean verify(String hostname, SSLSession session) {
@@ -103,6 +135,12 @@ public class HelperCollection {
         return con;
     }
 
+    /**
+     * Returns the price of a given cryptocurrency pair; price by kucoin.com
+     * @param symbol
+     * @return
+     * @throws Exception
+     */
     public static String getPrice(String symbol) throws Exception {
         try {
             HttpURLConnection con = getConnection("https://informatik.hs-bremerhaven.de/docker-hbv-kms-http/crypto?subject=price&symbol=" + symbol);
@@ -128,6 +166,18 @@ public class HelperCollection {
         }
     }
 
+    /**
+     * Saves the conversation data; called in onFocusLost
+     * @param uuidStr
+     * @param distance
+     * @param age
+     * @param gender
+     * @param basic_emotion
+     * @param pleasure_state
+     * @param excitement_state
+     * @param smile_state
+     * @param dialog_time
+     */
     public static void saveConversationData(String uuidStr, String distance, String age, String gender, String basic_emotion,
                                             String pleasure_state, String excitement_state, String smile_state,
                                             String dialog_time){
@@ -150,6 +200,11 @@ public class HelperCollection {
         }
     }
 
+    /**
+     * lets the robot say, what du essen kannst
+     * @param day
+     * @return
+     */
     public static String getOffer(String day) {
         try{
             HttpURLConnection con = getConnection("https://informatik.hs-bremerhaven.de/docker-hbv-kms-http/mensadata");
