@@ -406,12 +406,12 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         Log.i(TAG, "Basic Emotion : " + emotion);
         Log.i(TAG, "Smile state: " + smileState);
 
-        dashboardAPI.send2RealtimeDashboard("gender", "gender", gender.toString());
-        dashboardAPI.send2RealtimeDashboard("age", "age", String.valueOf(age));
-        dashboardAPI.send2RealtimeDashboard("pleasure_state", "state", pleasureState.toString());
-        dashboardAPI.send2RealtimeDashboard("excitement_state", "state", excitementState.toString());
-        dashboardAPI.send2RealtimeDashboard("emotion_state", "state", emotion.toString());
-        dashboardAPI.send2RealtimeDashboard("smile_state", "state", smileState.toString());
+        if(gender.toString().toLowerCase() != "unknown") dashboardAPI.send2RealtimeDashboard("gender", "gender", gender.toString());
+        if(String.valueOf(age).toLowerCase() != "unknown" && age != -1) dashboardAPI.send2RealtimeDashboard("age", "age", String.valueOf(age));
+        if(pleasureState.toString().toLowerCase() != "unknown") dashboardAPI.send2RealtimeDashboard("pleasure_state", "state", pleasureState.toString());
+        if(excitementState.toString().toLowerCase() != "unknown") dashboardAPI.send2RealtimeDashboard("excitement_state", "state", excitementState.toString());
+        if(emotion.toLowerCase() != "unknown") dashboardAPI.send2RealtimeDashboard("emotion_state", "state", emotion);
+        if(smileState.toString().toLowerCase() != "unknown") dashboardAPI.send2RealtimeDashboard("smile_state", "state", smileState.toString());
 
         if (age != -1) activePerson.setAge(String.valueOf(age));
 

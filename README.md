@@ -4,6 +4,13 @@ This application is created in relation to the work at the AI Transfer Center Br
 
 The goal of this application is to enable the humanoid robot Pepper, which is owned by the Bremerhaven University of Applied Sciences, to interact in different situations. For this purpose, different use cases are elaborated and implemented.
 
+# Update:
+Since the bachelor project is coming to an end and this was also done in cooperation with the KI - Lab Bremerhaven,
+this app will be further developed in the github organization of the KI - Lab.
+
+- https://github.com/KI-Lab-Bremerhaven
+- https://github.com/KI-Lab-Bremerhaven/KI-Lab-PepperApp
+
 Use cases:
 
 - Support in everyday life at the university
