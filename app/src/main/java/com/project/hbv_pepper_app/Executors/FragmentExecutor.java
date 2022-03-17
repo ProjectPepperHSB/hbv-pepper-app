@@ -20,6 +20,9 @@ import java.util.List;
  * FragmentExecutor sets the fragment to be displayed in the placeholder of the main activity
  * This executor is added to the Chat(see main activity)
  * Triggered in qiChat as follow : ^execute( FragmentExecutor, frag_XXXX )
+ *
+ * Template source of this file: https://github.com/softbankrobotics-labs/App-Template (March 2022)
+ *  Modified by Benjamin T. Schwertfeger, Kristian Kellermann, Jacob B. Menge
  */
 
 public class FragmentExecutor extends BaseQiChatExecutor {

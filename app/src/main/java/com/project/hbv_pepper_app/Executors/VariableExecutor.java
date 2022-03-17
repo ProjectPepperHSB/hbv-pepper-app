@@ -3,53 +3,33 @@ package com.project.hbv_pepper_app.Executors;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Build;
-import android.text.Html;
-import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
-import android.widget.VideoView;
-
 import com.aldebaran.qi.sdk.QiContext;
-import com.aldebaran.qi.sdk.RobotLifecycleCallbacks;
 import com.aldebaran.qi.sdk.object.conversation.BaseQiChatExecutor;
 import com.google.gson.Gson;
 import com.project.hbv_pepper_app.Fragments.ScreenTwoFragment;
 import com.project.hbv_pepper_app.MainActivity;
-import com.project.hbv_pepper_app.Other.HBV_TimeTable.Lectures;
-import com.project.hbv_pepper_app.Other.HBV_TimeTable.TimeTable;
-import com.project.hbv_pepper_app.Other.HBV_TimeTable.TimeTableHandler;
 import com.project.hbv_pepper_app.R;
 import com.project.hbv_pepper_app.Utils.HelperCollection;
 
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.sql.Time;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
 /*
 import org.apache.http.Header;
@@ -70,6 +50,9 @@ import org.apache.http.util.EntityUtils;
  * VariableExecutor is used when a qiVariable is modified in the qiChat and
  * you want to have feedback on the tablet
  * Triggered in qiChat as follow : ^execute( VariableExecutor, variableName, variableValue)
+ *
+ *  Template source of this file: https://github.com/softbankrobotics-labs/App-Template (March 2022)
+ *  Modified by Benjamin T. Schwertfeger, Kristian Kellermann, Jacob B. Menge
  */
 
 public class VariableExecutor extends BaseQiChatExecutor {
@@ -101,7 +84,7 @@ public class VariableExecutor extends BaseQiChatExecutor {
                 try {
                     HttpURLConnection con = HelperCollection.getConnection(
                             "https://informatik.hs-bremerhaven.de/docker-hbv-kms-http/api/v1/saveUseCaseData"
-                                    + "&identifier=" + ma.uuidHash
+                                    + "&identifier=" + ma.activePerson.getUUIDstr()
                                     + "&use_case=" + variableName
                     );
                     //int responseCode = con.getResponseCode();
@@ -157,7 +140,7 @@ public class VariableExecutor extends BaseQiChatExecutor {
                     jdata.put("semester", semester_);
 
                     Map<String, Object> params2 = new LinkedHashMap<>();
-                    params2.put("identifier", ma.uuidHash.toString());
+                    params2.put("identifier", ma.activePerson.getUUIDstr());
                     params2.put("data", jdata);
 
                     StringBuilder postData = new StringBuilder();

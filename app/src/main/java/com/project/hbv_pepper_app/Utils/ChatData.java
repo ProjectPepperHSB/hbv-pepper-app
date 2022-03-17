@@ -36,7 +36,10 @@ import java.util.Map;
  * ChatData contains all the elements of a QiChat
  * although not necessary it is greatly recommended to use this Class since it allows for much
  * better code readability
- */
+ * Template source of this file: https://github.com/softbankrobotics-labs/App-Template (March 2022)
+ * Modified by Benjamin Thomas Schwertfeger
+*/
+
 
 public class ChatData {
 
@@ -70,15 +73,14 @@ public class ChatData {
         this.topicNames = topicNames;
         Resources res = activity.getApplicationContext().getResources();
         Configuration config = res.getConfiguration();
-        Locale previousLocale = null; // needed if several languages are used.
-        if (!config.locale.toString().equals(locale)) {
-            previousLocale = config.locale;
-        }
+
+        Locale previousLocale = null;
+        if (!config.locale.toString().equals(locale))  previousLocale = config.locale;
+
         config.setLocale(locale);
         res.updateConfiguration(config, res.getDisplayMetrics());
 
         this.topics = new ArrayList<>();
-
         for (String topicName : topicNames) {
             Log.d(TAG, "adding " + topicName + " to topic list");
             topics.add(TopicBuilder.with(qiContext)
@@ -87,15 +89,12 @@ public class ChatData {
         }
 
         qiLocale = getQiLocale(locale);
-
         qiChatbot = QiChatbotBuilder.with(qiContext)
                 .withTopics(topics)
                 .withLocale(qiLocale)
                 .build();
 
-        if (buildChat) {
-            setupChat(qiContext);
-        }
+        if (buildChat) setupChat(qiContext);
 
         topicStatuses = new HashMap<>();
         for (Topic t : qiChatbot.getTopics()) {
@@ -105,9 +104,7 @@ public class ChatData {
         }
 
         bookmarks = new HashMap<>();
-        for (Topic t : qiChatbot.getTopics()) {
-            bookmarks.put(t.getName(), t.getBookmarks());
-        }
+        for (Topic t : qiChatbot.getTopics()) bookmarks.put(t.getName(), t.getBookmarks());
 
         if (previousLocale != null) {
             config.setLocale(previousLocale);
@@ -142,53 +139,31 @@ public class ChatData {
     public static com.aldebaran.qi.sdk.object.locale.Locale getQiLocale(Locale locale) {
         com.aldebaran.qi.sdk.object.locale.Locale qiLocale;
         String strLocale = locale.toString();
-        if (strLocale.contains("fr")) {
-            qiLocale = new com.aldebaran.qi.sdk.object.locale.Locale(Language.FRENCH, Region.FRANCE);
-        } else if (strLocale.contains("zh")) {
-            if (strLocale.equals("zh_CN")) {
+        if (strLocale.contains("fr")) qiLocale = new com.aldebaran.qi.sdk.object.locale.Locale(Language.FRENCH, Region.FRANCE);
+        else if (strLocale.contains("zh")) {
+            if (strLocale.equals("zh_CN"))
                 qiLocale = new com.aldebaran.qi.sdk.object.locale.Locale(Language.CHINESE, Region.CHINA);
-            } else {
+            else
                 qiLocale = new com.aldebaran.qi.sdk.object.locale.Locale(Language.CHINESE, Region.TAIWAN);
-            }
-        } else if (strLocale.contains("en")) {
-            qiLocale = new com.aldebaran.qi.sdk.object.locale.Locale(Language.ENGLISH, Region.UNITED_STATES);
-        } else if (strLocale.contains("ar")) {
-            qiLocale = new com.aldebaran.qi.sdk.object.locale.Locale(Language.ARABIC, Region.EGYPT);
-        } else if (strLocale.contains("da")) {
-            qiLocale = new com.aldebaran.qi.sdk.object.locale.Locale(Language.DANISH, Region.DENMARK);
-        } else if (strLocale.contains("nl")) {
-            qiLocale = new com.aldebaran.qi.sdk.object.locale.Locale(Language.DUTCH, Region.NETHERLANDS);
-        } else if (strLocale.contains("fi")) {
-            qiLocale = new com.aldebaran.qi.sdk.object.locale.Locale(Language.FINNISH, Region.FINLAND);
-        } else if (strLocale.contains("de")) {
-            qiLocale = new com.aldebaran.qi.sdk.object.locale.Locale(Language.GERMAN, Region.GERMANY);
-        } else if (strLocale.contains("it")) {
-            qiLocale = new com.aldebaran.qi.sdk.object.locale.Locale(Language.ITALIAN, Region.ITALY);
-        } else if (strLocale.contains("ja")) {
-            qiLocale = new com.aldebaran.qi.sdk.object.locale.Locale(Language.JAPANESE, Region.JAPAN);
-        } else if (strLocale.contains("nb")) {
-            qiLocale = new com.aldebaran.qi.sdk.object.locale.Locale(Language.NORWEGIAN_BOKMAL, Region.NORWAY);
-        } else if (strLocale.contains("es")) {
-            qiLocale = new com.aldebaran.qi.sdk.object.locale.Locale(Language.SPANISH, Region.SPAIN);
-        } else if (strLocale.contains("sv")) {
-            qiLocale = new com.aldebaran.qi.sdk.object.locale.Locale(Language.SWEDISH, Region.SWEDEN);
-        } else if (strLocale.contains("tr")) {
-            qiLocale = new com.aldebaran.qi.sdk.object.locale.Locale(Language.TURKISH, Region.TURKEY);
-        } else if (strLocale.contains("cs")) {
-            qiLocale = new com.aldebaran.qi.sdk.object.locale.Locale(Language.CZECH, Region.CZECH_REPUBLIC);
-        } else if (strLocale.contains("pl")) {
-            qiLocale = new com.aldebaran.qi.sdk.object.locale.Locale(Language.POLISH, Region.POLAND);
-        } else if (strLocale.contains("sk")) {
-            qiLocale = new com.aldebaran.qi.sdk.object.locale.Locale(Language.SLOVAK, Region.SLOVAKIA);
-        } else if (strLocale.contains("el")) {
-            qiLocale = new com.aldebaran.qi.sdk.object.locale.Locale(Language.GREEK, Region.GREECE);
-        } else if (strLocale.contains("ko")) {
-            qiLocale = new com.aldebaran.qi.sdk.object.locale.Locale(Language.KOREAN, Region.REPUBLIC_OF_KOREA);
-        } else if (strLocale.contains("hu")) {
-            qiLocale = new com.aldebaran.qi.sdk.object.locale.Locale(Language.HUNGARIAN, Region.HUNGARY);
-        } else {
-            qiLocale = new com.aldebaran.qi.sdk.object.locale.Locale(Language.ENGLISH, Region.UNITED_STATES);
-        }
+        } else if (strLocale.contains("en")) qiLocale = new com.aldebaran.qi.sdk.object.locale.Locale(Language.ENGLISH, Region.UNITED_STATES);
+         else if (strLocale.contains("ar")) qiLocale = new com.aldebaran.qi.sdk.object.locale.Locale(Language.ARABIC, Region.EGYPT);
+         else if (strLocale.contains("da")) qiLocale = new com.aldebaran.qi.sdk.object.locale.Locale(Language.DANISH, Region.DENMARK);
+         else if (strLocale.contains("nl")) qiLocale = new com.aldebaran.qi.sdk.object.locale.Locale(Language.DUTCH, Region.NETHERLANDS);
+         else if (strLocale.contains("fi")) qiLocale = new com.aldebaran.qi.sdk.object.locale.Locale(Language.FINNISH, Region.FINLAND);
+         else if (strLocale.contains("de")) qiLocale = new com.aldebaran.qi.sdk.object.locale.Locale(Language.GERMAN, Region.GERMANY);
+         else if (strLocale.contains("it")) qiLocale = new com.aldebaran.qi.sdk.object.locale.Locale(Language.ITALIAN, Region.ITALY);
+         else if (strLocale.contains("ja")) qiLocale = new com.aldebaran.qi.sdk.object.locale.Locale(Language.JAPANESE, Region.JAPAN);
+         else if (strLocale.contains("nb")) qiLocale = new com.aldebaran.qi.sdk.object.locale.Locale(Language.NORWEGIAN_BOKMAL, Region.NORWAY);
+         else if (strLocale.contains("es")) qiLocale = new com.aldebaran.qi.sdk.object.locale.Locale(Language.SPANISH, Region.SPAIN);
+         else if (strLocale.contains("sv")) qiLocale = new com.aldebaran.qi.sdk.object.locale.Locale(Language.SWEDISH, Region.SWEDEN);
+         else if (strLocale.contains("tr")) qiLocale = new com.aldebaran.qi.sdk.object.locale.Locale(Language.TURKISH, Region.TURKEY);
+         else if (strLocale.contains("cs")) qiLocale = new com.aldebaran.qi.sdk.object.locale.Locale(Language.CZECH, Region.CZECH_REPUBLIC);
+         else if (strLocale.contains("pl")) qiLocale = new com.aldebaran.qi.sdk.object.locale.Locale(Language.POLISH, Region.POLAND);
+         else if (strLocale.contains("sk")) qiLocale = new com.aldebaran.qi.sdk.object.locale.Locale(Language.SLOVAK, Region.SLOVAKIA);
+         else if (strLocale.contains("el")) qiLocale = new com.aldebaran.qi.sdk.object.locale.Locale(Language.GREEK, Region.GREECE);
+         else if (strLocale.contains("ko")) qiLocale = new com.aldebaran.qi.sdk.object.locale.Locale(Language.KOREAN, Region.REPUBLIC_OF_KOREA);
+         else if (strLocale.contains("hu")) qiLocale = new com.aldebaran.qi.sdk.object.locale.Locale(Language.HUNGARIAN, Region.HUNGARY);
+         else qiLocale = new com.aldebaran.qi.sdk.object.locale.Locale(Language.ENGLISH, Region.UNITED_STATES);
         return qiLocale;
     }
 
@@ -260,9 +235,8 @@ public class ChatData {
      */
     public void setupDynamics(List<String> dynamicConceptsNames) {
         dynamics = new ArrayList<>();
-        for (String dynamicVariable : dynamicConceptsNames) {
-            dynamics.add(qiChatbot.dynamicConcept(dynamicVariable));
-        }
+        for (String dynamicVariable : dynamicConceptsNames) dynamics.add(qiChatbot.dynamicConcept(dynamicVariable));
+
     }
 
     /**
@@ -300,9 +274,8 @@ public class ChatData {
         TopicStatus nextTopicStatus = topicStatuses.get(topic);
         nextTopicStatus.async().setEnabled(true).andThenConsume(aVoid ->
                 goToBookmark(bookmark, topic));
-        if (currentTopicStatus != null && !currentTopicName.equals(topic)) {
-            currentTopicStatus.async().setEnabled(false);
-        }
+        if (currentTopicStatus != null && !currentTopicName.equals(topic)) currentTopicStatus.async().setEnabled(false);
+
         currentTopicStatus = nextTopicStatus;
         currentTopicName = topic;
     }
@@ -323,9 +296,7 @@ public class ChatData {
                         currentGotoBookmarkFuture = qiChatbot.async().goToBookmark(tmp.get(bookmark),
                                 AutonomousReactionImportance.HIGH, AutonomousReactionValidity.IMMEDIATE));
             }
-        } else {
-            Log.e(TAG, "could not find topic: " + topic + " in topicNames");
-        }
+        } else Log.e(TAG, "could not find topic: " + topic + " in topicNames");
     }
 
     public Future<Void> cancelCurrentGotoBookmarkFuture() {

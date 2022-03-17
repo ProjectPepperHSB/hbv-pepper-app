@@ -9,16 +9,37 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.UUID;
 
+/**
+ *
+ *  ____            _     _                         _      _    ____ ___
+ * |  _ \  __ _ ___| |__ | |__   ___   __ _ _ __ __| |    / \  |  _ \_ _|
+ * | | | |/ _` / __| '_ \| '_ \ / _ \ / _` | '__/ _` |   / _ \ | |_) | |
+ * | |_| | (_| \__ \ | | | |_) | (_) | (_| | | | (_| |  / ___ \|  __/| |
+ * |____/ \__,_|___/_| |_|_.__/ \___/ \__,_|_|  \__,_| /_/   \_\_|  |___|
+ *
+ * Class that provides functions to interact with our running dashboard service.
+ */
+
 public class RealTimeDashboardAPI {
     /*
     Class to interact with the realtime dashboard by sending data
      */
     String url;
 
+    /**
+     * Contructor
+     * @param url
+     */
     public RealTimeDashboardAPI(String url){
         this.url = url;
     }
 
+    /**
+     * Sends GET messages to the dashbaord service
+     * @param topic
+     * @param key2
+     * @param message
+     */
     public void send2RealtimeDashboard(String topic, String key2, String message) {
         // Sends a request to the RTD in form: {"data": {"topic": topic, key2: message}}
         final String reference = String.valueOf(UUID.randomUUID());
@@ -34,6 +55,12 @@ public class RealTimeDashboardAPI {
         sendPost(this.url, payload, reference);
     }
 
+    /**
+     * Sends POST messages to the dashbaord service
+     * @param destinationURL
+     * @param payload
+     * @param reference
+     */
     public static void sendPost(String destinationURL, JSONObject payload, String reference) {
         // Sends a POST request to a desired destination url
         // the receiver will get data in form: { "data": paylaod }

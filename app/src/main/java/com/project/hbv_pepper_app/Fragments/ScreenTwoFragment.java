@@ -2,7 +2,6 @@ package com.project.hbv_pepper_app.Fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -10,11 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.project.hbv_pepper_app.MainActivity;
 import com.project.hbv_pepper_app.R;
-
+/**
+ * Template source of this file: https://github.com/softbankrobotics-labs/App-Template (March 2022)
+ *  Modified by Benjamin T. Schwertfeger, Kristian Kellermann, Jacob B. Menge
+ */
 public class ScreenTwoFragment extends Fragment {
 
     private static final String TAG = "MSI_ScreenTwoFragment";
