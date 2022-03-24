@@ -233,7 +233,7 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         countDownNoInteraction.start();
 
         String url;
-        String local_ip="192.168.8.140";
+        String local_ip="192.168.1.108";
         if (Build.DEVICE.equals("generic_x86")) url = "http://10.0.2.2:3000/api/data";
         else url = String.format("http://%s:3000/api/data", local_ip);
 
@@ -374,12 +374,13 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     protected void onResume() {
         super.onResume();
         setSpeechBarDisplayStrategy(SpeechBarDisplayStrategy.OVERLAY); // We don't want to see the speech bar while loading
-        this.setFragment(new LoadingFragment());
+        //this.setFragment(new LoadingFragment());
     }
 
     /**
      * if user touches screen in pause mode
      */
+
     @Override
     public void onUserInteraction() {
         if (getFragment() instanceof SplashFragment) {

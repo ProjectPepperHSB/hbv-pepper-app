@@ -84,6 +84,7 @@ u:({~was-kannst-du} {"mir über"} {die} {Hochschule} [erzählen sagen berichten 
 
 # ----- ----- A B O U T - R O O M F I N D E R ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 
+
 u:([zeig gib] {mir} {bitte} {den} [Gebäudeplan Campusplan Gelände])
     ^execute(VariableExecutor, qiVariableNav, Plan) Hier hast du eine Übersicht über das Hochschulgelände
 
@@ -114,7 +115,6 @@ u:({so} zeig{e} {er} {mir} {den} Stundenplan {für} {den} Studiengang _~Studieng
 
 u:({~w-words} {"findet der" "ist der"} Kurs $1 {statt})
     $course=$1 $semester=$2 Gib mir einen Moment ^execute(VariableExecutor, timetable_detail, $course, $semester) Der Kurs $course im Semester $semester findet irgendwann statt
-
 
 
 # ----- ----- A B O U T - M E N S A ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
