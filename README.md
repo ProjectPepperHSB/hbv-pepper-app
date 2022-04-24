@@ -46,9 +46,3 @@ git clone https://github.com/ProjectPepperHSB/hbv-pepper-app
 - Softbank Robotics [Development Center](https://developer.softbankrobotics.com/pepper-qisdk/api/motion/tutorials)
 - About sensors - [Publication](https://link.springer.com/article/10.1007/s12369-021-00749-x)
 
-## Notes
-
-## Todo
-
-- implement new use-cases
-- extend chat subjects
